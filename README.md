@@ -20,6 +20,16 @@ int main() {
     return 0;
 }
 ```
+### Running Tests
+
+To run tests for each module:
+
+```bash
+make check
+```
+> [!NOTE]
+> Data-driven testing handled by
+> [IncludeOnly/test.h](https://github.com/KDesp73/IncludeOnly/blob/main/libs/test.h).
 
 ## Documentation
 
