@@ -1,0 +1,9 @@
+#ifndef test_queen_moves_h
+#define test_queen_moves_h
+
+#define TEST_test_queen_moves\
+	test_queen_moves("rnb1kb1r/ppp1p1pp/5n2/3pPp2/7q/2N5/PPPP1PPP/R1BQKBNR b KQkq - 0 1", "h4", "h3", "h2", "h5", "h6", "g3", "g4", "g5", "f2", "f4", "e4", "d4", "c4", "b4", "a4", NULL), \
+	test_queen_moves("r1bqrbk1/2p2pp1/p1np1n1p/1p2p3/4P3/PBNP1N1P/1PPB1PP1/R2Q1RK1 w - - 3 12", "d1", "b1", "c1", "e1", "e2", NULL), \
+	test_queen_moves("3r4/R3KP2/1r3p2/1P2ppk1/7q/1Q1P4/3N1N2/1b6 w - - 0 1", "b3", "a2", "a3", "a4", "b2", "b4", "c2", "d1", "c3", "c4", "d5", "e6", "b1", NULL)
+
+#endif
