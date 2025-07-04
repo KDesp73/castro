@@ -21,6 +21,10 @@ int main() {
 }
 ```
 
+## Documentation
+
+Documentation for this library can be found in the header file [castro.h](./src/castro.h)
+
 ## License
 
 [MIT](./LICENSE)
