@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - bumped version to 0.2.0
 - Castro now using a single header
 
+
 ## [0.1.0] - 2025-02-06 
 
 ### Added
@@ -38,6 +39,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Fixed movegen bugs (passing all perft tests)
 
 
-[0.1.0]: https://github.com/KDesp73/castro/releases/tag/v0.1.0
-[0.2.0]: https://github.com/KDesp73/castro/releases/tag/v0.2.0
+[0.1.0]: https://github.com/KDesp73/castro//releases/tag/v0.1.0
+[0.2.0]: https://github.com/KDesp73/castro//releases/tag/v0.2.0
 
