@@ -1,5 +1,5 @@
 /**
- * test.h v0.0.3
+ * test.h v0.0.4
  *
  * A tiny data-driven testing framework
  *
@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define TEST_VERSION "0.0.3"
+#define TEST_VERSION "0.0.4"
 
 #ifndef TESTAPI
     #define TESTAPI static
@@ -47,6 +47,7 @@ TESTAPI void load_test(const char* name);
 
 #define RUN_TEST(test) \
     TEST_##test
+
 
 #define TEST_ARGS(argc, argv)                                                                 \
     do {                                                                                      \

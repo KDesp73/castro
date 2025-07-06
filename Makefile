@@ -5,23 +5,18 @@ SRC_DIR = src
 INCLUDE_DIR = include
 BUILD_DIR = build
 DIST_DIR = dist
-BIN_DIR = $(BUILD_DIR)/bin
-
-# Binaries
-ENGINE = $(BIN_DIR)/engine
-TEST_MOVEGEN = $(BIN_DIR)/test_movegen
-TEST_ENGINE = $(BIN_DIR)/test_engine
+TEST_DIR = test
 
 # Sanitizers
 SANITIZERS = -fsanitize=address,undefined
 
 type ?= RELEASE
 
+# Binaries
 LIBRARY_NAME = castro
 SO_NAME      = lib$(LIBRARY_NAME).so
 A_NAME       = lib$(LIBRARY_NAME).a
-
-TEST_DIR = test
+TEST_BIN = check
 
 # Flags
 INCLUDE = -Isrc -Iextern
@@ -43,10 +38,10 @@ TEST_FILES := $(shell find $(TEST_DIR) -name '*.c')
 OBJ_FILES  = $(patsubst $(SRC_DIR)/%.c,$(BUILD_DIR)/%.o,$(SRC_FILES))
 
 # Version Info
-version_file   = include/version.h
-VERSION_MAJOR  = $(shell sed -n -e 's/#define VERSION_MAJOR \([0-9]*\)/\1/p' $(version_file))
-VERSION_MINOR  = $(shell sed -n -e 's/#define VERSION_MINOR \([0-9]*\)/\1/p' $(version_file))
-VERSION_PATCH  = $(shell sed -n -e 's/#define VERSION_PATCH \([0-9]*\)/\1/p' $(version_file))
+version_file   = src/castro.h
+VERSION_MAJOR  = $(shell sed -n -e 's/#define CASTRO_VERSION_MAJOR \([0-9]*\)/\1/p' $(version_file))
+VERSION_MINOR  = $(shell sed -n -e 's/#define CASTRO_VERSION_MINOR \([0-9]*\)/\1/p' $(version_file))
+VERSION_PATCH  = $(shell sed -n -e 's/#define CASTRO_VERSION_PATCH \([0-9]*\)/\1/p' $(version_file))
 VERSION        = $(VERSION_MAJOR).$(VERSION_MINOR).$(VERSION_PATCH)
 
 .DEFAULT_GOAL := help
@@ -54,22 +49,25 @@ VERSION        = $(VERSION_MAJOR).$(VERSION_MINOR).$(VERSION_PATCH)
 # Targets
 
 .PHONY: all
-all: $(BUILD_DIR) static shared check ## Build everything
+all: $(BUILD_DIR) static shared $(TEST_BIN) ## Build everything
 	@echo "[INFO] Build complete."
 
 $(BUILD_DIR): ## Create build directories
 	@echo "[INFO] Creating build directories"
-	mkdir -p $(BUILD_DIR)/bin $(BUILD_DIR)/movegen $(BUILD_DIR)/notation $(BUILD_DIR)/bitboard
+	mkdir -p $(BUILD_DIR)/movegen $(BUILD_DIR)/notation $(BUILD_DIR)/bitboard
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c ## Compile .c to .o
 	@echo "[ CC ] $< -> $@"
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c -o $@ $<
 
-.PHONY: check
-check: $(BUILD_DIR) static ## Build test binary
-	@echo "[INFO] Building test executable: $(TEST_MOVEGEN)"
-	@$(CC) $(TEST_FILES) -o $(TEST_MOVEGEN) $(INCLUDE) -L. -l:$(A_NAME) -ggdb $(SANITIZERS)
+$(TEST_BIN): $(BUILD_DIR) static ## Build test binary
+	@echo "[INFO] Building test executable: $(TEST_BIN)"
+	@$(CC) $(TEST_FILES) -o $(TEST_BIN) $(INCLUDE) -L. -l:$(A_NAME) -ggdb $(SANITIZERS)
+
+.PHONY: test
+test: $(TEST_BIN) ## Build and run tests
+	./$(TEST_BIN)
 
 .PHONY: shared
 shared: $(OBJ_FILES) ## Build shared library
@@ -84,7 +82,7 @@ static: $(OBJ_FILES) ## Build static library
 .PHONY: clean
 clean: ## Remove all build files
 	@echo "[INFO] Cleaning build artifacts"
-	rm -rf $(BUILD_DIR) $(SO_NAME) $(A_NAME)
+	rm -rf $(BUILD_DIR) $(SO_NAME) $(A_NAME) $(TEST_BIN)
 
 .PHONY: compile_commands.json
 compile_commands.json: $(SRC_FILES) ## Generate compile_commands.json with Bear

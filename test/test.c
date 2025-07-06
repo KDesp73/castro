@@ -1,9 +1,9 @@
 #include "castro.h"
 #include <string.h>
-#define TEST_IMPLEMENTATION
-#include "IncludeOnly/test.h"
 #define CLI_IMPLEMENTATION
 #include "IncludeOnly/cli.h"
+#define TEST_IMPLEMENTATION
+#include "IncludeOnly/test.h"
 #include "tests.h"
 
 char* TEST_DIRECTORY = "test";
