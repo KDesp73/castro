@@ -1,5 +1,5 @@
 /**
- * test.h v0.0.2
+ * test.h v0.0.3
  *
  * A tiny data-driven testing framework
  *
@@ -48,7 +48,53 @@ TESTAPI void load_test(const char* name);
 #define RUN_TEST(test) \
     TEST_##test
 
+#define TEST_ARGS(argc, argv)                                                                 \
+    do {                                                                                      \
+        cli_args_t args = cli_args_make(                                                      \
+                cli_arg_new('h', "help", "Prints this message", no_argument),                 \
+                cli_arg_new('l', "load", "Load the tests", no_argument),                      \
+                cli_arg_new('1', "batch-1", "Run only batch #1", no_argument),                \
+                cli_arg_new('2', "batch-2", "Run only batch #2", no_argument),                \
+                cli_arg_new('3', "batch-3", "Run only batch #3", no_argument),                \
+                cli_arg_new('4', "batch-4", "Run only batch #4", no_argument),                \
+                NULL                                                                          \
+            );                                                                                \
+        int opt, rc = 0;                                                                      \
+        LOOP_ARGS(opt, args){                                                                 \
+            switch (opt) {                                                                    \
+                case 'h':                                                                     \
+                    cli_help(args, "check [OPTION]", "Written by KDesp73 - Part of test.h");  \
+                    break;                                                                    \
+                case 'l':                                                                     \
+                    load();                                                                   \
+                    break;                                                                    \
+                case '1':                                                                     \
+                    rc = _1();                                                                \
+                    break;                                                                    \
+                case '2':                                                                     \
+                    rc = _2();                                                                \
+                    break;                                                                    \
+                case '3':                                                                     \
+                    rc = _3();                                                                \
+                    break;                                                                    \
+                case '4':                                                                     \
+                    rc = _4();                                                                \
+                    break;                                                                    \
+                default:                                                                      \
+                    rc = 1;                                                                   \
+                    break;                                                                    \
+            }                                                                                 \
+        }                                                                                     \
+        cli_args_free(&args);                                                                 \
+        if(argc > 1){ exit(rc); }                                                             \
+    } while(0)
+
 extern char* TEST_DIRECTORY;
+extern void load(void);
+extern int _1(void);
+extern int _2(void);
+extern int _3(void);
+extern int _4(void);
 
 #ifdef TEST_IMPLEMENTATION
 #define STRAPPEND(buffer, fmt, ...) \

@@ -2,9 +2,11 @@
 #include <string.h>
 #define TEST_IMPLEMENTATION
 #include "IncludeOnly/test.h"
+#define CLI_IMPLEMENTATION
+#include "IncludeOnly/cli.h"
 #include "tests.h"
 
-char* TEST_DIRECTORY = "movegen/test";
+char* TEST_DIRECTORY = "test";
 
 void load()
 {
@@ -37,27 +39,26 @@ void load()
     LOAD_TEST("test_undo");
 }
 
+int _1() {
+    START_TESTS
+        RUN_TEST(test_perft),
+        RUN_TEST(test_perft_2),
+        RUN_TEST(test_perft_3),
+        RUN_TEST(test_perft_4),
+        RUN_TEST(test_perft_5),
+        RUN_TEST(test_perft_6)
+    END_TESTS
+}
+int _2() {}
+int _3() {}
+int _4() {}
+
+
 int main(int argc, char** argv)
 {
     InitMasks();
-    if(argc >= 2) {
-        if(!strcmp(argv[1], "load")){
-            load();
-        } else if(!strcmp(argv[1], "perft")){
-            if(argc == 2){
-                // All perft tests pass
-                START_TESTS
-                    RUN_TEST(test_perft),
-                    RUN_TEST(test_perft_2),
-                    RUN_TEST(test_perft_3),
-                    RUN_TEST(test_perft_4),
-                    RUN_TEST(test_perft_5),
-                    RUN_TEST(test_perft_6)
-                END_TESTS
-            }
-        }
-        return 0;
-    }
+
+    TEST_ARGS(argc, argv);
 
     START_TESTS
         RUN_TEST(test_piece_at),
