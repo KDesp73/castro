@@ -17,6 +17,8 @@ int main() {
 
     BoardPrintMove(&board, move);
 
+    BoardFree(&board);
+
     return 0;
 }
 ```
