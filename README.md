@@ -37,7 +37,7 @@ int main() {
 To run tests for each module:
 
 ```bash
-make check
+make test
 ```
 > [!NOTE]
 > Data-driven testing handled by
