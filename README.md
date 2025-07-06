@@ -2,6 +2,16 @@
 
 Independent Move Generation Library
 
+## Get Started
+
+```bash
+git clone https://github.com/KDesp73/castro
+cd castro
+make all -j3
+```
+
+`libcastro.a`, `libcastro.so` and `check` should be created
+
 ## Example
 
 ```c
