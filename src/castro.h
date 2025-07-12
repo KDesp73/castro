@@ -1840,6 +1840,8 @@ typedef unsigned long long u64;
 
 // NOTE: See https://www.chessprogramming.org/Perft
 u64 Perft(Board* board, int depth, bool root);
+// u64 PerftMT(Board* board, int depth);
+
 
 
 /*------------------------------------.

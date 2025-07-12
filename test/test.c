@@ -41,12 +41,12 @@ void load()
 
 int _1() {
     START_TESTS
-        RUN_TEST(test_perft),
-        RUN_TEST(test_perft_2),
-        RUN_TEST(test_perft_3),
-        RUN_TEST(test_perft_4),
+        RUN_TEST(test_perft_6),
         RUN_TEST(test_perft_5),
-        RUN_TEST(test_perft_6)
+        RUN_TEST(test_perft_4),
+        RUN_TEST(test_perft_3),
+        RUN_TEST(test_perft_2),
+        RUN_TEST(test_perft)
     END_TESTS
 }
 int _2() {}
