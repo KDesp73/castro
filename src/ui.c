@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void BoardPrintGrid(const Board* board)
+void castro_BoardPrintGrid(const Board* board)
 {
     const char* padding = "   ";
 
@@ -37,7 +37,7 @@ void BoardPrintGrid(const Board* board)
 
 }
 
-void BoardPrintSquares(const Board* board, Square* squares, size_t count)
+void castro_BoardPrintSquares(const Board* board, Square* squares, size_t count)
 {
     const char* yellow_bg = "\033[48;5;214m"; // Background yellow color
     const char* reset = "\033[0m";            // Reset color formatting
@@ -99,7 +99,7 @@ void BoardPrintSquares(const Board* board, Square* squares, size_t count)
     printf("\n");
 }
 
-void BoardPrintBitboard(const Board* board, Bitboard highlight)
+void castro_BoardPrintBitboard(const Board* board, Bitboard highlight)
 {
     Square* squares = NULL;
     int count = 0;
@@ -114,13 +114,13 @@ void BoardPrintBitboard(const Board* board, Bitboard highlight)
         if(highlight & (1ULL << i)) squares[count++] = (Square) i;
     }
 
-    BoardPrintSquares(board, squares, count);
+    castro_BoardPrintSquares(board, squares, count);
     free(squares);
 }
 
 #define TERMINATOR 64
 #define INITIAL_ALLOCATION 100
-void BoardPrint(const Board* board, Square first, ...)
+void castro_BoardPrint(const Board* board, Square first, ...)
 {
     Square* squares = NULL;
     int count = 0;
@@ -165,18 +165,18 @@ void BoardPrint(const Board* board, Square first, ...)
         squares = temp;
     }
 
-    BoardPrintSquares(board, squares, count);
+    castro_BoardPrintSquares(board, squares, count);
 
     if (squares) {
         free(squares);
     }
 }
 
-void BoardPrintBitboards(Board board)
+void castro_BoardPrintBitboards(Board board)
 {
     for(size_t i = 0; i < PIECE_TYPES; i++){
         printf("%2zu) %c ", i, PIECES[i]);
-        Uint64Print(board.bitboards[i]);
+        castro_Uint64Print(board.bitboards[i]);
     }
 }
 

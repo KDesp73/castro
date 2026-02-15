@@ -1,6 +1,6 @@
 #include "castro.h"
 
-Move ConvertMove(uint16_t polyglotMove)
+Move castro_ConvertMove(uint16_t polyglotMove)
 {
     int to_file = (polyglotMove >> 0) & 0b111;  // Bits 0-2
     int to_rank = (polyglotMove >> 3) & 0b111;  // Bits 3-5
@@ -14,7 +14,7 @@ Move ConvertMove(uint16_t polyglotMove)
     return (from_square) | (to_square << 6) | (promotion << 12) | FLAG_NORMAL;
 }
 
-Move LookupBookMove(uint64_t position_hash, const char* book_path)
+Move castro_LookupBookMove(uint64_t position_hash, const char* book_path)
 {
     FILE* book = fopen(book_path, "rb");
     if (!book) return 0;
@@ -23,7 +23,7 @@ Move LookupBookMove(uint64_t position_hash, const char* book_path)
     while (fread(&entry, sizeof(PolyglotEntry), 1, book)) {
         if (__builtin_bswap64(entry.zobrist_hash) == position_hash) {
             fclose(book);
-            return ConvertMove(__builtin_bswap16(entry.move));
+            return castro_ConvertMove(__builtin_bswap16(entry.move));
         }
     }
 

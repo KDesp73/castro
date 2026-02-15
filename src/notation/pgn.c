@@ -11,7 +11,7 @@
 
 #define IS_EMPTY(x) (x[0] == '\0')
 
-void PgnExport(Game* game, char* pgn)
+void castro_PgnExport(Game* game, char* pgn)
 {
     sprintf(pgn, "[Event \"%s\"]\n", IS_EMPTY(game->event) ? "??" : game->event);
     sprintf(pgn + strlen(pgn), "[Site \"%s\"]\n", IS_EMPTY(game->site) ? "??" : game->site);
@@ -39,7 +39,7 @@ void PgnExport(Game* game, char* pgn)
 }
 
 // FIX: has issues with moves
-void PgnImport(Game* game, const char* pgn)
+void castro_PgnImport(Game* game, const char* pgn)
 {
     int move_count = 0;
 
@@ -89,17 +89,17 @@ void PgnImport(Game* game, const char* pgn)
     game->move_count = move_count;
 }
 
-void PgnExportFile(Game* game, const char* path)
+void castro_PgnExportFile(Game* game, const char* path)
 {
     char pgn[2048];
-    PgnExport(game, pgn);
+    castro_PgnExport(game, pgn);
 
     FILE* file = fopen(path, "w"); 
     fprintf(file, "%s\n", pgn);
     fclose(file);
 }
 
-void removeChars(char* str, const char* chars_to_remove)
+static void removeChars(char* str, const char* chars_to_remove)
 {
     size_t i = 0, j = 0;
     size_t len = strlen(str);
@@ -116,29 +116,29 @@ void removeChars(char* str, const char* chars_to_remove)
     str[j] = '\0';
 }
 
-Move SanToMove(Board *board, SanMove san)
+Move castro_SanToMove(Board *board, SanMove san)
 {
-    Moves moves = GenerateMoves(board, MOVE_LEGAL);
+    Moves moves = castro_GenerateMoves(board, MOVE_LEGAL);
     for(size_t i = 0; i < moves.count; i++){
         SanMove s = {0};
-        Notate(board, moves.list[i], &s);
+        castro_Notate(board, moves.list[i], &s);
         if(!strcmp(san.move, s.move))
             return moves.list[i];
     }
     return NULL_MOVE;
 }
 
-void Notate(Board* board, Move move, SanMove* san)
+void castro_Notate(Board* board, Move move, SanMove* san)
 {
     MOVE_DECODE(move);
 
-    Piece piece = PieceAt(board, src);
+    Piece piece = castro_PieceAt(board, src);
     char target_square[3];
-    SquareToName(target_square, dst);
+    castro_SquareToName(target_square, dst);
 
     // Castling moves
-    if (IsCastle(board, &move)) {
-        if (File(dst) > File(src)) {
+    if (castro_IsCastle(board, &move)) {
+        if (castro_File(dst) > castro_File(src)) {
             strcpy(san->move, "O-O"); // Kingside castling
         } else {
             strcpy(san->move, "O-O-O"); // Queenside castling
@@ -150,7 +150,7 @@ void Notate(Board* board, Move move, SanMove* san)
     char piece_letter = IS_PAWN(piece) ? '\0' : toupper(piece.type); // Pawn moves omit the piece letter
 
     // Check if the move is a capture
-    _Bool is_capture = board->grid[COORDS(dst)] != ' ' || IsEnpassant(board, &move);
+    _Bool is_capture = board->grid[COORDS(dst)] != ' ' || castro_IsEnpassant(board, &move);
 
     // Build SAN string
     if (piece_letter != '\0') {
@@ -165,7 +165,7 @@ void Notate(Board* board, Move move, SanMove* san)
         // If the move is a pawn capture
         if (is_capture) {
             // Specify the file dst disambiguate
-            san->move[0] = 'a' + File(dst);
+            san->move[0] = 'a' + castro_File(dst);
             san->move[1] = 'x';
             san->move[2] = '\0'; // Ensure proper termination
         }
@@ -181,11 +181,11 @@ void Notate(Board* board, Move move, SanMove* san)
                 if (board->grid[rank][file] == ' ') continue;
 
                 // Skip our piece
-                if (Rank(src) == rank && File(src) == file) continue;
+                if (castro_Rank(src) == rank && castro_File(src) == file) continue;
 
                 if (
-                    PieceCmp(piece, PieceAt(board, current)) &&
-                    MoveIsValid(board, MoveEncode(current, dst, PROMOTION_NONE, FLAG_NORMAL), board->turn)
+                    castro_PieceCmp(piece, castro_PieceAt(board, current)) &&
+                    castro_MoveIsValid(board, castro_MoveEncode(current, dst, PROMOTION_NONE, FLAG_NORMAL), board->turn)
                 ) {
                     ambiguities[ambiguities_count++] = current;
                 }
@@ -211,18 +211,18 @@ void Notate(Board* board, Move move, SanMove* san)
         char name[3] = "";
         switch (ambiguity_count) {
         case 1:
-            if (Rank(src) == Rank(single_ambiguity)) {
-                sprintf(disambiguation, "%c", 'a' + File(src));  // File disambiguation
-            } else if (File(src) == File(single_ambiguity)) {
-                sprintf(disambiguation, "%d", Rank(src));  // Rank disambiguation
+            if (castro_Rank(src) == castro_Rank(single_ambiguity)) {
+                sprintf(disambiguation, "%c", 'a' + castro_File(src));  // File disambiguation
+            } else if (castro_File(src) == castro_File(single_ambiguity)) {
+                sprintf(disambiguation, "%d", castro_Rank(src));  // Rank disambiguation
             } else if (IS_KNIGHT(piece)) {
-                sprintf(disambiguation, "%c", 'a' + File(src));
+                sprintf(disambiguation, "%c", 'a' + castro_File(src));
             }
             break;
         case 0:
             break;
         default:
-            SquareToName(name, src);
+            castro_SquareToName(name, src);
             sprintf(disambiguation, "%s", name);
             break;
         }
@@ -238,22 +238,22 @@ void Notate(Board* board, Move move, SanMove* san)
     // Promotion
     if (promotion != PROMOTION_NONE) {
         if (promotion) {
-            char promo[3] = {'=', toupper(PromotionToChar(promotion)), '\0'};
+            char promo[3] = {'=', toupper(castro_PromotionToChar(promotion)), '\0'};
             strcat(san->move, promo); // Proper termination ensured by strcat
         }
     }
 
     Board temp = *board;
-    MakeMove(&temp, move);
-    if (IsCheckmate(&temp)) {
+    castro_MakeMove(&temp, move);
+    if (castro_IsCheckmate(&temp)) {
         strcat(san->move, "#"); // Proper termination ensured by strcat
-    } else if (IsInCheck(&temp)) {
+    } else if (castro_IsInCheck(&temp)) {
         strcat(san->move, "+"); // Proper termination ensured by strcat
     }
-    UnmakeMove(&temp);
+    castro_UnmakeMove(&temp);
 }
 
-void get_current_date(char* buffer, size_t buffer_size)
+static void get_current_date(char* buffer, size_t buffer_size)
 {
     time_t t = time(NULL);
     struct tm* tm_info = localtime(&t);
@@ -262,7 +262,7 @@ void get_current_date(char* buffer, size_t buffer_size)
     strftime(buffer, buffer_size, "%Y.%m.%d", tm_info);
 }
 
-void GameInit(Game* game, 
+void castro_GameInit(Game* game, 
     const char* event,
     const char* site,
     const char* white,
@@ -273,24 +273,24 @@ void GameInit(Game* game,
     game->move_count = 0;
 
     if(!event) game->event[0] = '\0';
-    else GameSetEvent(game, event);
+    else castro_GameSetEvent(game, event);
 
     if(!site) game->site[0] = '\0';
-    else GameSetSite(game, site);
+    else castro_GameSetSite(game, site);
 
     get_current_date(game->date, MAX_HEADER_LENGTH);
 
     if(!white) game->white[0] = '\0';
-    else GameSetWhite(game, white);
+    else castro_GameSetWhite(game, white);
 
     if(!black) game->black[0] = '\0';
-    else GameSetBlack(game, black);
+    else castro_GameSetBlack(game, black);
 
     if(!fen) game->fen[0] = '\0';
-    else GameSetFen(game, fen);
+    else castro_GameSetFen(game, fen);
 }
 
-void GameAddMove(Game* game, SanMove move)
+void castro_GameAddMove(Game* game, SanMove move)
 {
     if(game->move_count >= MAX_MOVES){
         ERRO("Maximum number of moves reached");
@@ -299,44 +299,44 @@ void GameAddMove(Game* game, SanMove move)
     game->moves[game->move_count++] = move;
 }
 
-void GameSetEvent(Game* game, const char* event)
+void castro_GameSetEvent(Game* game, const char* event)
 {
     if(!event) return;
     strcpy(game->event, event);
 }
 
-void GameSetSite(Game* game, const char* site)
+void castro_GameSetSite(Game* game, const char* site)
 {
     if(!site) return;
     strcpy(game->site, site);
 }
-void GameSetDate(Game* game, const char* date)
+void castro_GameSetDate(Game* game, const char* date)
 {
     if(!date) return;
     strcpy(game->date, date);
 }
-void GameSetWhite(Game* game, const char* white)
+void castro_GameSetWhite(Game* game, const char* white)
 {
     if(!white) return;
     strcpy(game->white, white);
 }
-void GameSetBlack(Game* game, const char* black)
+void castro_GameSetBlack(Game* game, const char* black)
 {
     if(!black) return;
     strcpy(game->black, black);
 }
-void GameSetFen(Game* game, const char* fen)
+void castro_GameSetFen(Game* game, const char* fen)
 {
     if(!fen) return;
     strcpy(game->fen, fen);
 }
-void GameSetResult(Game* game, const char* result)
+void castro_GameSetResult(Game* game, const char* result)
 {
     if(!result) return;
     strcpy(game->result, result);
 }
 
-void GamePrint(Game game)
+void castro_GamePrint(Game game)
 {
     printf("[Event \"%s\"]\n", IS_EMPTY(game.event) ? "??" : game.event);
     printf("[Site \"%s\"]\n", IS_EMPTY(game.site) ? "??" : game.site);
@@ -363,7 +363,7 @@ void GamePrint(Game game)
     printf("\n");
 }
 
-void press_enter_to_continue()
+static void press_enter_to_continue()
 {
     printf("Press Enter to continue...\n");
     getchar();  // Waits for the user to press Enter
@@ -372,9 +372,9 @@ void press_enter_to_continue()
 void GameRun(Game game)
 {
     Board board;
-    BoardInitFen(&board, IS_EMPTY(game.fen) ? NULL : game.fen);
+    castro_BoardInitFen(&board, IS_EMPTY(game.fen) ? NULL : game.fen);
     ansi_clear_screen();
-    BoardPrint(&board, 64);
+    castro_BoardPrint(&board, 64);
     press_enter_to_continue();
     int result = RESULT_NONE;
 
@@ -386,15 +386,15 @@ void GameRun(Game game)
             }
         }
 
-        Move move = SanToMove(&board, game.moves[i]);
+        Move move = castro_SanToMove(&board, game.moves[i]);
 
-        if(!MakeMove(&board, move)){
+        if(!castro_MakeMove(&board, move)){
             // ERRO("Invalid pgn. Move %s is not valid", game.moves[i].move);
             goto end;
         }
 
         ansi_clear_screen();
-        BoardPrint(&board, 64);
+        castro_BoardPrint(&board, 64);
         press_enter_to_continue();
     }
 
@@ -404,5 +404,5 @@ end:
     } else {
         printf("Game did not end\n");
     }
-    BoardFree(&board);
+    castro_BoardFree(&board);
 }

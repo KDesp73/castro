@@ -1,5 +1,3 @@
-#include "castro.h"
-#include <string.h>
 #define CLI_IMPLEMENTATION
 #include "IncludeOnly/cli.h"
 #define TEST_IMPLEMENTATION
@@ -56,7 +54,7 @@ int _4() {}
 
 int main(int argc, char** argv)
 {
-    InitMasks();
+    castro_InitMasks();
 
     TEST_ARGS(argc, argv);
 

@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void InitHashTableHash(HashTable* table, uint64_t starting_hash)
+void castro_InitHashTableHash(HashTable* table, uint64_t starting_hash)
 {
     assert(table);
 
@@ -16,10 +16,10 @@ void InitHashTableHash(HashTable* table, uint64_t starting_hash)
     table->count = 0;
 
     // Adding starting position
-    UpdateHashTable(table, starting_hash);
+    castro_UpdateHashTable(table, starting_hash);
 }
 
-void InitHashTable(HashTable* table, const char* starting_fen)
+void castro_InitHashTable(HashTable* table, const char* starting_fen)
 {
     assert(table);
 
@@ -33,17 +33,17 @@ void InitHashTable(HashTable* table, const char* starting_fen)
 
     // Adding starting position
     Board board;
-    FenImport(&board, (starting_fen) ? starting_fen : STARTING_FEN);
-    UpdateHashTable(table, CalculateZobristHash(&board));
-    BoardFree(&board);
+    castro_FenImport(&board, (starting_fen) ? starting_fen : STARTING_FEN);
+    castro_UpdateHashTable(table, castro_CalculateZobristHash(&board));
+    castro_BoardFree(&board);
 }
 
-void FreeHashTable(HashTable* table)
+void castro_FreeHashTable(HashTable* table)
 {
     free(table->entries);
 }
 
-_Bool UpdateHashTable(HashTable* table, uint64_t hash)
+_Bool castro_UpdateHashTable(HashTable* table, uint64_t hash)
 {
     // TODO: Faster search. HashMap maybe
     for (size_t i = 0; i < table->count; i++) {

@@ -1,14 +1,14 @@
 #include "castro.h"
 #include <string.h>
 
-void MovesAppend(Moves* moves, Move move)
+void castro_MovesAppend(Moves* moves, Move move)
 {
     if(moves->count >= MOVES_CAPACITY) return;
 
     moves->list[moves->count++] = move;
 }
 
-void MovesAppendList(Moves* dest, Moves src)
+void castro_MovesAppendList(Moves* dest, Moves src)
 {
     if (!dest) return;
 
@@ -17,7 +17,7 @@ void MovesAppendList(Moves* dest, Moves src)
     }
 }
 
-Moves MovesCombine(Moves m1, Moves m2)
+Moves castro_MovesCombine(Moves m1, Moves m2)
 {
     Moves result;
     result.count = m1.count;

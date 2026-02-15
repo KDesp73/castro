@@ -1,4 +1,3 @@
-#include "castro.h"
 #include "tests.h"
 #include "test-perft.h"
 

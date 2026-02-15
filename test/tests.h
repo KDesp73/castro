@@ -1,5 +1,9 @@
 #ifndef ENGINE_TESTS_H
 #define ENGINE_TESTS_H
+
+#include "IncludeOnly/test.h"
+
+#define CASTRO_STRIP_PREFIX
 #include "castro.h"
 
 #define FAILF(fen, fmt, ...) \

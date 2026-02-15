@@ -3,48 +3,48 @@
 #include <stdlib.h>
 
 
-Bitboard PawnPushes(Square pawn, Bitboard emptySquares, uint8_t color)
+Bitboard castro_PawnPushes(Square pawn, Bitboard emptySquares, uint8_t color)
 {
-    Bitboard oneSquarePushes = PawnPushMask(pawn, color) & emptySquares;
+    Bitboard oneSquarePushes = castro_PawnPushMask(pawn, color) & emptySquares;
 
     Direction dir = color ? NORTH : SOUTH;
 
     Bitboard twoSquarePushes = 0ULL;
     if (oneSquarePushes != 0) {
-        twoSquarePushes = PawnDoublePushMask(pawn, color) & emptySquares & shift(oneSquarePushes, dir);
+        twoSquarePushes = castro_PawnDoublePushMask(pawn, color) & emptySquares & shift(oneSquarePushes, dir);
     }
 
     return oneSquarePushes | twoSquarePushes;
 }
 
-Bitboard PawnPromotions(Square pawn, Bitboard emptySquares, uint8_t color)
+Bitboard castro_PawnPromotions(Square pawn, Bitboard emptySquares, uint8_t color)
 {
-    return PawnPromotionMask(pawn, color) & emptySquares;
+    return castro_PawnPromotionMask(pawn, color) & emptySquares;
 }
 
-Bitboard PawnPromotionCaptures(Square pawn, Bitboard opponentPieces, uint8_t color)
+Bitboard castro_PawnPromotionCaptures(Square pawn, Bitboard opponentPieces, uint8_t color)
 {
-    return PawnPromotionAttackMask(pawn, color) & opponentPieces;
+    return castro_PawnPromotionAttackMask(pawn, color) & opponentPieces;
 }
 
-Bitboard PawnAttacks(Square pawn, Bitboard enemySquares, uint8_t color)
+Bitboard castro_PawnAttacks(Square pawn, Bitboard enemySquares, uint8_t color)
 {
-    return PawnAttackMask(pawn, color) & enemySquares;
+    return castro_PawnAttackMask(pawn, color) & enemySquares;
 }
 
-Bitboard KnightAttacks(Square knight, Bitboard emptySquares, Bitboard enemySquares)
-{
-    Bitboard emptyOrEnemySquares = emptySquares | enemySquares;
-    return KnightMoveMask(knight) & emptyOrEnemySquares;
-}
-
-Bitboard KingAttacks(Square king, Bitboard emptySquares, Bitboard enemySquares)
+Bitboard castro_KnightAttacks(Square knight, Bitboard emptySquares, Bitboard enemySquares)
 {
     Bitboard emptyOrEnemySquares = emptySquares | enemySquares;
-    return KingMoveMask(king) & emptyOrEnemySquares;
+    return castro_KnightMoveMask(knight) & emptyOrEnemySquares;
 }
 
-Bitboard calculateBishopAttacks(int square, Bitboard occupancy) {
+Bitboard castro_KingAttacks(Square king, Bitboard emptySquares, Bitboard enemySquares)
+{
+    Bitboard emptyOrEnemySquares = emptySquares | enemySquares;
+    return castro_KingMoveMask(king) & emptyOrEnemySquares;
+}
+
+static Bitboard calculateBishopAttacks(int square, Bitboard occupancy) {
     Bitboard attacks = 0;
     int rank = square / 8;
     int file = square % 8;
@@ -78,7 +78,7 @@ Bitboard calculateBishopAttacks(int square, Bitboard occupancy) {
     return attacks;
 }
 
-Bitboard BishopAttacks(Square bishop, Bitboard emptySquares, Bitboard enemySquares)
+Bitboard castro_BishopAttacks(Square bishop, Bitboard emptySquares, Bitboard enemySquares)
 {
     Bitboard attacks = calculateBishopAttacks(bishop, ~emptySquares);
     Bitboard friendly = ~(emptySquares | enemySquares);
@@ -86,7 +86,7 @@ Bitboard BishopAttacks(Square bishop, Bitboard emptySquares, Bitboard enemySquar
     return attacks & ~friendly;
 }
 
-Bitboard calculateRookAttacks(int square, Bitboard occupancy) {
+static Bitboard calculateRookAttacks(int square, Bitboard occupancy) {
     Bitboard attacks = 0;
     int rank = square / 8;
 
@@ -113,7 +113,7 @@ Bitboard calculateRookAttacks(int square, Bitboard occupancy) {
     return attacks;
 }
 
-Bitboard RookAttacks(Square rook, Bitboard emptySquares, Bitboard enemySquares)
+Bitboard castro_RookAttacks(Square rook, Bitboard emptySquares, Bitboard enemySquares)
 {
     Bitboard attacks = calculateRookAttacks(rook, ~emptySquares);
     Bitboard friendly = ~(emptySquares | enemySquares);
@@ -121,8 +121,8 @@ Bitboard RookAttacks(Square rook, Bitboard emptySquares, Bitboard enemySquares)
     return attacks & ~friendly;
 }
 
-Bitboard QueenAttacks(Square queens, Bitboard emptySquares, Bitboard enemySquares)
+Bitboard castro_QueenAttacks(Square queens, Bitboard emptySquares, Bitboard enemySquares)
 {
-    return BishopAttacks(queens, emptySquares, enemySquares) | RookAttacks(queens, emptySquares, enemySquares);
+    return castro_BishopAttacks(queens, emptySquares, enemySquares) | castro_RookAttacks(queens, emptySquares, enemySquares);
 }
 

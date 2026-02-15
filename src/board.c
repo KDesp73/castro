@@ -7,19 +7,19 @@
 #include <stdio.h>
 
 
-bool IsInCheck(const Board *board)
+bool castro_IsInCheck(const Board *board)
 {
-    return IsInCheckColor(board, board->turn);
+    return castro_IsInCheckColor(board, board->turn);
 }
 
-bool IsInCheckColor(const Board* board, PieceColor color)
+bool castro_IsInCheckColor(const Board* board, PieceColor color)
 {
-    Bitboard enemyAttacks = GeneratePseudoLegalAttacks(board, !color);
+    Bitboard enemyAttacks = castro_GeneratePseudoLegalAttacks(board, !color);
 
-    return IsKingInCheck(board->bitboards[color*6 + INDEX_BLACK_KING], enemyAttacks);
+    return castro_IsKingInCheck(board->bitboards[color*6 + INDEX_BLACK_KING], enemyAttacks);
 }
 
-Board BoardCopy(const Board* board)
+Board castro_BoardCopy(const Board* board)
 {
     Board b = {0};
     b.turn = board->turn;
@@ -33,16 +33,16 @@ Board BoardCopy(const Board* board)
     return b;
 }
 
-void BoardFree(Board* board)
+void castro_BoardFree(Board* board)
 {
-    FreeHashTable(&board->history.positions);
+    castro_FreeHashTable(&board->history.positions);
 }
 
-Board* BoardInitFenHeap(const char* fen)
+Board* castro_BoardInitFenHeap(const char* fen)
 {
     Board* board = malloc(sizeof(Board));
     
-    BoardInitFen(board, fen);
+    castro_BoardInitFen(board, fen);
 
     return board;
 }
@@ -50,20 +50,20 @@ Board* BoardInitFenHeap(const char* fen)
 /**
  * Parses a FEN string and initializes the Board structure.
  */
-void BoardInitFen(Board *board, const char *fen)
+void castro_BoardInitFen(Board *board, const char *fen)
 {
     if(fen == NULL) {
-        BoardInitFen(board, STARTING_FEN);
+        castro_BoardInitFen(board, STARTING_FEN);
         return;
     }
 
-    FenImport(board, fen);
+    castro_FenImport(board, fen);
 
-    InitHashTable(&board->history.positions, fen);
+    castro_InitHashTable(&board->history.positions, fen);
 }
 
 
-bool IsSquareOccupiedBy(const Board* board, Square square, PieceColor color)
+bool castro_IsSquareOccupiedBy(const Board* board, Square square, PieceColor color)
 {
     uint64_t occupied = 0;
     for (int i = color * 6; i < (color + 1) * 6; ++i) {
@@ -72,7 +72,7 @@ bool IsSquareOccupiedBy(const Board* board, Square square, PieceColor color)
     return (occupied & (1ULL << square)) != 0;
 }
 
-bool IsSquareEmpty(const Board* board, Square square)
+bool castro_IsSquareEmpty(const Board* board, Square square)
 {
     for (int i = 0; i < 12; ++i) {
         if (board->bitboards[i] & (1ULL << square)) {
@@ -82,18 +82,18 @@ bool IsSquareEmpty(const Board* board, Square square)
     return 1;
 }
 
-Square UpdateEnpassantSquare(Board* board, Move move)
+Square castro_UpdateEnpassantSquare(Board* board, Move move)
 {
-    Piece piece = PieceAt(board, GetFrom(move));
+    Piece piece = castro_PieceAt(board, castro_GetFrom(move));
 
     if(!IS_PAWN(piece)) {
         goto no_enpassant;
     }
 
-    int from_file = Rank(GetFrom(move));
-    int to_file = Rank(GetTo(move));
-    int from_rank = File(GetFrom(move));
-    int to_rank = File(GetTo(move));
+    int from_file = castro_Rank(castro_GetFrom(move));
+    int to_file = castro_Rank(castro_GetTo(move));
+    int from_rank = castro_File(castro_GetFrom(move));
+    int to_rank = castro_File(castro_GetTo(move));
 
     int file_diff = abs((int)from_file - (int)to_file);
     int rank_diff = (int)to_rank - (int)from_rank;
@@ -110,12 +110,12 @@ no_enpassant:
     return 64;
 }
 
-uint8_t UpdateCastlingRights(Board* board, Move move)
+uint8_t castro_UpdateCastlingRights(Board* board, Move move)
 {
-    Square from = GetFrom(move);
-    Square to = GetTo(move);
-    Piece piece = PieceAt(board, from);
-    Piece to_piece = PieceAt(board, to);
+    Square from = castro_GetFrom(move);
+    Square to = castro_GetTo(move);
+    Piece piece = castro_PieceAt(board, from);
+    Piece to_piece = castro_PieceAt(board, to);
     int color = piece.color;
     uint8_t castling_rights = board->castling_rights;
 
@@ -182,14 +182,14 @@ uint8_t UpdateCastlingRights(Board* board, Move move)
 }
 
 
-void UpdateHalfmove(Board* board, Move move, size_t piece_count_before, size_t piece_count_after, char piece)
+void castro_UpdateHalfmove(Board* board, Move move, size_t piece_count_before, size_t piece_count_after, char piece)
 {
-    int color = GetPieceColor(piece);
+    int color = castro_GetPieceColor(piece);
     int direction = (color == COLOR_WHITE) ? 1 : -1;
     bool is_pawn = tolower(piece) == 'p';
     bool is_capture = (piece_count_after < piece_count_before);
-    int from_rank = Rank(GetFrom(move));
-    int to_rank = Rank(GetTo(move));
+    int from_rank = castro_Rank(castro_GetFrom(move));
+    int to_rank = castro_Rank(castro_GetTo(move));
 
     // Check if it's a pawn move
     bool is_pawn_advancement = is_pawn && (from_rank == (color == COLOR_WHITE ? 7 : 2)) &&
@@ -203,7 +203,7 @@ void UpdateHalfmove(Board* board, Move move, size_t piece_count_before, size_t p
     }
 }
 
-size_t NumberOfPieces(const Board* board, PieceColor color)
+size_t castro_NumberOfPieces(const Board* board, PieceColor color)
 {
     size_t count = 0;
 
@@ -216,7 +216,7 @@ size_t NumberOfPieces(const Board* board, PieceColor color)
     return count;
 }
 
-Bitboard GetWhite(const Board* board)
+Bitboard castro_GetWhite(const Board* board)
 {
     return board->bitboards[INDEX_WHITE_PAWN]
          | board->bitboards[INDEX_WHITE_KNIGHT]
@@ -225,7 +225,7 @@ Bitboard GetWhite(const Board* board)
          | board->bitboards[INDEX_WHITE_QUEEN]
          | board->bitboards[INDEX_WHITE_KING];
 }
-Bitboard GetBlack(const Board* board)
+Bitboard castro_GetBlack(const Board* board)
 {
     return board->bitboards[INDEX_BLACK_PAWN]
          | board->bitboards[INDEX_BLACK_KNIGHT]
@@ -235,35 +235,35 @@ Bitboard GetBlack(const Board* board)
          | board->bitboards[INDEX_BLACK_KING];
 }
 
-Bitboard GetEnemyColor(const Board *board, PieceColor us)
+Bitboard castro_GetEnemyColor(const Board *board, PieceColor us)
 {
     return (us) 
-        ? GetBlack(board)
-        : GetWhite(board);
+        ? castro_GetBlack(board)
+        : castro_GetWhite(board);
 }
 
-Bitboard GetEnemy(const Board *board)
+Bitboard castro_GetEnemy(const Board *board)
 {
-    return GetEnemyColor(board, board->turn);
+    return castro_GetEnemyColor(board, board->turn);
 }
 
-Bitboard GetEmpty(const Board* board)
+Bitboard castro_GetEmpty(const Board* board)
 {
-    return ~(GetWhite(board) | GetBlack(board));
+    return ~(castro_GetWhite(board) | castro_GetBlack(board));
 }
 
 
-int HasCastlingRights(const Board* board, uint8_t castling_rights)
+int castro_HasCastlingRights(const Board* board, uint8_t castling_rights)
 {
     return board->castling_rights & castling_rights;
 }
 
-void RevokeCastlingRights(Board* board, uint8_t castling_rights)
+void castro_RevokeCastlingRights(Board* board, uint8_t castling_rights)
 {
     board->castling_rights &= ~castling_rights;
 }
 
-int CountPieces(const Board* board, PieceColor color, PieceType type)
+int castro_CountPieces(const Board* board, PieceColor color, PieceType type)
 {
     Bitboard bb = board->bitboards[color * 6 + type];
     return popcount(bb);

@@ -9,7 +9,7 @@ typedef struct {
     Moves moves;
 } PerftStackFrame;
 
-u64 Perft(Board* board, int depth, bool root) {
+u64 castro_Perft(Board* board, int depth, bool root) {
     if (depth == 0) return 1;
 
     size_t stack_capacity = 1024;
@@ -22,7 +22,7 @@ u64 Perft(Board* board, int depth, bool root) {
     stack[0].board = *board;
     stack[0].depth = depth;
     stack[0].move_index = 0;
-    stack[0].moves = GenerateMoves(&stack[0].board, MOVE_LEGAL);
+    stack[0].moves = castro_GenerateMoves(&stack[0].board, MOVE_LEGAL);
     int stack_ptr = 1;
     
     u64 total = 0;
@@ -60,12 +60,12 @@ u64 Perft(Board* board, int depth, bool root) {
             
             // Create new stack frame for next depth
             stack[stack_ptr].board = current->board;
-            if (!MakeMove(&stack[stack_ptr].board, move)) {
+            if (!castro_MakeMove(&stack[stack_ptr].board, move)) {
                 continue; // Skip illegal moves
             }
             stack[stack_ptr].depth = current->depth - 1;
             stack[stack_ptr].move_index = 0;
-            stack[stack_ptr].moves = GenerateMoves(&stack[stack_ptr].board, MOVE_LEGAL);
+            stack[stack_ptr].moves = castro_GenerateMoves(&stack[stack_ptr].board, MOVE_LEGAL);
             stack_ptr++;
         } else {
             stack_ptr--;

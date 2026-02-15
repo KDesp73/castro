@@ -1,6 +1,5 @@
-#include "castro.h"
+#include "tests.h"
 #include <string.h>
-#include "IncludeOnly/test.h"
 
 int test_square_to_name(Square square, const char* expected)
 {

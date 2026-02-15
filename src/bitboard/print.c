@@ -1,7 +1,7 @@
 #include "castro.h"
 #include <stdio.h>
 
-void Uint32Print(uint32_t value)
+void castro_Uint32Print(uint32_t value)
 {
     for (int i = 31; i >= 0; i--) {
         printf("%d", (value >> i) & 1);
@@ -12,7 +12,7 @@ void Uint32Print(uint32_t value)
     printf("\n");
 }
 
-void Uint64Print(uint64_t value)
+void castro_Uint64Print(uint64_t value)
 {
     for (int i = 63; i >= 0; i--) {
         printf("%lu", (value >> i) & 1);
@@ -23,7 +23,7 @@ void Uint64Print(uint64_t value)
     printf("\n");
 }
 
-void BitboardPrint(Bitboard bitboard)
+void castro_BitboardPrint(Bitboard bitboard)
 {
     const char* yellow_bg = "\033[48;5;214m";
     const char* reset = "\033[0m";
@@ -71,7 +71,7 @@ void BitboardPrint(Bitboard bitboard)
         printf("  %c ", label);
     }
     printf("\n");
-    Uint64Print(bitboard);
+    castro_Uint64Print(bitboard);
 }
 
 

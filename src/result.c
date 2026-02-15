@@ -1,37 +1,37 @@
 #include "castro.h"
 #include <ctype.h>
 
-Result IsResult(Board* board)
+Result castro_IsResult(Board* board)
 {
-    if(IsCheckmate(board))
+    if(castro_IsCheckmate(board))
         return board->turn == COLOR_WHITE ? RESULT_BLACK_WON : RESULT_WHITE_WON;
-    if(IsStalemate(board)) 
+    if(castro_IsStalemate(board)) 
         return RESULT_STALEMATE;
-    if(IsInsufficientMaterial(board)) 
+    if(castro_IsInsufficientMaterial(board)) 
         return RESULT_DRAW_DUE_TO_INSUFFICIENT_MATERIAL;
-    if(IsThreefoldRepetition(board)) 
+    if(castro_IsThreefoldRepetition(board)) 
         return RESULT_DRAW_BY_REPETITION;
 
     return RESULT_NONE;
 }
 
-bool IsCheckmate(const Board* board)
+bool castro_IsCheckmate(const Board* board)
 {
-    Moves moves = GenerateMoves(board, MOVE_LEGAL);
+    Moves moves = castro_GenerateMoves(board, MOVE_LEGAL);
     if(moves.count != 0) return false;
 
-    return IsInCheck(board);
+    return castro_IsInCheck(board);
 }
 
-bool IsStalemate(const Board* board)
+bool castro_IsStalemate(const Board* board)
 {
-    Moves moves = GenerateMoves(board, MOVE_LEGAL);
+    Moves moves = castro_GenerateMoves(board, MOVE_LEGAL);
     if(moves.count != 0) return false;
 
-    return !IsInCheck(board);
+    return !castro_IsInCheck(board);
 }
 
-bool IsInsufficientMaterial(const Board* board)
+bool castro_IsInsufficientMaterial(const Board* board)
 {
     int white_bishops = 0, black_bishops = 0;
     int white_knights = 0, black_knights = 0;
@@ -40,7 +40,7 @@ bool IsInsufficientMaterial(const Board* board)
     for (int rank = 0; rank < BOARD_SIZE; rank++) {
         for (int file = 0; file < BOARD_SIZE; file++) {
             Square square = rank*8 + file; 
-            Piece piece = PieceAt(board, square);
+            Piece piece = castro_PieceAt(board, square);
             int color = piece.color;
 
             if (piece.type == EMPTY_SQUARE) continue;
@@ -134,9 +134,9 @@ bool IsInsufficientMaterial(const Board* board)
 
 }
 
-bool IsThreefoldRepetition(Board* board)
+bool castro_IsThreefoldRepetition(Board* board)
 {
-    uint64_t hash = CalculateZobristHash(board);
-    return UpdateHashTable(&board->history.positions, hash);
+    uint64_t hash = castro_CalculateZobristHash(board);
+    return castro_UpdateHashTable(&board->history.positions, hash);
 }
 

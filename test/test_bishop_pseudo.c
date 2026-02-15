@@ -1,6 +1,5 @@
-#include "IncludeOnly/test.h"
-#include "castro.h"
 #include "tests.h"
+#include <stdarg.h>
 
 int test_bishop_pseudo(const char* fen, const char* square, const char* first, ...)
 {

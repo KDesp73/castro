@@ -4,9 +4,9 @@
 #include "IncludeOnly/test.h"
 #define PERFT_TEST(num, fen, depth, expected) \
     Board board; \
-    BoardInitFen(&board, fen); \
-    u64 count = Perft(&board, depth, true); \
-    BoardFree(&board); \
+    castro_BoardInitFen(&board, fen); \
+    u64 count = castro_Perft(&board, depth, true); \
+    castro_BoardFree(&board); \
 \
     if(count != expected){ \
         FAIL("Perft %d. For depth %d. Expected %llu. Found %llu", num, depth, expected, count); \

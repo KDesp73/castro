@@ -1,6 +1,4 @@
-#include "castro.h"
 #include "tests.h"
-#include "IncludeOnly/test.h"
 
 int test_piece_at(const char* fen, Square square, char expected)
 {

@@ -73,10 +73,10 @@ extern "C" {
 #endif
 
 #define CASTRO_VERSION_MAJOR 0
-#define CASTRO_VERSION_MINOR 2
-#define CASTRO_VERSION_PATCH 1
+#define CASTRO_VERSION_MINOR 3
+#define CASTRO_VERSION_PATCH 0
 
-#define CASTRO_VERSION_STRING "0.2.1"
+#define CASTRO_VERSION_STRING "0.3.0"
 
 #define CASTRO_VERSION_HEX ((CASTRO_VERSION_MAJOR * 10000) + (CASTRO_VERSION_MINOR * 100) + CASTRO_VERSION_PATCH)
 
@@ -87,7 +87,13 @@ extern "C" {
  * @param minor Pointer to an int to store the minor version
  * @param patch Pointer to an int to store the patch version
  */
-void version(int* major, int* minor, int* patch);
+static inline void castro_version(int* major, int* minor, int* patch)
+{
+    if (major) *major = CASTRO_VERSION_MAJOR;
+    if (minor) *minor = CASTRO_VERSION_MINOR;
+    if (patch) *patch = CASTRO_VERSION_PATCH;
+}
+
 
 /*------------------------------------.
 | *SQUARE*                            |
@@ -115,7 +121,7 @@ typedef uint8_t Square;
 #define SQUARE_PRINT(square)\
     do {\
         char __square_name__[3];\
-        SquareToName(__square_name__, square);\
+        castro_SquareToName(__square_name__, square);\
         printf("%s = %s %d\n", #square, __square_name__, square);\
     } while(0)
 
@@ -132,7 +138,7 @@ typedef uint8_t Square;
  * @param[out] buffer A 3-character buffer (e.g., `char name[3]`) to store the result.
  * @param[in] square Square index from 0 to 63.
  */
-void SquareToName(char buffer[3], Square square);
+void castro_SquareToName(char buffer[3], Square square);
 
 /**
  * @brief Converts algebraic notation (e.g. "e4") to a square index (0-63).
@@ -140,22 +146,22 @@ void SquareToName(char buffer[3], Square square);
  * @param[in] buffer A null-terminated string containing the square name.
  * @return Square index corresponding to the name, or SQUARE_NONE if invalid.
  */
-Square NameToSquare(const char buffer[3]);
+Square castro_NameToSquare(const char buffer[3]);
 
 /**
  * @brief Returns the rank (0–7) of a square index.
  */
-int Rank(Square square);
+int castro_Rank(Square square);
 
 /**
  * @brief Returns the file (0–7) of a square index.
  */
-int File(Square square);
+int castro_File(Square square);
 
 /**
  * @brief Checks whether a square index is valid (0–63).
  */
-bool IsSquareValid(Square square);
+bool castro_IsSquareValid(Square square);
 
 /**
  * @brief Converts (rank, file) coordinates to a square index.
@@ -164,7 +170,7 @@ bool IsSquareValid(Square square);
  * @param x File (0 = file A, 7 = file H)
  * @return Square index.
  */
-Square SquareFromCoords(size_t y, size_t x);
+Square castro_SquareFromCoords(size_t y, size_t x);
 
 /**
  * @brief Converts a square name (e.g. "d2") to an index.
@@ -172,7 +178,7 @@ Square SquareFromCoords(size_t y, size_t x);
  * @param name A 2-character string like "e4".
  * @return Square index or SQUARE_NONE.
  */
-Square SquareFromName(const char* name);
+Square castro_SquareFromName(const char* name);
 
 /**
  * @brief Flips a square vertically (used for mirror board logic).
@@ -362,7 +368,7 @@ void off(Bitboard* bitboard, Square square);
  * @param enemySquares Bitboard of enemy pieces.
  * @param color 0 = white, 1 = black.
  */
-Bitboard PawnAttacks(Square pawn, Bitboard enemySquares, uint8_t color);
+Bitboard castro_PawnAttacks(Square pawn, Bitboard enemySquares, uint8_t color);
 
 /**
  * @brief Computes pseudo-legal pawn forward pushes.
@@ -371,7 +377,7 @@ Bitboard PawnAttacks(Square pawn, Bitboard enemySquares, uint8_t color);
  * @param emptySquares Bitboard of empty squares.
  * @param color 0 = white, 1 = black.
  */
-Bitboard PawnPushes(Square pawn, Bitboard emptySquares, uint8_t color);
+Bitboard castro_PawnPushes(Square pawn, Bitboard emptySquares, uint8_t color);
 
 /**
  * @brief Computes pawn promotions (non-capturing).
@@ -380,7 +386,7 @@ Bitboard PawnPushes(Square pawn, Bitboard emptySquares, uint8_t color);
  * @param emptySquares Bitboard of empty target squares.
  * @param color 0 = white, 1 = black.
  */
-Bitboard PawnPromotions(Square pawns, Bitboard emptySquares, uint8_t color);
+Bitboard castro_PawnPromotions(Square pawns, Bitboard emptySquares, uint8_t color);
 
 /**
  * @brief Computes pawn promotion captures.
@@ -389,32 +395,32 @@ Bitboard PawnPromotions(Square pawns, Bitboard emptySquares, uint8_t color);
  * @param opponentPieces Bitboard of capturable opponent pieces.
  * @param color 0 = white, 1 = black.
  */
-Bitboard PawnPromotionCaptures(Square pawns, Bitboard opponentPieces, uint8_t color);
+Bitboard castro_PawnPromotionCaptures(Square pawns, Bitboard opponentPieces, uint8_t color);
 
 /**
  * @brief Computes knight attacks from a given square.
  */
-Bitboard KnightAttacks(Square knights, Bitboard emptySquares, Bitboard enemySquares);
+Bitboard castro_KnightAttacks(Square knights, Bitboard emptySquares, Bitboard enemySquares);
 
 /**
  * @brief Computes king attacks from a given square.
  */
-Bitboard KingAttacks(Square king, Bitboard emptySquares, Bitboard enemySquares);
+Bitboard castro_KingAttacks(Square king, Bitboard emptySquares, Bitboard enemySquares);
 
 /**
  * @brief Computes bishop attacks using a sliding attack method.
  */
-Bitboard BishopAttacks(Square bishops, Bitboard emptySquares, Bitboard enemySquares);
+Bitboard castro_BishopAttacks(Square bishops, Bitboard emptySquares, Bitboard enemySquares);
 
 /**
  * @brief Computes rook attacks using a sliding attack method.
  */
-Bitboard RookAttacks(Square rooks, Bitboard emptySquares, Bitboard enemySquares);
+Bitboard castro_RookAttacks(Square rooks, Bitboard emptySquares, Bitboard enemySquares);
 
 /**
  * @brief Computes queen attacks as the union of rook and bishop attacks.
  */
-Bitboard QueenAttacks(Square queens, Bitboard emptySquares, Bitboard enemySquares);
+Bitboard castro_QueenAttacks(Square queens, Bitboard emptySquares, Bitboard enemySquares);
 
 
 /*------------------------.
@@ -427,7 +433,7 @@ Bitboard QueenAttacks(Square queens, Bitboard emptySquares, Bitboard enemySquare
  * @param kingPosition Bitboard with one bit set where the king is.
  * @param enemyAttacks Bitboard of all enemy attacks.
  */
-bool IsKingInCheck(Bitboard kingPosition, Bitboard enemyAttacks);
+bool castro_IsKingInCheck(Bitboard kingPosition, Bitboard enemyAttacks);
 
 /**
  * @brief Returns the bitboard of pinned pieces relative to the king.
@@ -446,19 +452,19 @@ Bitboard _PinnedPieces(Bitboard kingPosition, Bitboard slidingAttacks, Bitboard 
 /**
  * @brief Prints a 32-bit unsigned integer (e.g. in binary or hex).
  */
-void Uint32Print(uint32_t value);
+void castro_Uint32Print(uint32_t value);
 
 /**
  * @brief Prints a 64-bit unsigned integer (e.g. in binary or hex).
  */
-void Uint64Print(uint64_t value);
+void castro_Uint64Print(uint64_t value);
 
 /**
  * @brief Prints a visual representation of a bitboard.
  * 
  * Useful for debugging. Marks set bits on an 8x8 grid.
  */
-void BitboardPrint(Bitboard bitboard);
+void castro_BitboardPrint(Bitboard bitboard);
 
 
 /*------------------------------------.
@@ -492,7 +498,7 @@ typedef struct {
  * @param table Pointer to an uninitialized HashTable
  * @param starting_fen FEN string of the initial position
  */
-void InitHashTable(HashTable* table, const char* starting_fen);
+void castro_InitHashTable(HashTable* table, const char* starting_fen);
 
 /**
  * @brief Initializes a hash table directly from a known Zobrist hash.
@@ -500,7 +506,7 @@ void InitHashTable(HashTable* table, const char* starting_fen);
  * @param table Pointer to HashTable
  * @param starting_hash Precomputed Zobrist hash of the position
  */
-void InitHashTableHash(HashTable* table, uint64_t starting_hash);
+void castro_InitHashTableHash(HashTable* table, uint64_t starting_hash);
 
 /**
  * @brief Adds a new position hash or updates an existing entry.
@@ -511,12 +517,12 @@ void InitHashTableHash(HashTable* table, uint64_t starting_hash);
  * @param hash New Zobrist hash to insert
  * @return true if repetition >= 3 (e.g., threefold repetition), false otherwise
  */
-_Bool UpdateHashTable(HashTable* table, uint64_t hash);
+_Bool castro_UpdateHashTable(HashTable* table, uint64_t hash);
 
 /**
  * @brief Frees all memory used by the hash table.
  */
-void FreeHashTable(HashTable* table);
+void castro_FreeHashTable(HashTable* table);
 
 
 /*------------------------------------.
@@ -545,7 +551,7 @@ typedef struct {
 /**
  * @brief Prints the contents of an Undo struct (for debugging).
  */
-void UndoPrint(Undo undo);
+void castro_UndoPrint(Undo undo);
 
 /**
  * @brief Stores full game history for repetition detection and undo functionality.
@@ -561,7 +567,7 @@ typedef struct {
  * 
  * Updates position table and count.
  */
-void HistoryRemove(History* history);
+void castro_HistoryRemove(History* history);
 
 /**
  * @brief Returns the most recent Undo record from history.
@@ -569,7 +575,7 @@ void HistoryRemove(History* history);
  * @param history History object
  * @return Undo struct of the last move; undefined if history is empty.
  */
-Undo HistoryGetLast(History history);
+Undo castro_HistoryGetLast(History history);
 
 
 /*------------------------------------.
@@ -644,7 +650,7 @@ typedef struct {
  * @param move The move to be undone later
  * @return true on success
  */
-bool AddUndo(Board* board, uint32_t move);
+bool castro_AddUndo(Board* board, uint32_t move);
 
 /**
  * @brief Loads and removes the last undo record.
@@ -652,7 +658,7 @@ bool AddUndo(Board* board, uint32_t move);
  * @param board The board to restore
  * @return Undo information for the last move
  */
-Undo LoadLastUndo(Board* board);
+Undo castro_LoadLastUndo(Board* board);
 
 /// All 12 supported pieces, as characters
 #define PIECES "pnbrqkPNBRQK"
@@ -694,7 +700,7 @@ typedef enum {
  * @param promotion Numeric code (0 = queen, 1 = rook, etc.)
  * @return Promotion piece character ('q', 'r', ...)
  */
-char PromotionToChar(uint8_t promotion);
+char castro_PromotionToChar(uint8_t promotion);
 
 /**
  * @brief Converts a promotion piece character to a numeric code.
@@ -702,126 +708,126 @@ char PromotionToChar(uint8_t promotion);
  * @param promotion Piece character (e.g., 'q', 'n')
  * @return Numeric code
  */
-uint8_t CharToPromotion(char promotion);
+uint8_t castro_CharToPromotion(char promotion);
 
 /**
  * @brief Initializes a board from a FEN string.
  */
-void BoardInitFen(Board* board, const char* fen);
+void castro_BoardInitFen(Board* board, const char* fen);
 
 /**
  * @brief Heap-allocates and initializes a board from FEN.
  * 
  * Must be freed with BoardFree().
  */
-Board* BoardInitFenHeap(const char* fen);
+Board* castro_BoardInitFenHeap(const char* fen);
 
 /**
  * @brief Frees heap-allocated board (from BoardInitFenHeap).
  */
-void BoardFree(Board* board);
+void castro_BoardFree(Board* board);
 
 /**
  * @brief Returns a bitboard of all white pieces.
  */
-Bitboard GetWhite(const Board* board);
+Bitboard castro_GetWhite(const Board* board);
 
 /**
  * @brief Returns a bitboard of all black pieces.
  */
-Bitboard GetBlack(const Board* board);
+Bitboard castro_GetBlack(const Board* board);
 
 /**
  * @brief Returns a bitboard of all opponent pieces.
  */
-Bitboard GetEnemyColor(const Board* board, PieceColor us);
+Bitboard castro_GetEnemyColor(const Board* board, PieceColor us);
 
 /**
  * @brief Returns a bitboard of all enemy pieces (based on current turn).
  */
-Bitboard GetEnemy(const Board* board);
+Bitboard castro_GetEnemy(const Board* board);
 
 /**
  * @brief Returns a bitboard of all empty squares.
  */
-Bitboard GetEmpty(const Board* board);
+Bitboard castro_GetEmpty(const Board* board);
 
 /**
  * @brief Counts the number of a specific piece color/type on the board.
  */
-int CountPieces(const Board* board, PieceColor color, PieceType type);
+int castro_CountPieces(const Board* board, PieceColor color, PieceType type);
 
 /**
  * @brief Checks if a board has certain castling rights.
  */
-int HasCastlingRights(const Board* board, uint8_t castling_rights);
+int castro_HasCastlingRights(const Board* board, uint8_t castling_rights);
 
 /**
  * @brief Revokes specific castling rights from a board.
  */
-void RevokeCastlingRights(Board* board, uint8_t castling_rights);
+void castro_RevokeCastlingRights(Board* board, uint8_t castling_rights);
 
 /**
  * @brief Checks if a square is attacked by a given color.
  */
-bool IsSquareAttacked(const Board* board, Square square, PieceColor color);
+bool castro_IsSquareAttacked(const Board* board, Square square, PieceColor color);
 
 /**
  * @brief Checks if a square is empty.
  */
-bool IsSquareEmpty(const Board* board, Square square);
+bool castro_IsSquareEmpty(const Board* board, Square square);
 
 /**
  * @brief Checks if a square is occupied by a given color.
  */
-bool IsSquareOccupiedBy(const Board* board, Square square, PieceColor color);
+bool castro_IsSquareOccupiedBy(const Board* board, Square square, PieceColor color);
 
 /**
  * @brief Returns the number of pieces on the board for a given color.
  */
-size_t NumberOfPieces(const Board* board, PieceColor color);
+size_t castro_NumberOfPieces(const Board* board, PieceColor color);
 
 /**
  * @brief Checks if a color is in check.
  */
-bool IsInCheckColor(const Board* board, PieceColor color);
+bool castro_IsInCheckColor(const Board* board, PieceColor color);
 
 /**
  * @brief Checks if the player to move is in check.
  */
-bool IsInCheck(const Board* board);
+bool castro_IsInCheck(const Board* board);
 
 /**
  * @brief Prints a list of squares (e.g. legal moves) on the board.
  */
-void BoardPrintSquares(const Board* board, Square* squares, size_t count);
+void castro_BoardPrintSquares(const Board* board, Square* squares, size_t count);
 
 /**
  * @brief Highlights a bitboard on the board (used for debugging).
  */
-void BoardPrintBitboard(const Board* board, Bitboard highlight);
+void castro_BoardPrintBitboard(const Board* board, Bitboard highlight);
 
 /**
  * @brief Prints the board with a list of highlighted squares.
  * 
  * Usage: `BoardPrint(board, E4, G5, A2, ...)`
  */
-void BoardPrint(const Board* board, Square first, ...);
+void castro_BoardPrint(const Board* board, Square first, ...);
 
 /**
  * @brief Prints all bitboards in the board structure (for debugging).
  */
-void BoardPrintBitboards(Board board);
+void castro_BoardPrintBitboards(Board board);
 
 /**
  * @brief Prints the character grid of the board.
  */
-void BoardPrintGrid(const Board* board);
+void castro_BoardPrintGrid(const Board* board);
 
 /**
  * @brief Returns a deep copy of the board.
  */
-Board BoardCopy(const Board* board);
+Board castro_BoardCopy(const Board* board);
 
 /*------------------------------------.
 | *ZOBRIST*                           |
@@ -857,7 +863,7 @@ extern uint64_t zobrist_black_to_move __attribute__((unused));
  * 
  * WARNING: Not used in practice since Polyglot's standard set of 781 random numbers is used instead.
  */
-void InitZobrist();
+void castro_InitZobrist();
 
 /**
  * @brief Calculates the Zobrist hash of a board.
@@ -871,7 +877,7 @@ void InitZobrist();
  * @param board Pointer to the Board structure
  * @return 64-bit Zobrist hash
  */
-uint64_t CalculateZobristHash(const Board* board);
+uint64_t castro_CalculateZobristHash(const Board* board);
 
 /**
  * @brief Convenience function to calculate a Zobrist hash directly from a FEN string.
@@ -879,7 +885,7 @@ uint64_t CalculateZobristHash(const Board* board);
  * @param fen Forsyth-Edwards Notation string
  * @return 64-bit Zobrist hash
  */
-uint64_t CalculateZobristHashFen(const char* fen);
+uint64_t castro_CalculateZobristHashFen(const char* fen);
 
 
 /*------------------------------------.
@@ -945,44 +951,44 @@ typedef enum {
     HORIZONTAL
 } RayType;
 
-void InitMasks();
+void castro_InitMasks();
 
-Bitboard GeneralOccupancy(Bitboard whitePieces, Bitboard blackPieces);
-Bitboard BlockerMasks(Bitboard slidingPiece, Bitboard occupancy);
+Bitboard castro_GeneralOccupancy(Bitboard whitePieces, Bitboard blackPieces);
+Bitboard castro_BlockerMasks(Bitboard slidingPiece, Bitboard occupancy);
 
 /*** Ray Masks ***/
-Bitboard ComputeDiagonalMask(Square square);
-Bitboard ComputeAntiDiagonalMask(Square square);
-Bitboard ComputeHorizontalMask(Square);
-Bitboard ComputeVerticalMask(Square);
+Bitboard castro_ComputeDiagonalMask(Square square);
+Bitboard castro_ComputeAntiDiagonalMask(Square square);
+Bitboard castro_ComputeHorizontalMask(Square);
+Bitboard castro_ComputeVerticalMask(Square);
 
-Bitboard DiagonalMask(Square square);
-Bitboard AntiDiagonalMask(Square square);
-Bitboard HorizontalMask(Square square);
-Bitboard VerticalMask(Square square);
+Bitboard castro_DiagonalMask(Square square);
+Bitboard castro_AntiDiagonalMask(Square square);
+Bitboard castro_HorizontalMask(Square square);
+Bitboard castro_VerticalMask(Square square);
 
 /*** Piece Masks ***/
-Bitboard ComputePawnPushMask(Square square, PieceColor color);
-Bitboard ComputePawnDoublePushMask(Square square, PieceColor color);
-Bitboard ComputePawnPromotionMask(Square square, PieceColor color);
-Bitboard ComputePawnPromotionAttackMask(Square square, PieceColor color);
-Bitboard ComputePawnAttackMask(Square square, PieceColor color);
-Bitboard ComputeKnightMoveMask(Square square);
-Bitboard ComputeBishopMoveMask(Square square);
-Bitboard ComputeRookMoveMask(Square square);
-Bitboard ComputeQueenMoveMask(Square square);
-Bitboard ComputeKingMoveMask(Square square);
+Bitboard castro_ComputePawnPushMask(Square square, PieceColor color);
+Bitboard castro_ComputePawnDoublePushMask(Square square, PieceColor color);
+Bitboard castro_ComputePawnPromotionMask(Square square, PieceColor color);
+Bitboard castro_ComputePawnPromotionAttackMask(Square square, PieceColor color);
+Bitboard castro_ComputePawnAttackMask(Square square, PieceColor color);
+Bitboard castro_ComputeKnightMoveMask(Square square);
+Bitboard castro_ComputeBishopMoveMask(Square square);
+Bitboard castro_ComputeRookMoveMask(Square square);
+Bitboard castro_ComputeQueenMoveMask(Square square);
+Bitboard castro_ComputeKingMoveMask(Square square);
 
-Bitboard PawnPushMask(Square square, PieceColor color);
-Bitboard PawnDoublePushMask(Square square, PieceColor color);
-Bitboard PawnPromotionMask(Square square, PieceColor color);
-Bitboard PawnPromotionAttackMask(Square square, PieceColor color);
-Bitboard PawnAttackMask(Square square, PieceColor color);
-Bitboard KnightMoveMask(Square square);
-Bitboard BishopMoveMask(Square square);
-Bitboard RookMoveMask(Square square);
-Bitboard QueenMoveMask(Square square);
-Bitboard KingMoveMask(Square square);
+Bitboard castro_PawnPushMask(Square square, PieceColor color);
+Bitboard castro_PawnDoublePushMask(Square square, PieceColor color);
+Bitboard castro_PawnPromotionMask(Square square, PieceColor color);
+Bitboard castro_PawnPromotionAttackMask(Square square, PieceColor color);
+Bitboard castro_PawnAttackMask(Square square, PieceColor color);
+Bitboard castro_KnightMoveMask(Square square);
+Bitboard castro_BishopMoveMask(Square square);
+Bitboard castro_RookMoveMask(Square square);
+Bitboard castro_QueenMoveMask(Square square);
+Bitboard castro_KingMoveMask(Square square);
 
 /*--------------------------------------.
 | *MOVE*                                |
@@ -1072,44 +1078,44 @@ typedef struct {
 /**
  * @brief Appends a move to a move list.
  */
-void MovesAppend(Moves* moves, Move move);
+void castro_MovesAppend(Moves* moves, Move move);
 
 /**
  * @brief Appends one move list to another.
  */
-void MovesAppendList(Moves* dest, Moves src);
+void castro_MovesAppendList(Moves* dest, Moves src);
 
 /**
  * @brief Combines two move lists into a new one.
  */
-Moves MovesCombine(Moves m1, Moves m2);
+Moves castro_MovesCombine(Moves m1, Moves m2);
 
 /**
  * @brief Creates an Undo struct representing a move played on a board.
  */
-Undo MakeUndo(const Board* board, Move move);
+Undo castro_MakeUndo(const Board* board, Move move);
 
 /*-----------------------------------------------.
 | Piece-specific movement offsets (mailbox 0x88) |
 `-----------------------------------------------*/
 
 #define KNIGHT_OFFSETS_COUNT 8
-const static int KNIGHT_OFFSETS[] = {
+static const int KNIGHT_OFFSETS[] = {
     -17, -15, -10, -6, 6, 10, 15, 17
 };
 
 #define BISHOP_OFFSETS_COUNT 4
-const static int BISHOP_OFFSETS[] = {
+static const int BISHOP_OFFSETS[] = {
     -9, -7, 7, 9
 };
 
 #define ROOK_OFFSETS_COUNT 4
-const static int ROOK_OFFSETS[] = {
+static const int ROOK_OFFSETS[] = {
     -8, -1, 1, 8
 };
 
 #define KING_OFFSETS_COUNT 8
-const static int KING_OFFSETS[] = {
+static const int KING_OFFSETS[] = {
     -9, -8, -7, -1, 1, 7, 8, 9
 };
 
@@ -1119,7 +1125,7 @@ const static int KING_OFFSETS[] = {
 #define MOVE_DECODE(move) \
     Square src, dst; \
     uint8_t promotion, flag; \
-    MoveDecode(move, &src, &dst, &promotion, &flag)
+    castro_MoveDecode(move, &src, &dst, &promotion, &flag)
 
 /*-----------------------------.
 | Move encoding/decoding/util  |
@@ -1128,32 +1134,32 @@ const static int KING_OFFSETS[] = {
 /**
  * @brief Checks whether a move is legal and does not leave the king in check.
  */
-_Bool MoveIsValid(const Board* board, Move move, PieceColor color);
+_Bool castro_MoveIsValid(const Board* board, Move move, PieceColor color);
 
 /**
  * @brief Encodes a move from components into a 32-bit integer.
  */
-Move MoveEncode(Square from, Square to, uint8_t promotion, uint8_t flag);
+Move castro_MoveEncode(Square from, Square to, uint8_t promotion, uint8_t flag);
 
 /**
  * @brief Encodes a move from algebraic names ("e2", "e4", etc.).
  */
-Move MoveEncodeNames(const char* from, const char* to, uint8_t promotion, uint8_t flag);
+Move castro_MoveEncodeNames(const char* from, const char* to, uint8_t promotion, uint8_t flag);
 
 /**
  * @brief Decodes a move into from-square, to-square, promotion, and flag.
  */
-void MoveDecode(Move move, Square* from, Square* to, uint8_t* promotion, uint8_t* flag);
+void castro_MoveDecode(Move move, Square* from, Square* to, uint8_t* promotion, uint8_t* flag);
 
 /**
  * @brief Sets the move flag field.
  */
-void MoveSetFlag(Move* move, Flag flag);
+void castro_MoveSetFlag(Move* move, Flag flag);
 
 /**
  * @brief Sets the promotion field in a move.
  */
-void MoveSetPromotion(Move* move, Promotion promotion);
+void castro_MoveSetPromotion(Move* move, Promotion promotion);
 
 /*-------------------------------.
 | Bitboard Move Application API  |
@@ -1162,12 +1168,12 @@ void MoveSetPromotion(Move* move, Promotion promotion);
 /**
  * @brief Applies a move on a bitboard.
  */
-Bitboard DoMove(Bitboard* current, Move move);
+Bitboard castro_DoMove(Bitboard* current, Move move);
 
 /**
  * @brief Undoes a move on a bitboard.
  */
-Bitboard UndoMove(Bitboard* current, Move move);
+Bitboard castro_UndoMove(Bitboard* current, Move move);
 
 /*-----------------------------.
 | Full board move application  |
@@ -1176,22 +1182,22 @@ Bitboard UndoMove(Bitboard* current, Move move);
 /**
  * @brief Makes a move and updates board state accordingly.
  */
-bool MakeMove(Board* board, Move move);
+bool castro_MakeMove(Board* board, Move move);
 
 /**
  * @brief Unmakes the last move and restores previous board state.
  */
-void UnmakeMove(Board* board);
+void castro_UnmakeMove(Board* board);
 
 /**
  * @brief Performs a null move (used in search algorithms).
  */
-void MakeNullMove(Board* board);
+void castro_MakeNullMove(Board* board);
 
 /**
  * @brief Reverts a null move.
  */
-void UnmakeNullMove(Board* board);
+void castro_UnmakeNullMove(Board* board);
 
 /*-------------------------------.
 | Move-type specific helpers     |
@@ -1200,67 +1206,67 @@ void UnmakeNullMove(Board* board);
 /**
  * @brief Executes castling move.
  */
-bool Castle(Board* board, Move move);
+bool castro_Castle(Board* board, Move move);
 
 /**
  * @brief Checks if a move is a castling move.
  */
-bool IsCastle(const Board* board, Move* move);
+bool castro_IsCastle(const Board* board, Move* move);
 
 /**
  * @brief Executes en passant capture.
  */
-bool Enpassant(Board* board, Move move);
+bool castro_Enpassant(Board* board, Move move);
 
 /**
  * @brief Checks if a move is an en passant capture.
  */
-bool IsEnpassant(const Board* board, Move* move);
+bool castro_IsEnpassant(const Board* board, Move* move);
 
 /**
  * @brief Checks if a move is a two-square pawn advance.
  */
-bool IsDoublePawnPush(Board* board, Move move);
+bool castro_IsDoublePawnPush(Board* board, Move move);
 
 /**
  * @brief Checks if a move is a promotion.
  */
-bool IsPromotion(Board* board, Move* move);
+bool castro_IsPromotion(Board* board, Move* move);
 
 /**
  * @brief Checks if a move is a capture (regular or en passant).
  */
-bool IsCapture(const Board* board, Move move);
+bool castro_IsCapture(const Board* board, Move move);
 
 /**
  * @brief Checks if executing a move leaves the king in check.
  */
-bool IsInCheckAfterMove(Board *board, Move move);
+bool castro_IsInCheckAfterMove(Board *board, Move move);
 
 /**
  * @brief Makes a move with full legality rules.
  */
-_Bool MoveMake(Board* board, Move move);
+_Bool castro_MoveMake(Board* board, Move move);
 
 /**
  * @brief Applies a move directly (ignores turn/check legality).
  */
-void MoveFreely(Board* board, Move move, PieceColor color);
+void castro_MoveFreely(Board* board, Move move, PieceColor color);
 
 /**
  * @brief Prints a move to stdout in algebraic format.
  */
-void MovePrint(Move move);
+void castro_MovePrint(Move move);
 
 /**
  * @brief Converts an algebraic string (e.g., "e2e4") to a move.
  */
-Move StringToMove(const char* str);
+Move castro_StringToMove(const char* str);
 
 /**
  * @brief Converts a move to a string in algebraic format (e.g., "e2e4").
  */
-void MoveToString(Move move, char* buffer);
+void castro_MoveToString(Move move, char* buffer);
 
 /*--------------------.
 | Move comparisons    |
@@ -1269,12 +1275,12 @@ void MoveToString(Move move, char* buffer);
 /**
  * @brief Compares two moves for equality (ignores metadata).
  */
-bool MoveCmp(Move m1, Move m2);
+bool castro_MoveCmp(Move m1, Move m2);
 
 /**
  * @brief Compares two moves strictly (includes metadata).
  */
-bool MoveCmpStrict(Move m1, Move m2);
+bool castro_MoveCmpStrict(Move m1, Move m2);
 
 /*--------------------.
 | Move field getters  |
@@ -1283,22 +1289,22 @@ bool MoveCmpStrict(Move m1, Move m2);
 /**
  * @brief Gets the source square of a move.
  */
-Square GetFrom(Move move);
+Square castro_GetFrom(Move move);
 
 /**
  * @brief Gets the destination square of a move.
  */
-Square GetTo(Move move);
+Square castro_GetTo(Move move);
 
 /**
  * @brief Gets the promotion type of a move.
  */
-uint8_t GetPromotion(Move move);
+uint8_t castro_GetPromotion(Move move);
 
 /**
  * @brief Gets the move flag.
  */
-uint8_t GetFlag(Move move);
+uint8_t castro_GetFlag(Move move);
 
 /*----------------------------.
 | Board state update helpers  |
@@ -1307,17 +1313,17 @@ uint8_t GetFlag(Move move);
 /**
  * @brief Updates the 50-move counter based on the move.
  */
-void UpdateHalfmove(Board* board, Move move, size_t piece_count_before, size_t piece_count_after, char piece);
+void castro_UpdateHalfmove(Board* board, Move move, size_t piece_count_before, size_t piece_count_after, char piece);
 
 /**
  * @brief Updates castling rights after a move.
  */
-uint8_t UpdateCastlingRights(Board* board, Move move);
+uint8_t castro_UpdateCastlingRights(Board* board, Move move);
 
 /**
  * @brief Updates en passant target square.
  */
-Square UpdateEnpassantSquare(Board* board, Move move);
+Square castro_UpdateEnpassantSquare(Board* board, Move move);
 
 /*-------------------------.
 | Bitboard-Move conversion |
@@ -1326,12 +1332,12 @@ Square UpdateEnpassantSquare(Board* board, Move move);
 /**
  * @brief Converts a bitboard of destinations to move list from a source square.
  */
-Moves BitboardToMoves(Bitboard bitboard, Square from);
+Moves castro_BitboardToMoves(Bitboard bitboard, Square from);
 
 /**
  * @brief Converts a move list to a bitboard of destinations.
  */
-Bitboard MovesToBitboard(Moves moves);
+Bitboard castro_MovesToBitboard(Moves moves);
 
 /*-------------------------.
 | Board Debugging Helpers  |
@@ -1340,7 +1346,7 @@ Bitboard MovesToBitboard(Moves moves);
 /**
  * @brief Prints a move on a board (highlighted view).
  */
-void BoardPrintMove(const Board* board, Move move);
+void castro_BoardPrintMove(const Board* board, Move move);
 
 /// Debug macro alias for MovePrint
 #define MOVE_PRINT(move) MovePrint(move)
@@ -1438,7 +1444,7 @@ typedef struct {
  * @param piece The character representing a piece
  * @return COLOR_WHITE, COLOR_BLACK, or COLOR_NONE
  */
-int GetPieceColor(char piece);
+int castro_GetPieceColor(char piece);
 
 /**
  * @brief Returns the Piece located at a specific square on the board.
@@ -1447,7 +1453,7 @@ int GetPieceColor(char piece);
  * @param square Square index (0–63)
  * @return Piece struct representing the piece at that square
  */
-Piece PieceAt(const Board* board, Square square);
+Piece castro_PieceAt(const Board* board, Square square);
 
 /**
  * @brief Compares two Piece structs for type and color equality.
@@ -1456,7 +1462,7 @@ Piece PieceAt(const Board* board, Square square);
  * @param p2 Second piece
  * @return true if both pieces are the same type and color
  */
-bool PieceCmp(Piece p1, Piece p2);
+bool castro_PieceCmp(Piece p1, Piece p2);
 
 /*------------------------------------.
 | *NOTATION*                          |
@@ -1476,7 +1482,7 @@ bool PieceCmp(Piece p1, Piece p2);
  * @param board Pointer to the board to initialize
  * @param fen FEN string
  */
-void FenImport(Board* board, const char* fen);
+void castro_FenImport(Board* board, const char* fen);
 
 /**
  * @brief Exports the current board state to a FEN string.
@@ -1484,7 +1490,7 @@ void FenImport(Board* board, const char* fen);
  * @param board Board to serialize
  * @param fen Output buffer (must be large enough)
  */
-void FenExport(const Board* board, char fen[]);
+void castro_FenExport(const Board* board, char fen[]);
 
 /**
  * @brief Maximum length for PGN header fields (Event, Site, etc.)
@@ -1527,7 +1533,7 @@ typedef struct {
  * @param move_str SAN move string (e.g., "e4", "O-O")
  * @return true on success
  */
-bool move_name(const Board* board, Game* game, const char* move_str);
+bool castro_move_name(const Board* board, Game* game, const char* move_str);
 
 /**
  * @brief Shorthand for move_name(board, game, move)
@@ -1542,7 +1548,7 @@ bool move_name(const Board* board, Game* game, const char* move_str);
 /**
  * @brief Initializes a Game object with basic metadata and FEN.
  */
-void GameInit(Game* game, 
+void castro_GameInit(Game* game, 
     const char* event,
     const char* site,
     const char* white,
@@ -1553,28 +1559,28 @@ void GameInit(Game* game,
 /**
  * @brief Runs a game move-by-move, showing each updated board (for debugging/visualization).
  */
-void GameRun(Game game);
+void castro_GameRun(Game game);
 
 /**
  * @brief Prints the full PGN representation of a game.
  */
-void GamePrint(Game game);
+void castro_GamePrint(Game game);
 
 /**
  * @brief Appends a SAN move to the game.
  */
-void GameAddMove(Game* game, SanMove move);
+void castro_GameAddMove(Game* game, SanMove move);
 
 /**
  * @brief Setters for PGN metadata fields.
  */
-void GameSetEvent(Game* game, const char* event);
-void GameSetSite(Game* game, const char* site);
-void GameSetDate(Game* game, const char* date);
-void GameSetWhite(Game* game, const char* white);
-void GameSetBlack(Game* game, const char* black);
-void GameSetFen(Game* game, const char* fen);
-void GameSetResult(Game* game, const char* result);
+void castro_GameSetEvent(Game* game, const char* event);
+void castro_GameSetSite(Game* game, const char* site);
+void castro_GameSetDate(Game* game, const char* date);
+void castro_GameSetWhite(Game* game, const char* white);
+void castro_GameSetBlack(Game* game, const char* black);
+void castro_GameSetFen(Game* game, const char* fen);
+void castro_GameSetResult(Game* game, const char* result);
 
 /*--------------------------.
 | PGN Import/Export Support |
@@ -1583,17 +1589,17 @@ void GameSetResult(Game* game, const char* result);
 /**
  * @brief Parses a PGN string and populates the game object.
  */
-void PgnImport(Game* game, const char* pgn);
+void castro_PgnImport(Game* game, const char* pgn);
 
 /**
  * @brief Serializes a Game to PGN format.
  */
-void PgnExport(Game* game, char* pgn);
+void castro_PgnExport(Game* game, char* pgn);
 
 /**
  * @brief Saves a PGN game to a file.
  */
-void PgnExportFile(Game* game, const char* path);
+void castro_PgnExportFile(Game* game, const char* path);
 
 /*-----------------------------.
 | SAN <-> Move conversions     |
@@ -1602,12 +1608,12 @@ void PgnExportFile(Game* game, const char* path);
 /**
  * @brief Converts a Move to a SAN notation string (e.g., "Nf3", "O-O").
  */
-void Notate(Board* board, Move move, SanMove* san);
+void castro_Notate(Board* board, Move move, SanMove* san);
 
 /**
  * @brief Converts a SAN move to an internal Move.
  */
-Move SanToMove(Board* board, SanMove san);
+Move castro_SanToMove(Board* board, SanMove san);
 
 
 /*------------------------------------.
@@ -1675,7 +1681,7 @@ static const char result_message[][256] = {
  * @param board Current board state
  * @return Corresponding Result enum
  */
-Result IsResult(Board* board);
+Result castro_IsResult(Board* board);
 
 /**
  * @brief Determines if the current position is checkmate.
@@ -1683,7 +1689,7 @@ Result IsResult(Board* board);
  * @param board Pointer to the board
  * @return true if checkmate
  */
-bool IsCheckmate(const Board* board);
+bool castro_IsCheckmate(const Board* board);
 
 /**
  * @brief Determines if the current position is stalemate.
@@ -1691,7 +1697,7 @@ bool IsCheckmate(const Board* board);
  * @param board Pointer to the board
  * @return true if stalemate
  */
-bool IsStalemate(const Board* board);
+bool castro_IsStalemate(const Board* board);
 
 /**
  * @brief Checks if neither player has sufficient material to checkmate.
@@ -1704,7 +1710,7 @@ bool IsStalemate(const Board* board);
  * @param board Pointer to the board
  * @return true if the game should be drawn due to insufficient material
  */
-bool IsInsufficientMaterial(const Board* board);
+bool castro_IsInsufficientMaterial(const Board* board);
 
 /**
  * @brief Determines if the current position has occurred three times (3-fold repetition).
@@ -1714,7 +1720,7 @@ bool IsInsufficientMaterial(const Board* board);
  * @param board Pointer to the board
  * @return true if position repeated three times
  */
-bool IsThreefoldRepetition(Board* board);
+bool castro_IsThreefoldRepetition(Board* board);
 
 /*------------------------------------.
 | *MOVEGEN*                           |
@@ -1740,48 +1746,48 @@ typedef enum {
  * 
  * Includes moves that may leave the king in check.
  */
-Moves GeneratePseudoLegalMoves(const Board* board);
+Moves castro_GeneratePseudoLegalMoves(const Board* board);
 
 /**
  * @brief Generates a bitboard representing all pseudo-legal moves.
  */
-Bitboard GeneratePseudoLegalMovesBitboard(const Board* board);
+Bitboard castro_GeneratePseudoLegalMovesBitboard(const Board* board);
 
 /**
  * @brief Pseudo-legal push moves for pawns.
  */
-Bitboard GeneratePseudoLegalPawnMoves(Bitboard pawns, Bitboard enemy, PieceColor color);
+Bitboard castro_GeneratePseudoLegalPawnMoves(Bitboard pawns, Bitboard enemy, PieceColor color);
 
 /**
  * @brief Pseudo-legal pawn attacks.
  * 
  * If `strict` is true, diagonal movement is restricted to squares with capturable enemies.
  */
-Bitboard GeneratePseudoLegalPawnAttacks(Bitboard pawns, Bitboard enemy, PieceColor color, bool strict);
+Bitboard castro_GeneratePseudoLegalPawnAttacks(Bitboard pawns, Bitboard enemy, PieceColor color, bool strict);
 
 /**
  * @brief Pseudo-legal attacks for specific pieces.
  */
-Bitboard GeneratePseudoLegalKnightAttacks(Bitboard knights, Bitboard empty, Bitboard enemy);
-Bitboard GeneratePseudoLegalBishopAttacks(Bitboard bishops, Bitboard empty, Bitboard enemy);
-Bitboard GeneratePseudoLegalRookAttacks(Bitboard rooks, Bitboard empty, Bitboard enemy);
-Bitboard GeneratePseudoLegalQueenAttacks(Bitboard queens, Bitboard empty, Bitboard enemy);
-Bitboard GeneratePseudoLegalKingAttacks(Bitboard kings, Bitboard empty, Bitboard enemy);
+Bitboard castro_GeneratePseudoLegalKnightAttacks(Bitboard knights, Bitboard empty, Bitboard enemy);
+Bitboard castro_GeneratePseudoLegalBishopAttacks(Bitboard bishops, Bitboard empty, Bitboard enemy);
+Bitboard castro_GeneratePseudoLegalRookAttacks(Bitboard rooks, Bitboard empty, Bitboard enemy);
+Bitboard castro_GeneratePseudoLegalQueenAttacks(Bitboard queens, Bitboard empty, Bitboard enemy);
+Bitboard castro_GeneratePseudoLegalKingAttacks(Bitboard kings, Bitboard empty, Bitboard enemy);
 
 /**
  * @brief Generates all pseudo-legal attacks for a given color.
  */
-Bitboard GeneratePseudoLegalAttacks(const Board* board, PieceColor color);
+Bitboard castro_GeneratePseudoLegalAttacks(const Board* board, PieceColor color);
 
 /**
  * @brief Generates potential moves for a single piece square.
  */
-Bitboard GeneratePawnMoves(const Board* board, Square piece, PieceColor color);
-Bitboard GenerateKnightMoves(const Board* board, Square piece, PieceColor color);
-Bitboard GenerateBishopMoves(const Board* board, Square piece, PieceColor color);
-Bitboard GenerateRookMoves(const Board* board, Square piece, PieceColor color);
-Bitboard GenerateQueenMoves(const Board* board, Square piece, PieceColor color);
-Bitboard GenerateKingMoves(const Board* board, Square piece, PieceColor color);
+Bitboard castro_GeneratePawnMoves(const Board* board, Square piece, PieceColor color);
+Bitboard castro_GenerateKnightMoves(const Board* board, Square piece, PieceColor color);
+Bitboard castro_GenerateBishopMoves(const Board* board, Square piece, PieceColor color);
+Bitboard castro_GenerateRookMoves(const Board* board, Square piece, PieceColor color);
+Bitboard castro_GenerateQueenMoves(const Board* board, Square piece, PieceColor color);
+Bitboard castro_GenerateKingMoves(const Board* board, Square piece, PieceColor color);
 
 /*------------------------.
 | Legal Move Generation   |
@@ -1790,32 +1796,32 @@ Bitboard GenerateKingMoves(const Board* board, Square piece, PieceColor color);
 /**
  * @brief Returns whether a move is fully legal (doesn't leave the king in check).
  */
-bool IsLegal(const Board* board, Move move);
+bool castro_IsLegal(const Board* board, Move move);
 
 /**
  * @brief Generates all legal moves for the current board position.
  */
-Moves GenerateLegalMoves(const Board* board);
+Moves castro_GenerateLegalMoves(const Board* board);
 
 /**
  * @brief Generates legal moves that originate from a specific square.
  */
-Moves GenerateLegalMovesSquare(const Board* board, Square square);
+Moves castro_GenerateLegalMovesSquare(const Board* board, Square square);
 
 /**
  * @brief Returns a bitboard of all legal destination squares.
  */
-Bitboard GenerateLegalMovesBitboard(const Board* board);
+Bitboard castro_GenerateLegalMovesBitboard(const Board* board);
 
 /**
  * @brief Generates legal moves for piece sets by type.
  */
-Moves GenerateLegalPawnMoves(const Board* board, Bitboard pieces, PieceColor color);
-Moves GenerateLegalKnightMoves(const Board* board, Bitboard pieces, PieceColor color);
-Moves GenerateLegalBishopMoves(const Board* board, Bitboard pieces, PieceColor color);
-Moves GenerateLegalRookMoves(const Board* board, Bitboard pieces, PieceColor color);
-Moves GenerateLegalQueenMoves(const Board* board, Bitboard pieces, PieceColor color);
-Moves GenerateLegalKingMoves(const Board* board, Bitboard pieces, PieceColor color);
+Moves castro_GenerateLegalPawnMoves(const Board* board, Bitboard pieces, PieceColor color);
+Moves castro_GenerateLegalKnightMoves(const Board* board, Bitboard pieces, PieceColor color);
+Moves castro_GenerateLegalBishopMoves(const Board* board, Bitboard pieces, PieceColor color);
+Moves castro_GenerateLegalRookMoves(const Board* board, Bitboard pieces, PieceColor color);
+Moves castro_GenerateLegalQueenMoves(const Board* board, Bitboard pieces, PieceColor color);
+Moves castro_GenerateLegalKingMoves(const Board* board, Bitboard pieces, PieceColor color);
 
 /*---------------------------------------------.
 | Convenience inline dispatcher for move types |
@@ -1828,7 +1834,7 @@ Moves GenerateLegalKingMoves(const Board* board, Bitboard pieces, PieceColor col
  * @param type MOVE_LEGAL or MOVE_PSEUDO
  * @return Moves struct containing the resulting moves
  */
-Moves GenerateMoves(const Board* board, MoveType type);
+Moves castro_GenerateMoves(const Board* board, MoveType type);
 
 /*------------------------------------.
 | *PERFT*                             |
@@ -1839,7 +1845,7 @@ Moves GenerateMoves(const Board* board, MoveType type);
 typedef unsigned long long u64;
 
 // NOTE: See https://www.chessprogramming.org/Perft
-u64 Perft(Board* board, int depth, bool root);
+u64 castro_Perft(Board* board, int depth, bool root);
 
 
 
@@ -2089,16 +2095,207 @@ static const uint64_t Random64[781] = {
 /**
  * @brief Converts polyglot's 16bit format to my 32bit one
  */
-Move ConvertMove(uint16_t polyglotMove);
+Move castro_ConvertMove(uint16_t polyglotMove);
 
 /**
  * @brief Returns the next book move based on the current polyglot hash
  */
-Move LookupBookMove(uint64_t position_hash, const char* book_path);
+Move castro_LookupBookMove(uint64_t position_hash, const char* book_path);
 
 
 #ifdef __cplusplus
 }
 #endif
+
+#ifdef CASTRO_STRIP_PREFIX
+
+#define SquareToName castro_SquareToName
+#define NameToSquare castro_NameToSquare
+#define Rank castro_Rank
+#define File castro_File
+#define IsSquareValid castro_IsSquareValid
+#define SquareFromCoords castro_SquareFromCoords
+#define SquareFromName castro_SquareFromName
+#define PawnAttacks castro_PawnAttacks
+#define PawnPushes castro_PawnPushes
+#define PawnPromotions castro_PawnPromotions
+#define PawnPromotionCaptures castro_PawnPromotionCaptures
+#define KnightAttacks castro_KnightAttacks
+#define KingAttacks castro_KingAttacks
+#define BishopAttacks castro_BishopAttacks
+#define RookAttacks castro_RookAttacks
+#define QueenAttacks castro_QueenAttacks
+#define IsKingInCheck castro_IsKingInCheck
+#define Uint32Print castro_Uint32Print
+#define Uint64Print castro_Uint64Print
+#define BitboardPrint castro_BitboardPrint
+#define InitHashTable castro_InitHashTable
+#define InitHashTableHash castro_InitHashTableHash
+#define UpdateHashTable castro_UpdateHashTable
+#define FreeHashTable castro_FreeHashTable
+#define UndoPrint castro_UndoPrint
+#define HistoryRemove castro_HistoryRemove
+#define HistoryGetLast castro_HistoryGetLast
+#define AddUndo castro_AddUndo
+#define LoadLastUndo castro_LoadLastUndo
+#define PromotionToChar castro_PromotionToChar
+#define CharToPromotion castro_CharToPromotion
+#define BoardInitFen castro_BoardInitFen
+#define BoardBoardInitFenHeap Boardcastro_BoardInitFenHeap
+#define BoardFree castro_BoardFree
+#define GetWhite castro_GetWhite
+#define GetBlack castro_GetBlack
+#define GetEnemyColor castro_GetEnemyColor
+#define GetEnemy castro_GetEnemy
+#define GetEmpty castro_GetEmpty
+#define CountPieces castro_CountPieces
+#define HasCastlingRights castro_HasCastlingRights
+#define RevokeCastlingRights castro_RevokeCastlingRights
+#define IsSquareAttacked castro_IsSquareAttacked
+#define IsSquareEmpty castro_IsSquareEmpty
+#define IsSquareOccupiedBy castro_IsSquareOccupiedBy
+#define NumberOfPieces castro_NumberOfPieces
+#define IsInCheckColor castro_IsInCheckColor
+#define IsInCheck castro_IsInCheck
+#define BoardPrintSquares castro_BoardPrintSquares
+#define BoardPrintBitboard castro_BoardPrintBitboard
+#define BoardPrint castro_BoardPrint
+#define BoardPrintBitboards castro_BoardPrintBitboards
+#define BoardPrintGrid castro_BoardPrintGrid
+#define BoardCopy castro_BoardCopy
+#define InitZobrist castro_InitZobrist
+#define CalculateZobristHash castro_CalculateZobristHash
+#define CalculateZobristHashFen castro_CalculateZobristHashFen
+#define InitMasks castro_InitMasks
+#define GeneralOccupancy castro_GeneralOccupancy
+#define BlockerMasks castro_BlockerMasks
+#define ComputeDiagonalMask castro_ComputeDiagonalMask
+#define ComputeAntiDiagonalMask castro_ComputeAntiDiagonalMask
+#define ComputeHorizontalMask castro_ComputeHorizontalMask
+#define ComputeVerticalMask castro_ComputeVerticalMask
+#define DiagonalMask castro_DiagonalMask
+#define AntiDiagonalMask castro_AntiDiagonalMask
+#define HorizontalMask castro_HorizontalMask
+#define VerticalMask castro_VerticalMask
+#define ComputePawnPushMask castro_ComputePawnPushMask
+#define ComputePawnDoublePushMask castro_ComputePawnDoublePushMask
+#define ComputePawnPromotionMask castro_ComputePawnPromotionMask
+#define ComputePawnPromotionAttackMask castro_ComputePawnPromotionAttackMask
+#define ComputePawnAttackMask castro_ComputePawnAttackMask
+#define ComputeKnightMoveMask castro_ComputeKnightMoveMask
+#define ComputeBishopMoveMask castro_ComputeBishopMoveMask
+#define ComputeRookMoveMask castro_ComputeRookMoveMask
+#define ComputeQueenMoveMask castro_ComputeQueenMoveMask
+#define ComputeKingMoveMask castro_ComputeKingMoveMask
+#define PawnPushMask castro_PawnPushMask
+#define PawnDoublePushMask castro_PawnDoublePushMask
+#define PawnPromotionMask castro_PawnPromotionMask
+#define PawnPromotionAttackMask castro_PawnPromotionAttackMask
+#define PawnAttackMask castro_PawnAttackMask
+#define KnightMoveMask castro_KnightMoveMask
+#define BishopMoveMask castro_BishopMoveMask
+#define RookMoveMask castro_RookMoveMask
+#define QueenMoveMask castro_QueenMoveMask
+#define KingMoveMask castro_KingMoveMask
+#define MovesAppend castro_MovesAppend
+#define MovesAppendList castro_MovesAppendList
+#define MovesCombine castro_MovesCombine
+#define MakeUndo castro_MakeUndo
+#define MoveIsValid castro_MoveIsValid
+#define MoveEncode castro_MoveEncode
+#define MoveEncodeNames castro_MoveEncodeNames
+#define MoveDecode castro_MoveDecode
+#define MoveSetFlag castro_MoveSetFlag
+#define MoveSetPromotion castro_MoveSetPromotion
+#define DoMove castro_DoMove
+#define UndoMove castro_UndoMove
+#define MakeMove castro_MakeMove
+#define UnmakeMove castro_UnmakeMove
+#define MakeNullMove castro_MakeNullMove
+#define UnmakeNullMove castro_UnmakeNullMove
+#define Castle castro_Castle
+#define IsCastle castro_IsCastle
+#define Enpassant castro_Enpassant
+#define IsEnpassant castro_IsEnpassant
+#define IsDoublePawnPush castro_IsDoublePawnPush
+#define IsPromotion castro_IsPromotion
+#define IsCapture castro_IsCapture
+#define IsInCheckAfterMove castro_IsInCheckAfterMove
+#define MoveMake castro_MoveMake
+#define MoveFreely castro_MoveFreely
+#define MovePrint castro_MovePrint
+#define StringToMove castro_StringToMove
+#define MoveToString castro_MoveToString
+#define MoveCmp castro_MoveCmp
+#define MoveCmpStrict castro_MoveCmpStrict
+#define GetFrom castro_GetFrom
+#define GetTo castro_GetTo
+#define GetPromotion castro_GetPromotion
+#define GetFlag castro_GetFlag
+#define UpdateHalfmove castro_UpdateHalfmove
+#define UpdateCastlingRights castro_UpdateCastlingRights
+#define UpdateEnpassantSquare castro_UpdateEnpassantSquare
+#define BitboardToMoves castro_BitboardToMoves
+#define MovesToBitboard castro_MovesToBitboard
+#define BoardPrintMove castro_BoardPrintMove
+#define GetPieceColor castro_GetPieceColor
+#define PieceAt castro_PieceAt
+#define PieceCmp castro_PieceCmp
+#define FenImport castro_FenImport
+#define FenExport castro_FenExport
+#define move_name castro_move_name
+#define GameInit castro_GameInit
+#define GameRun castro_GameRun
+#define GamePrint castro_GamePrint
+#define GameAddMove castro_GameAddMove
+#define GameSetEvent castro_GameSetEvent
+#define GameSetSite castro_GameSetSite
+#define GameSetDate castro_GameSetDate
+#define GameSetWhite castro_GameSetWhite
+#define GameSetBlack castro_GameSetBlack
+#define GameSetFen castro_GameSetFen
+#define GameSetResult castro_GameSetResult
+#define PgnImport castro_PgnImport
+#define PgnExport castro_PgnExport
+#define PgnExportFile castro_PgnExportFile
+#define Notate castro_Notate
+#define SanToMove castro_SanToMove
+#define IsResult castro_IsResult
+#define IsCheckmate castro_IsCheckmate
+#define IsStalemate castro_IsStalemate
+#define IsInsufficientMaterial castro_IsInsufficientMaterial
+#define IsThreefoldRepetition castro_IsThreefoldRepetition
+#define GeneratePseudoLegalMoves castro_GeneratePseudoLegalMoves
+#define GeneratePseudoLegalMovesBitboard castro_GeneratePseudoLegalMovesBitboard
+#define GeneratePseudoLegalPawnMoves castro_GeneratePseudoLegalPawnMoves
+#define GeneratePseudoLegalPawnAttacks castro_GeneratePseudoLegalPawnAttacks
+#define GeneratePseudoLegalKnightAttacks castro_GeneratePseudoLegalKnightAttacks
+#define GeneratePseudoLegalBishopAttacks castro_GeneratePseudoLegalBishopAttacks
+#define GeneratePseudoLegalRookAttacks castro_GeneratePseudoLegalRookAttacks
+#define GeneratePseudoLegalQueenAttacks castro_GeneratePseudoLegalQueenAttacks
+#define GeneratePseudoLegalKingAttacks castro_GeneratePseudoLegalKingAttacks
+#define GeneratePseudoLegalAttacks castro_GeneratePseudoLegalAttacks
+#define GeneratePawnMoves castro_GeneratePawnMoves
+#define GenerateKnightMoves castro_GenerateKnightMoves
+#define GenerateBishopMoves castro_GenerateBishopMoves
+#define GenerateRookMoves castro_GenerateRookMoves
+#define GenerateQueenMoves castro_GenerateQueenMoves
+#define GenerateKingMoves castro_GenerateKingMoves
+#define IsLegal castro_IsLegal
+#define GenerateLegalMoves castro_GenerateLegalMoves
+#define GenerateLegalMovesSquare castro_GenerateLegalMovesSquare
+#define GenerateLegalMovesBitboard castro_GenerateLegalMovesBitboard
+#define GenerateLegalPawnMoves castro_GenerateLegalPawnMoves
+#define GenerateLegalKnightMoves castro_GenerateLegalKnightMoves
+#define GenerateLegalBishopMoves castro_GenerateLegalBishopMoves
+#define GenerateLegalRookMoves castro_GenerateLegalRookMoves
+#define GenerateLegalQueenMoves castro_GenerateLegalQueenMoves
+#define GenerateLegalKingMoves castro_GenerateLegalKingMoves
+#define GenerateMoves castro_GenerateMoves
+#define Perft castro_Perft
+#define ConvertMove castro_ConvertMove
+#define LookupBookMove castro_LookupBookMove
+
+#endif // CASTRO_STRIP_PREFIX
 
 #endif // CASTRO_H

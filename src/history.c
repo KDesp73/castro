@@ -1,18 +1,18 @@
 #include "castro.h"
 #include <stdio.h>
 
-bool AddUndo(Board* board, uint32_t move)
+bool castro_AddUndo(Board* board, uint32_t move)
 {
     if (board->history.count >= MAX_MOVES) {
         return false;
     }
 
-    board->history.moves[(board->history.count)++] = MakeUndo(board, move);
+    board->history.moves[(board->history.count)++] = castro_MakeUndo(board, move);
 
     return true;
 }
 
-void HistoryRemove(History* history)
+void castro_HistoryRemove(History* history)
 {
     if (history->count == 0) return;
     history->count--;
@@ -27,9 +27,9 @@ void HistoryRemove(History* history)
     }
 }
 
-void UndoPrint(Undo undo)
+void castro_UndoPrint(Undo undo)
 {
-    MovePrint(undo.move);
+    castro_MovePrint(undo.move);
     printf("Castling: %d\n", undo.castling);
     printf("Halfmove: %zu\n", undo.fiftyMove);
     printf("Captured: %c\n", undo.captured);
@@ -39,7 +39,7 @@ void UndoPrint(Undo undo)
         SQUARE_PRINT(undo.enpassant);
 }
 
-Undo HistoryGetLast(History history)
+Undo castro_HistoryGetLast(History history)
 {
     if(history.count <= 0) {
         fprintf(stderr, "No more moves\n");
@@ -48,9 +48,9 @@ Undo HistoryGetLast(History history)
     return history.moves[history.count-1];
 }
 
-Undo LoadLastUndo(Board* board)
+Undo castro_LoadLastUndo(Board* board)
 {
-    Undo undo = HistoryGetLast(board->history);
+    Undo undo = castro_HistoryGetLast(board->history);
     if(undo.move == NULL_MOVE) return undo;
 
     board->halfmove = undo.fiftyMove;

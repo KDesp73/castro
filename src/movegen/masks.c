@@ -1,11 +1,11 @@
 #include "castro.h"
 
-Bitboard GeneralOccupancy(Bitboard whitePieces, Bitboard blackPieces)
+Bitboard castro_GeneralOccupancy(Bitboard whitePieces, Bitboard blackPieces)
 {
     return whitePieces | blackPieces;
 }
 
-Bitboard ComputeDiagonalMask(Square square)
+Bitboard castro_ComputeDiagonalMask(Square square)
 {
     Bitboard result = 0;
     int rank = square / 8, file = square % 8;
@@ -19,7 +19,7 @@ Bitboard ComputeDiagonalMask(Square square)
     return result;
 }
 
-Bitboard ComputeAntiDiagonalMask(Square square)
+Bitboard castro_ComputeAntiDiagonalMask(Square square)
 {
     Bitboard result = 0;
     int rank = square / 8, file = square % 8;
@@ -33,7 +33,7 @@ Bitboard ComputeAntiDiagonalMask(Square square)
     return result;
 }
 
-Bitboard ComputeHorizontalMask(Square square)
+Bitboard castro_ComputeHorizontalMask(Square square)
 {
     Bitboard result = 0;
     int rank = square / 8, file = square % 8;
@@ -47,7 +47,7 @@ Bitboard ComputeHorizontalMask(Square square)
     return result;
 }
 
-Bitboard ComputeVerticalMask(Square square)
+Bitboard castro_ComputeVerticalMask(Square square)
 {
     Bitboard result = 0;
     int rank = square / 8, file = square % 8;
@@ -61,59 +61,59 @@ Bitboard ComputeVerticalMask(Square square)
     return result;
 }
 
-Bitboard DiagonalMask(Square square)
+Bitboard castro_DiagonalMask(Square square)
 {
     return DIAGONAL_MASKS[square];
 }
-Bitboard AntiDiagonalMask(Square square)
+Bitboard castro_AntiDiagonalMask(Square square)
 {
     return ANTI_DIAGONAL_MASKS[square];
 }
-Bitboard HorizontalMask(Square square)
+Bitboard castro_HorizontalMask(Square square)
 {
     return HORIZONTAL_MASKS[square];
 }
-Bitboard VerticalMask(Square square)
+Bitboard castro_VerticalMask(Square square)
 {
     return VERTICAL_MASKS[square];
 }
 
-void InitMasks()
+void castro_InitMasks()
 {
     for (int square = 0; square < 64; ++square) {
-        DIAGONAL_MASKS[square] = ComputeDiagonalMask(square);
-        ANTI_DIAGONAL_MASKS[square] = ComputeAntiDiagonalMask(square);
-        HORIZONTAL_MASKS[square] = ComputeHorizontalMask(square);
-        VERTICAL_MASKS[square] = ComputeVerticalMask(square);
+        DIAGONAL_MASKS[square] = castro_ComputeDiagonalMask(square);
+        ANTI_DIAGONAL_MASKS[square] = castro_ComputeAntiDiagonalMask(square);
+        HORIZONTAL_MASKS[square] = castro_ComputeHorizontalMask(square);
+        VERTICAL_MASKS[square] = castro_ComputeVerticalMask(square);
     }
 
     for (int square = 0; square < 64; ++square) {
-        PAWN_PUSH_MASKS[COLOR_WHITE][square] = ComputePawnPushMask(square, COLOR_WHITE);
-        PAWN_PUSH_MASKS[COLOR_BLACK][square] = ComputePawnPushMask(square, COLOR_BLACK);
-        PAWN_DOUBLE_PUSH_MASKS[COLOR_WHITE][square] = ComputePawnDoublePushMask(square, COLOR_WHITE);
-        PAWN_DOUBLE_PUSH_MASKS[COLOR_BLACK][square] = ComputePawnDoublePushMask(square, COLOR_BLACK);
-        PAWN_ATTACK_MASKS[COLOR_WHITE][square] = ComputePawnAttackMask(square, COLOR_WHITE);
-        PAWN_ATTACK_MASKS[COLOR_BLACK][square] = ComputePawnAttackMask(square, COLOR_BLACK);
-        PAWN_PROMOTION_MASKS[COLOR_WHITE][square] = ComputePawnPromotionMask(square, COLOR_WHITE);
-        PAWN_PROMOTION_MASKS[COLOR_BLACK][square] = ComputePawnPromotionMask(square, COLOR_BLACK);
-        PAWN_PROMOTION_ATTACK_MASKS[COLOR_WHITE][square] = ComputePawnPromotionAttackMask(square, COLOR_WHITE);
-        PAWN_PROMOTION_ATTACK_MASKS[COLOR_BLACK][square] = ComputePawnPromotionAttackMask(square, COLOR_BLACK);
+        PAWN_PUSH_MASKS[COLOR_WHITE][square] = castro_ComputePawnPushMask(square, COLOR_WHITE);
+        PAWN_PUSH_MASKS[COLOR_BLACK][square] = castro_ComputePawnPushMask(square, COLOR_BLACK);
+        PAWN_DOUBLE_PUSH_MASKS[COLOR_WHITE][square] = castro_ComputePawnDoublePushMask(square, COLOR_WHITE);
+        PAWN_DOUBLE_PUSH_MASKS[COLOR_BLACK][square] = castro_ComputePawnDoublePushMask(square, COLOR_BLACK);
+        PAWN_ATTACK_MASKS[COLOR_WHITE][square] = castro_ComputePawnAttackMask(square, COLOR_WHITE);
+        PAWN_ATTACK_MASKS[COLOR_BLACK][square] = castro_ComputePawnAttackMask(square, COLOR_BLACK);
+        PAWN_PROMOTION_MASKS[COLOR_WHITE][square] = castro_ComputePawnPromotionMask(square, COLOR_WHITE);
+        PAWN_PROMOTION_MASKS[COLOR_BLACK][square] = castro_ComputePawnPromotionMask(square, COLOR_BLACK);
+        PAWN_PROMOTION_ATTACK_MASKS[COLOR_WHITE][square] = castro_ComputePawnPromotionAttackMask(square, COLOR_WHITE);
+        PAWN_PROMOTION_ATTACK_MASKS[COLOR_BLACK][square] = castro_ComputePawnPromotionAttackMask(square, COLOR_BLACK);
 
-        KNIGHT_MOVE_MASKS[square] = ComputeKnightMoveMask(square);
-        BISHOP_MOVE_MASKS[square] = ComputeBishopMoveMask(square);
-        ROOK_MOVE_MASKS[square] = ComputeRookMoveMask(square);
-        QUEEN_MOVE_MASKS[square] = ComputeQueenMoveMask(square);
-        KING_MOVE_MASKS[square] = ComputeKingMoveMask(square);
+        KNIGHT_MOVE_MASKS[square] = castro_ComputeKnightMoveMask(square);
+        BISHOP_MOVE_MASKS[square] = castro_ComputeBishopMoveMask(square);
+        ROOK_MOVE_MASKS[square] = castro_ComputeRookMoveMask(square);
+        QUEEN_MOVE_MASKS[square] = castro_ComputeQueenMoveMask(square);
+        KING_MOVE_MASKS[square] = castro_ComputeKingMoveMask(square);
     }
 
 }
 
-Bitboard BlockerMasks(Bitboard slidingPiece, Bitboard occupancy)
+Bitboard castro_BlockerMasks(Bitboard slidingPiece, Bitboard occupancy)
 {
     int square = lsb(slidingPiece); // Find the least significant bit
 
-    Bitboard diagonalMask = DiagonalMask(square);
-    Bitboard antiDiagonalMask = AntiDiagonalMask(square);
+    Bitboard diagonalMask = castro_DiagonalMask(square);
+    Bitboard antiDiagonalMask = castro_AntiDiagonalMask(square);
 
     Bitboard diagonalBlockers = occupancy & diagonalMask;
     Bitboard antiDiagonalBlockers = occupancy & antiDiagonalMask;
@@ -122,7 +122,7 @@ Bitboard BlockerMasks(Bitboard slidingPiece, Bitboard occupancy)
 }
 
 
-Bitboard ComputePawnPushMask(Square square, PieceColor color)
+Bitboard castro_ComputePawnPushMask(Square square, PieceColor color)
 {
     Bitboard bb = 1ULL << square, oneSquarePush;
     if(color == COLOR_WHITE){
@@ -134,7 +134,7 @@ Bitboard ComputePawnPushMask(Square square, PieceColor color)
     return oneSquarePush;
 }
 
-Bitboard ComputePawnDoublePushMask(Square square, PieceColor color)
+Bitboard castro_ComputePawnDoublePushMask(Square square, PieceColor color)
 {
     Bitboard bb = 1ULL << square, twoSquarePush;
     if(color == COLOR_WHITE){
@@ -146,7 +146,7 @@ Bitboard ComputePawnDoublePushMask(Square square, PieceColor color)
     return twoSquarePush;
 }
 
-Bitboard ComputePawnAttackMask(Square square, PieceColor color)
+Bitboard castro_ComputePawnAttackMask(Square square, PieceColor color)
 {
     Bitboard bb = 1ULL << square;
     Bitboard leftAttacks, rightAttacks;
@@ -162,13 +162,13 @@ Bitboard ComputePawnAttackMask(Square square, PieceColor color)
     return leftAttacks | rightAttacks;
 }
 
-Bitboard ComputePawnPromotionMask(Square square, PieceColor color)
+Bitboard castro_ComputePawnPromotionMask(Square square, PieceColor color)
 {
     Bitboard bb = 1ULL << square;
     return (color) ? (bb << 8) & RANK_8 : (bb >> 8) & RANK_1;
 }
 
-Bitboard ComputePawnPromotionAttackMask(Square square, PieceColor color)
+Bitboard castro_ComputePawnPromotionAttackMask(Square square, PieceColor color)
 {
     Bitboard bb = 1ULL << square;
     Bitboard leftCapture, rightCapture;
@@ -184,7 +184,7 @@ Bitboard ComputePawnPromotionAttackMask(Square square, PieceColor color)
     return leftCapture | rightCapture;
 }
 
-Bitboard ComputeKnightMoveMask(Square square)
+Bitboard castro_ComputeKnightMoveMask(Square square)
 {
     Bitboard bb = 1ULL << square;
     return (((bb << 6) & ~FILE_H & ~FILE_G)
@@ -197,23 +197,23 @@ Bitboard ComputeKnightMoveMask(Square square)
          | ((bb >> 17) & ~FILE_H));
 }
 
-Bitboard ComputeBishopMoveMask(Square square)
+Bitboard castro_ComputeBishopMoveMask(Square square)
 {
-    return DiagonalMask(square) | AntiDiagonalMask(square);
+    return castro_DiagonalMask(square) | castro_AntiDiagonalMask(square);
 }
 
-Bitboard ComputeRookMoveMask(Square square)
+Bitboard castro_ComputeRookMoveMask(Square square)
 {
-    return HorizontalMask(square) | VerticalMask(square);
+    return castro_HorizontalMask(square) | castro_VerticalMask(square);
 
 }
 
-Bitboard ComputeQueenMoveMask(Square square)
+Bitboard castro_ComputeQueenMoveMask(Square square)
 {
-    return ComputeRookMoveMask(square) | ComputeBishopMoveMask(square);
+    return castro_ComputeRookMoveMask(square) | castro_ComputeBishopMoveMask(square);
 }
 
-Bitboard ComputeKingMoveMask(Square square)
+Bitboard castro_ComputeKingMoveMask(Square square)
 {
     Bitboard bb = 1ULL << square;
     return (((bb << 1) & ~FILE_A)
@@ -226,53 +226,53 @@ Bitboard ComputeKingMoveMask(Square square)
          | ((bb >> 9) & ~FILE_H));
 }
 
-Bitboard PawnPushMask(Square square, PieceColor color)
+Bitboard castro_PawnPushMask(Square square, PieceColor color)
 {
     if (square == 64) return 0ULL;
     return PAWN_PUSH_MASKS[color][square];
 }
-Bitboard PawnDoublePushMask(Square square, PieceColor color)
+Bitboard castro_PawnDoublePushMask(Square square, PieceColor color)
 {
     if (square == 64) return 0ULL;
     return PAWN_DOUBLE_PUSH_MASKS[color][square];
 }
-Bitboard PawnAttackMask(Square square, PieceColor color)
+Bitboard castro_PawnAttackMask(Square square, PieceColor color)
 {
     if (square == 64) return 0ULL;
     return PAWN_ATTACK_MASKS[color][square];
 }
-Bitboard PawnPromotionMask(Square square, PieceColor color)
+Bitboard castro_PawnPromotionMask(Square square, PieceColor color)
 {
     if (square == 64) return 0ULL;
     return PAWN_PROMOTION_MASKS[color][square];
 }
-Bitboard PawnPromotionAttackMask(Square square, PieceColor color)
+Bitboard castro_PawnPromotionAttackMask(Square square, PieceColor color)
 {
     if (square == 64) return 0ULL;
     return PAWN_PROMOTION_ATTACK_MASKS[color][square];
 }
 
-Bitboard KnightMoveMask(Square square)
+Bitboard castro_KnightMoveMask(Square square)
 {
     if (square == 64) return 0ULL;
     return KNIGHT_MOVE_MASKS[square];
 }
-Bitboard BishopMoveMask(Square square)
+Bitboard castro_BishopMoveMask(Square square)
 {
     if (square == 64) return 0ULL;
     return BISHOP_MOVE_MASKS[square];
 }
-Bitboard RookMoveMask(Square square)
+Bitboard castro_RookMoveMask(Square square)
 {
     if (square == 64) return 0ULL;
     return ROOK_MOVE_MASKS[square];
 }
-Bitboard QueenMoveMask(Square square)
+Bitboard castro_QueenMoveMask(Square square)
 {
     if (square == 64) return 0ULL;
     return QUEEN_MOVE_MASKS[square];
 }
-Bitboard KingMoveMask(Square square)
+Bitboard castro_KingMoveMask(Square square)
 {
     if (square == 64) return 0ULL;
     return KING_MOVE_MASKS[square];

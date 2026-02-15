@@ -1,5 +1,4 @@
 #include "tests.h"
-#include "castro.h"
 #include "test-perft.h"
 
 int test_perft_6(int depth, u64 expected)

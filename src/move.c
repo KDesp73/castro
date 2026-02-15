@@ -7,40 +7,40 @@
 #include <stdlib.h>
 #include <string.h>
 
-bool MoveCmpStrict(Move m1, Move m2)
+bool castro_MoveCmpStrict(Move m1, Move m2)
 {
-    return MoveCmp(m1, m2) && GetFlag(m1) == GetFlag(m2);
+    return castro_MoveCmp(m1, m2) && castro_GetFlag(m1) == castro_GetFlag(m2);
 }
 
 
-bool MoveCmp(Move m1, Move m2)
+bool castro_MoveCmp(Move m1, Move m2)
 {
     return (
-        GetFrom(m1) == GetFrom(m2) &&
-        GetTo(m1) == GetTo(m2) &&
-        GetPromotion(m1) == GetPromotion(m2));
+        castro_GetFrom(m1) == castro_GetFrom(m2) &&
+        castro_GetTo(m1) == castro_GetTo(m2) &&
+        castro_GetPromotion(m1) == castro_GetPromotion(m2));
 }
 
-void MoveSetFlag(Move* move, Flag flag)
+void castro_MoveSetFlag(Move* move, Flag flag)
 {
     *move &= ~(0x7 << 16);
     *move |= ((flag & 0x7) << 16);
 }
-void MoveSetPromotion(Move* move, Promotion promotion)
+void castro_MoveSetPromotion(Move* move, Promotion promotion)
 {
     *move &= ~(0xF << 12);
     *move |= ((promotion & 0xF) << 12); 
 }
 
-void BoardPrintMove(const Board* board, Move move)
+void castro_BoardPrintMove(const Board* board, Move move)
 {
     MOVE_DECODE(move);
-    BoardPrint(board, src, dst, 64);
+    castro_BoardPrint(board, src, dst, 64);
 }
 
-Undo MakeUndo(const Board* board, Move move)
+Undo castro_MakeUndo(const Board* board, Move move)
 {
-    char capture = PieceAt(board, GetTo(move)).type;
+    char capture = castro_PieceAt(board, castro_GetTo(move)).type;
     return (Undo) {
         .move = move,
         .castling = board->castling_rights,
@@ -50,33 +50,33 @@ Undo MakeUndo(const Board* board, Move move)
     };
 }
 
-Moves BitboardToMoves(Bitboard bitboard, Square from)
+Moves castro_BitboardToMoves(Bitboard bitboard, Square from)
 {
     Moves moves = {0};
     while (bitboard) {
         Square to = poplsb(&bitboard);
-        moves.list[moves.count++] = MoveEncode(from, to, PROMOTION_NONE, FLAG_NORMAL);
+        moves.list[moves.count++] = castro_MoveEncode(from, to, PROMOTION_NONE, FLAG_NORMAL);
     }
     return moves;
 }
 
-Bitboard MovesToBitboard(Moves moves)
+Bitboard castro_MovesToBitboard(Moves moves)
 {
     Bitboard bb = 0ULL;
 
     for(size_t i = 0; i < moves.count; i++){
-        bb |= BB(GetTo(moves.list[i]));
+        bb |= BB(castro_GetTo(moves.list[i]));
     }
 
     return bb;
 }
 
-Move MoveEncodeNames(const char* from, const char* to, uint8_t promotion, uint8_t flag)
+Move castro_MoveEncodeNames(const char* from, const char* to, uint8_t promotion, uint8_t flag)
 {
-    return MoveEncode(NameToSquare(from), NameToSquare(to), promotion, flag);
+    return castro_MoveEncode(castro_NameToSquare(from), castro_NameToSquare(to), promotion, flag);
 }
 
-Move MoveEncode(Square from, Square to, uint8_t promotion, uint8_t flag)
+Move castro_MoveEncode(Square from, Square to, uint8_t promotion, uint8_t flag)
 {
     return (from & 0x3F) | 
            ((to & 0x3F) << 6) | 
@@ -84,7 +84,7 @@ Move MoveEncode(Square from, Square to, uint8_t promotion, uint8_t flag)
            ((flag & 0x7) << 16);
 }
 
-void MoveDecode(Move move, Square* from, Square* to, uint8_t* promotion, uint8_t* flag)
+void castro_MoveDecode(Move move, Square* from, Square* to, uint8_t* promotion, uint8_t* flag)
 {
     *from = move & 0x3F;
     *to = (move >> 6) & 0x3F;
@@ -92,34 +92,34 @@ void MoveDecode(Move move, Square* from, Square* to, uint8_t* promotion, uint8_t
     *flag = (move >> 16) & 0x7;
 }
 
-Square GetFrom(Move move)
+Square castro_GetFrom(Move move)
 {
     return move & 0x3F;
 }
-Square GetTo(Move move)
+Square castro_GetTo(Move move)
 {
     return (move >> 6) & 0x3F;
 }
-uint8_t GetPromotion(Move move)
+uint8_t castro_GetPromotion(Move move)
 {
     return (move >> 12) & 0xF;
 }
-uint8_t GetFlag(Move move)
+uint8_t castro_GetFlag(Move move)
 {
     return (move >> 16) & 0x7;
 }
 
-void MoveFreely(Board* board, Move move, PieceColor color) {
+void castro_MoveFreely(Board* board, Move move, PieceColor color) {
     // Decode the move
     Square from, to;
     uint8_t promotion, flags;
-    MoveDecode(move, &from, &to, &promotion, &flags);
+    castro_MoveDecode(move, &from, &to, &promotion, &flags);
 
     // Update the 2D character array for the board
     if (promotion == PROMOTION_NONE) {
         board->grid[COORDS(to)] = board->grid[COORDS(from)]; // Move the piece
     } else {
-        char promotedPiece = PromotionToChar(promotion); // Get promoted piece character
+        char promotedPiece = castro_PromotionToChar(promotion); // Get promoted piece character
         board->grid[COORDS(to)] = (color == COLOR_WHITE) ? toupper(promotedPiece) : tolower(promotedPiece);
     }
     board->grid[COORDS(from)] = EMPTY_SQUARE; // Clear the source square
@@ -155,15 +155,15 @@ void MoveFreely(Board* board, Move move, PieceColor color) {
     }
 }
 
-void MoveToString(Move move, char* buffer)
+void castro_MoveToString(Move move, char* buffer)
 {
     Square from, to;
     uint8_t promotion, flag;
-    MoveDecode(move, &from, &to, &promotion, &flag);
+    castro_MoveDecode(move, &from, &to, &promotion, &flag);
 
     char fromName[3], toName[3];
-    SquareToName(fromName, from);
-    SquareToName(toName, to);
+    castro_SquareToName(fromName, from);
+    castro_SquareToName(toName, to);
 
     char p[2] = "";
     switch (promotion) {
@@ -182,21 +182,21 @@ void MoveToString(Move move, char* buffer)
     sprintf(buffer, "%s%s%s", fromName, toName, p); 
 }
 
-Move StringToMove(const char* str) 
+Move castro_StringToMove(const char* str) 
 {
     if (!str || strlen(str) < 4 || strlen(str) > 5){
         fprintf(stderr, "invalid input\n");
         return NULL_MOVE;
     }
 
-    Square from = SquareFromName(str);
-    Square to = SquareFromName(str + 2);
+    Square from = castro_SquareFromName(str);
+    Square to = castro_SquareFromName(str + 2);
 
-    if (!IsSquareValid(from)){
+    if (!castro_IsSquareValid(from)){
         fprintf(stderr, "invalid from square\n");
         return NULL_MOVE;
     }
-    if(!IsSquareValid(to)) {
+    if(!castro_IsSquareValid(to)) {
         fprintf(stderr, "invalid to square\n");
         return NULL_MOVE;
     }
@@ -216,28 +216,28 @@ Move StringToMove(const char* str)
         flag = FLAG_PROMOTION;
     }
 
-    return MoveEncode(from, to, promotion, flag);
+    return castro_MoveEncode(from, to, promotion, flag);
 }
 
-void MovePrint(Move move)
+void castro_MovePrint(Move move)
 {
     Square from, to;
     uint8_t promotion, flags;
-    MoveDecode(move, &from, &to, &promotion, &flags);
+    castro_MoveDecode(move, &from, &to, &promotion, &flags);
 
     char square_from[3], square_to[3];
-    SquareToName(square_from, from);
-    SquareToName(square_to, to);
+    castro_SquareToName(square_from, from);
+    castro_SquareToName(square_to, to);
     printf("Move: %s -> %s, Promotion: %d, Flags: %d\n",
             square_from, square_to,
             promotion, flags);
 }
 
-_Bool MoveIsValid(const Board* board, Move move, PieceColor color)
+_Bool castro_MoveIsValid(const Board* board, Move move, PieceColor color)
 {
     Square from, to;
     uint8_t promotion, flags;
-    MoveDecode(move, &from, &to, &promotion, &flags);
+    castro_MoveDecode(move, &from, &to, &promotion, &flags);
     uint64_t from_bb = 1ULL << from;
 
     for (int piece = 0; piece < 6; piece++) {
@@ -249,7 +249,7 @@ _Bool MoveIsValid(const Board* board, Move move, PieceColor color)
     return 0;
 }
 
-char PromotionToChar(uint8_t promotion)
+char castro_PromotionToChar(uint8_t promotion)
 {
     switch (promotion) {
     case PROMOTION_QUEEN: return 'q';
@@ -262,7 +262,7 @@ char PromotionToChar(uint8_t promotion)
     }
 }
 
-uint8_t CharToPromotion(char promotion)
+uint8_t castro_CharToPromotion(char promotion)
 {
     switch (promotion) {
     case 'q': return PROMOTION_QUEEN;
@@ -295,17 +295,17 @@ static size_t getBitboardIndexFromPiece(char piece)
 
 static size_t getBitboardIndexFromSquare(Board* board, Square square)
 {
-    Piece piece = PieceAt(board, square);
+    Piece piece = castro_PieceAt(board, square);
     return getBitboardIndexFromPiece(piece.type);
 }
 
-bool IsCastle(const Board* board, Move* move)
+bool castro_IsCastle(const Board* board, Move* move)
 {
     Square from, to;
     uint8_t promotion, flag;
-    MoveDecode(*move, &from, &to, &promotion, &flag);
+    castro_MoveDecode(*move, &from, &to, &promotion, &flag);
 
-    Piece piece = PieceAt(board, from);
+    Piece piece = castro_PieceAt(board, from);
     if (tolower(piece.type) != 'k' || piece.color != board->turn) {
         return false;
     }
@@ -325,7 +325,7 @@ bool IsCastle(const Board* board, Move* move)
         return false;
     }
 
-    MoveSetFlag(move, FLAG_CASTLING);
+    castro_MoveSetFlag(move, FLAG_CASTLING);
     return true;
 }
 
@@ -341,13 +341,13 @@ bool IsCastle(const Board* board, Move* move)
     }
 
 
-bool Castle(Board* board, Move move)
+bool castro_Castle(Board* board, Move move)
 {
     MOVE_DECODE(move);
     PieceColor color = board->turn;
 
     if(flag != FLAG_CASTLING) return false;
-    Piece piece = PieceAt(board, src);
+    Piece piece = castro_PieceAt(board, src);
 
     int colFrom = src % 8;
     int colTo = dst % 8;
@@ -356,25 +356,25 @@ bool Castle(Board* board, Move move)
 
     if (colDiff == 2) { // Short castling (kingside)
         if (
-            !(HasCastlingRights(board, CASTLE_WHITE_KINGSIDE) && piece.color)
+            !(castro_HasCastlingRights(board, CASTLE_WHITE_KINGSIDE) && piece.color)
             &&
-            !(HasCastlingRights(board, CASTLE_BLACK_KINGSIDE) && !piece.color)
+            !(castro_HasCastlingRights(board, CASTLE_BLACK_KINGSIDE) && !piece.color)
         ) return false;
         if(
-            IsSquareAttacked(board, (color) ? 6 : 62, !color)
+            castro_IsSquareAttacked(board, (color) ? 6 : 62, !color)
             ||
-            IsSquareAttacked(board, (color) ? 5 : 61, !color)
+            castro_IsSquareAttacked(board, (color) ? 5 : 61, !color)
         ) return false;
     } else if (colDiff == -2) { // Long castling (queenside)
         if (
-            !(HasCastlingRights(board, CASTLE_WHITE_QUEENSIDE) && piece.color)
+            !(castro_HasCastlingRights(board, CASTLE_WHITE_QUEENSIDE) && piece.color)
             &&
-            !(HasCastlingRights(board, CASTLE_BLACK_QUEENSIDE) && !piece.color)
+            !(castro_HasCastlingRights(board, CASTLE_BLACK_QUEENSIDE) && !piece.color)
         ) return false;
         if(
-            IsSquareAttacked(board, (color) ? 3 : 59, !color)
+            castro_IsSquareAttacked(board, (color) ? 3 : 59, !color)
             ||
-            IsSquareAttacked(board, (color) ? 2 : 58, !color)
+            castro_IsSquareAttacked(board, (color) ? 2 : 58, !color)
         ) return false;
     }
 
@@ -385,13 +385,13 @@ bool Castle(Board* board, Move move)
     return true;
 }
 
-bool IsEnpassant(const Board* board, Move* move)
+bool castro_IsEnpassant(const Board* board, Move* move)
 {
     Square from, to;
     uint8_t promotion, flag;
 
     // Decode the move into its components
-    MoveDecode(*move, &from, &to, &promotion, &flag);
+    castro_MoveDecode(*move, &from, &to, &promotion, &flag);
 
     // Ensure the piece moving is a pawn
     int color = board->turn;
@@ -412,10 +412,11 @@ bool IsEnpassant(const Board* board, Move* move)
         return false; // Not en passant
     }
 
-    MoveSetFlag(move, FLAG_ENPASSANT);
+    castro_MoveSetFlag(move, FLAG_ENPASSANT);
     return true;
 }
-bool Enpassant(Board* board, Move move)
+
+bool castro_Enpassant(Board* board, Move move)
 {
     MOVE_DECODE(move);
     PieceColor color = board->turn;
@@ -435,111 +436,112 @@ bool Enpassant(Board* board, Move move)
 
     return true;
 }
-bool IsPromotion(Board* board, Move* move)
+
+bool castro_IsPromotion(Board* board, Move* move)
 {
-    Square from = GetFrom(*move);
-    Square to = GetTo(*move);
+    Square from = castro_GetFrom(*move);
+    Square to = castro_GetTo(*move);
 
-    if(!IS_PAWN(PieceAt(board, from))) return false;
+    if(!IS_PAWN(castro_PieceAt(board, from))) return false;
 
-    PieceColor color = PieceAt(board, from).color;
+    PieceColor color = castro_PieceAt(board, from).color;
 
-    if(color && (Rank(from) != 6 || Rank(to) != 7)) return false;
-    if(!color && (Rank(from) != 1 || Rank(to) != 0)) return false;
+    if(color && (castro_Rank(from) != 6 || castro_Rank(to) != 7)) return false;
+    if(!color && (castro_Rank(from) != 1 || castro_Rank(to) != 0)) return false;
 
     // if(File(from) != File(to))
     //     MoveSetFlag(move, FLAG_PROMOTION_WITH_CAPTURE);
     // else 
-        MoveSetFlag(move, FLAG_PROMOTION);
+        castro_MoveSetFlag(move, FLAG_PROMOTION);
     return true;
 }
 
-bool IsCapture(const Board* board, Move move)
+bool castro_IsCapture(const Board* board, Move move)
 {
-    Square to = GetTo(move);
-    Piece target = PieceAt(board, to);
+    Square to = castro_GetTo(move);
+    Piece target = castro_PieceAt(board, to);
     bool enemy_color = !board->turn;
     return IS_COLOR(target, enemy_color);
 }
 
-bool IsInCheckAfterMove(Board* board, Move move)
+bool castro_IsInCheckAfterMove(Board* board, Move move)
 {
     PieceColor color = board->turn ? COLOR_WHITE : COLOR_BLACK;
 
-    if (!MakeMove(board, move)) {
+    if (!castro_MakeMove(board, move)) {
         return false;
     }
 
-    bool in_check = IsInCheckColor(board, color);
+    bool in_check = castro_IsInCheckColor(board, color);
 
-    UnmakeMove(board);
+    castro_UnmakeMove(board);
 
     return in_check;
 }
 
 
-bool IsDoublePawnPush(Board* board, Move move)
+bool castro_IsDoublePawnPush(Board* board, Move move)
 {
-    Square from = GetFrom(move);
-    Piece piece = PieceAt(board, from);
+    Square from = castro_GetFrom(move);
+    Piece piece = castro_PieceAt(board, from);
     if(!IS_PAWN(piece)) return false;
 
-    Bitboard doublePushes = PawnDoublePushMask(from, piece.color);
+    Bitboard doublePushes = castro_PawnDoublePushMask(from, piece.color);
 
-    return doublePushes & BB(GetTo(move));
+    return doublePushes & BB(castro_GetTo(move));
 }
 
-bool MakeMove(Board* board, Move move)
+bool castro_MakeMove(Board* board, Move move)
 {
-    Piece piece = PieceAt(board, GetFrom(move));
+    Piece piece = castro_PieceAt(board, castro_GetFrom(move));
     if (piece.type == EMPTY_SQUARE) return false;
     if (piece.color != board->turn) return false;
 
-    uint8_t castling = UpdateCastlingRights(board, move);
+    uint8_t castling = castro_UpdateCastlingRights(board, move);
     Square enpassant = 64;
 
-    if (IsDoublePawnPush(board, move)) {
-        enpassant = GetFrom(move) + ((piece.color == COLOR_WHITE) ? 8 : -8);
+    if (castro_IsDoublePawnPush(board, move)) {
+        enpassant = castro_GetFrom(move) + ((piece.color == COLOR_WHITE) ? 8 : -8);
     }
 
     bool succ = true;
-    if (IsCastle(board, &move)) {
-        succ = Castle(board, move);
-    } else if (IsEnpassant(board, &move)) {
-        succ = Enpassant(board, move);
+    if (castro_IsCastle(board, &move)) {
+        succ = castro_Castle(board, move);
+    } else if (castro_IsEnpassant(board, &move)) {
+        succ = castro_Enpassant(board, move);
     }
 
     if (!succ) return false;
 
-    IsPromotion(board, &move);
+    castro_IsPromotion(board, &move);
 
-    AddUndo(board, move);
+    castro_AddUndo(board, move);
 
-    MoveFreely(board, move, board->turn);
+    castro_MoveFreely(board, move, board->turn);
 
     board->castling_rights = castling;
     board->enpassant_square = enpassant;
 
-    UpdateHashTable(&board->history.positions, CalculateZobristHash(board));
+    castro_UpdateHashTable(&board->history.positions, castro_CalculateZobristHash(board));
 
     if (board->turn == COLOR_BLACK) {
         board->fullmove++;
     }
 
     board->turn = !board->turn;
-    board->hash = CalculateZobristHash(board);
+    board->hash = castro_CalculateZobristHash(board);
 
     return true;
 }
 
-void UnmakeMove(Board* board)
+void castro_UnmakeMove(Board* board)
 {
     if (board->history.count <= 0) return;
 
-    Undo undo = LoadLastUndo(board);
+    Undo undo = castro_LoadLastUndo(board);
     MOVE_DECODE(undo.move);
 
-    Bitboard specialBB = UndoMove(&board->bitboards[getBitboardIndexFromSquare(board, dst)], undo.move);
+    Bitboard specialBB = castro_UndoMove(&board->bitboards[getBitboardIndexFromSquare(board, dst)], undo.move);
     board->grid[COORDS(src)] = board->grid[COORDS(dst)];
     board->grid[COORDS(dst)] = EMPTY_SQUARE;
 
@@ -566,7 +568,7 @@ void UnmakeMove(Board* board)
         board->grid[COORDS(src)] = (color) ? 'P' : 'p';
     } 
     else if (flag == FLAG_CASTLING) {
-        if (File(dst) > File(src)) { // Kingside castling
+        if (castro_File(dst) > castro_File(src)) { // Kingside castling
             board->grid[COORDS(src + 3)] = (color) ? 'R' : 'r';
             board->grid[COORDS(dst - 1)] = EMPTY_SQUARE;
         } else { // Queenside castling
@@ -591,10 +593,10 @@ void UnmakeMove(Board* board)
         board->fullmove--;
     }
 
-    HistoryRemove(&board->history); // Move before flipping turn
+    castro_HistoryRemove(&board->history); // Move before flipping turn
 
     board->turn = !board->turn;
-    board->hash = CalculateZobristHash(board);
+    board->hash = castro_CalculateZobristHash(board);
 }
 
 NullMoveState nullState = {0};
@@ -615,7 +617,7 @@ void MakeNullMove(Board* board)
 
     // Remove en passant rights
     board->enpassant_square = SQUARE_NONE;
-    board->hash = CalculateZobristHash(board);
+    board->hash = castro_CalculateZobristHash(board);
 }
 void UnmakeNullMove(Board* board)
 {
@@ -623,7 +625,7 @@ void UnmakeNullMove(Board* board)
     board->halfmove= nullState.halfmoveClock;
     board->fullmove = nullState.fullmoveNumber;
     board->enpassant_square = nullState.epSquare;
-    board->hash = CalculateZobristHash(board);
+    board->hash = castro_CalculateZobristHash(board);
 }
 
 // TODO: Don't recalculate the whole zobrist hash each time. Modify only what's changed

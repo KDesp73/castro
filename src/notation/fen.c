@@ -8,7 +8,7 @@
  * Maps a piece character to its corresponding bitboard index.
  * Uppercase characters are white pieces, lowercase are black.
  */
-int charToPieceIndex(char c) 
+static int charToPieceIndex(char c) 
 {
     switch (c) {
         case 'P': return INDEX_WHITE_PAWN;
@@ -28,7 +28,7 @@ int charToPieceIndex(char c)
 }
 
 
-void FenImport(Board *board, const char *fen)
+void castro_FenImport(Board *board, const char *fen)
 {
     memset(board, 0, sizeof(Board));
 
@@ -110,7 +110,7 @@ void FenImport(Board *board, const char *fen)
     board->fullmove = atoi(ptr);
 }
 
-void FenExport(const Board* board, char buffer[])
+void castro_FenExport(const Board* board, char buffer[])
 {
     char* ptr = buffer;
 

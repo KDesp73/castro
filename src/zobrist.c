@@ -9,7 +9,7 @@ uint64_t zobrist_en_passant[BOARD_SIZE];
 uint64_t zobrist_black_to_move;
 
 // https://vigna.di.unimi.it/ftp/papers/xorshift.pdf > page 20
-uint64_t rand64()
+static uint64_t rand64()
 {
     static uint64_t seed = 270803ULL;
 
@@ -19,7 +19,8 @@ uint64_t rand64()
 
     return seed * 2685821657736338717ULL;
 }
-void InitZobrist()
+
+void castro_InitZobrist()
 {
     // Initialize zobrist_table
     for (int piece = 0; piece < PIECE_TYPES; piece++) {
@@ -67,7 +68,7 @@ static int remap(int a)
     return (a % 6) * 2 + (a / 6);
 }
 
-uint64_t CalculateZobristHash(const Board* board)
+uint64_t castro_CalculateZobristHash(const Board* board)
 {
     uint64_t hash = 0;
 
@@ -114,7 +115,7 @@ uint64_t CalculateZobristHash(const Board* board)
         for (size_t i = 0; i < 2; i++) {
             if (possibleAttackers[i] < 0 || possibleAttackers[i] >= 64) continue;
 
-            Piece piece = PieceAt(board, possibleAttackers[i]);
+            Piece piece = castro_PieceAt(board, possibleAttackers[i]);
             if (piece.type != ' ' && piece.color == board->turn && tolower(piece.type) == 'p') {
                 includeEP = true;
                 break;
@@ -122,7 +123,7 @@ uint64_t CalculateZobristHash(const Board* board)
         }
 
         if (includeEP) {
-            hash ^= Random64[772 + File(ep)];
+            hash ^= Random64[772 + castro_File(ep)];
         }
     }
 
@@ -133,11 +134,11 @@ uint64_t CalculateZobristHash(const Board* board)
     return hash;
 }
 
-uint64_t CalculateZobristHashFen(const char* fen)
+uint64_t castro_CalculateZobristHashFen(const char* fen)
 {
     Board b;
-    BoardInitFen(&b, fen);
-    uint64_t hash = CalculateZobristHash(&b);
-    BoardFree(&b);
+    castro_BoardInitFen(&b, fen);
+    uint64_t hash = castro_CalculateZobristHash(&b);
+    castro_BoardFree(&b);
     return hash;
 }

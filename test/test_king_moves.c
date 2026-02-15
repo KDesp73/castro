@@ -1,7 +1,5 @@
-#include "castro.h"
 #include "tests.h"
 #include <stdarg.h>
-#include "IncludeOnly/test.h"
 
 int test_king_moves(const char* fen, const char* square, const char* first, ...)
 {

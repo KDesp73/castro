@@ -2,16 +2,16 @@
 #include <assert.h>
 #include <string.h>
 
-Square SquareFromCoords(size_t y, size_t x)
+Square castro_SquareFromCoords(size_t y, size_t x)
 {
     return y * 8 + x;
 }
-Square SquareFromName(const char* name)
+Square castro_SquareFromName(const char* name)
 {
-    return NameToSquare(name);
+    return castro_NameToSquare(name);
 }
 
-void SquareToName(char buffer[3], Square square)
+void castro_SquareToName(char buffer[3], Square square)
 {
     if(!(square >= 0 && square <= 63)){
         strcat(buffer, "-");
@@ -26,7 +26,7 @@ void SquareToName(char buffer[3], Square square)
     buffer[2] = '\0';  // Null-terminate the string
 }
 
-_Bool squareIsValid(const char* name)
+static _Bool squareIsValid(const char* name)
 {
     if(name == NULL) return 0;
     if(name[0] < 'a' || name[0] > 'h') return 0;
@@ -35,7 +35,7 @@ _Bool squareIsValid(const char* name)
     return 1;
 }
 
-Square NameToSquare(const char buffer[3])
+Square castro_NameToSquare(const char buffer[3])
 {
     if(!squareIsValid(buffer)) return 64;
 
@@ -58,17 +58,17 @@ Square NameToSquare(const char buffer[3])
 //     square_from_coords(square, rank, file);
 // }
 
-int Rank(Square square)
+int castro_Rank(Square square)
 {
     return square / BOARD_SIZE;
 }
 
-int File(Square square)
+int castro_File(Square square)
 {
     return square % BOARD_SIZE;
 }
 
-bool IsSquareValid(Square square)
+bool castro_IsSquareValid(Square square)
 {
     return square >= 0 && square <= 63;
 }
