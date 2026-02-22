@@ -79,6 +79,10 @@ static: $(OBJ_FILES) ## Build static library
 	@echo "[INFO] Building static library: $(A_NAME)"
 	@$(AR) rcs $(A_NAME) $(OBJ_FILES)
 
+.PHONY: bench
+bench: static ## Build benchmark executable
+	$(CC) -O2 -o benchmark bench/main.c -L. -l:$(A_NAME) -Isrc
+
 .PHONY: clean
 clean: ## Remove all build files
 	@echo "[INFO] Cleaning build artifacts"

@@ -14,11 +14,6 @@ void load()
     LOAD_TEST("test_square_to_name");
 
     LOAD_TEST("test_perft");
-    LOAD_TEST("test_perft_2");
-    LOAD_TEST("test_perft_3");
-    LOAD_TEST("test_perft_4");
-    LOAD_TEST("test_perft_5");
-    LOAD_TEST("test_perft_6");
 
     LOAD_TEST("test_pawn_moves");
     LOAD_TEST("test_knight_moves");
@@ -42,12 +37,8 @@ void load()
 
 int _1() {
     START_TESTS
-        RUN_TEST(test_perft_6),
-        RUN_TEST(test_perft_5),
-        RUN_TEST(test_perft_4),
-        RUN_TEST(test_perft_3),
-        RUN_TEST(test_perft_2),
-        RUN_TEST(test_perft)
+        RUN_TEST(test_perft),
+        1
     END_TESTS
 }
 int _2() {

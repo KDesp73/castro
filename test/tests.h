@@ -17,17 +17,7 @@ int test_board_hash(char* initial_position, size_t moves);
 
 // https://www.chessprogramming.org/Perft_Results
 #include "test_perft.h"
-int test_perft(int depth, u64 expected);
-#include "test_perft_2.h"
-int test_perft_2(int depth, u64 expected);
-#include "test_perft_3.h"
-int test_perft_3(int depth, u64 expected);
-#include "test_perft_4.h"
-int test_perft_4(int depth, u64 expected);
-#include "test_perft_5.h"
-int test_perft_5(int depth, u64 expected);
-#include "test_perft_6.h"
-int test_perft_6(int depth, u64 expected);
+int test_perft(char* fen, int depth, u64 expected);
 
 #include "test_piece_at.h"
 int test_piece_at(const char* fen, Square square, char expected);
