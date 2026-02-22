@@ -11,17 +11,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 - Add move capture detection and order legal moves for improved search efficiency
 - Benchmarking
-- Enhance move legality checks for pawns, knights, and bishops
 - Implement hash table capacity management and add decrement method for position tracking
 - Implement pseudo-legal perft and enhance bishop/rook attack calculations
 - Occupancy tracking for pieces and update methods for board state management
 - Optimize perft stack management and improve legality context initialization
-- Partial zobrist hash updates
-- Remove unused move types
 
 ### Changed
 
+- Enhance move legality checks for pawns, knights, and bishops
+- Partial zobrist hash updates
 - Bumped version
+
+### Removed
+
+- Unused move types
 
 
 ## [0.2.2] - 2026-02-15 
