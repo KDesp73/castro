@@ -47,6 +47,11 @@ make test
 
 Documentation for this library can be found in the header file [castro.h](./src/castro.h)
 
+## Benchmarks
+
+<img width="754" height="795" alt="2026-02-22-185222_hyprshot" src="https://github.com/user-attachments/assets/28078d2d-d726-4257-8b84-0f626ca71ea7" />
+
+
 ## License
 
 [MIT](./LICENSE)
