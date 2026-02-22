@@ -17,14 +17,7 @@ void castro_HistoryRemove(History* history)
     if (history->count == 0) return;
     history->count--;
 
-    for (size_t i = 0; i < history->positions.count; i++) {
-        if (history->positions.last_added == history->positions.entries[i].hash) {
-            if (history->positions.entries[i].count > 0) {
-                history->positions.entries[i].count--;
-            }
-            break;
-        }
-    }
+    castro_HashTableDecrement(&history->positions, history->positions.last_added);
 }
 
 void castro_UndoPrint(Undo undo)

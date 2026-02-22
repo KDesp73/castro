@@ -488,13 +488,17 @@ typedef struct {
     int count;      ///< Number of times this position has occurred
 } HashEntry;
 
+/** Capacity of the repetition hash table (power of two for fast modulo). */
+#define HASH_TABLE_CAPACITY 4096
+
 /**
  * @brief Tracks position repetition using Zobrist hashes.
+ * Uses open addressing (linear probing). Empty buckets have hash == 0.
  */
 typedef struct {
-    uint64_t last_added;  ///< Last added hash (for quick duplicate check)
-    HashEntry* entries;   ///< Dynamic array of hash entries
-    size_t count;         ///< Number of stored entries
+    uint64_t last_added;   ///< Last added hash (used when decrementing on unmake)
+    HashEntry* entries;    ///< Buckets: index = hash & (capacity - 1), probe on collision
+    size_t capacity;       ///< Number of buckets (power of two)
 } HashTable;
 
 /**
@@ -525,6 +529,12 @@ void castro_InitHashTableHash(HashTable* table, uint64_t starting_hash);
  * @return true if repetition >= 3 (e.g., threefold repetition), false otherwise
  */
 _Bool castro_UpdateHashTable(HashTable* table, uint64_t hash);
+
+/**
+ * @brief Decrements the repetition count for a position (used on unmake).
+ * Call with the hash that was last added before the move being undone.
+ */
+void castro_HashTableDecrement(HashTable* table, uint64_t hash);
 
 /**
  * @brief Frees all memory used by the hash table.
@@ -2161,6 +2171,7 @@ Move castro_LookupBookMove(uint64_t position_hash, const char* book_path);
 #define InitHashTable castro_InitHashTable
 #define InitHashTableHash castro_InitHashTableHash
 #define UpdateHashTable castro_UpdateHashTable
+#define HashTableDecrement castro_HashTableDecrement
 #define FreeHashTable castro_FreeHashTable
 #define UndoPrint castro_UndoPrint
 #define HistoryRemove castro_HistoryRemove
