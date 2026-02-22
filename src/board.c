@@ -56,10 +56,9 @@ void castro_BoardInitFen(Board *board, const char *fen)
         castro_BoardInitFen(board, STARTING_FEN);
         return;
     }
-
     castro_FenImport(board, fen);
-
     castro_InitHashTable(&board->history.positions, fen);
+    board->hash = castro_CalculateZobristHash(board);
 }
 
 

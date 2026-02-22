@@ -45,27 +45,23 @@ void castro_InitZobrist()
 }
 
 
-int PieceToIndex(char piece)
+int castro_ZobristPieceToIndex(char piece)
 {
     switch (piece) {
-        case 'P': return 0;  // White Pawn
-        case 'N': return 1;  // White Knight
-        case 'B': return 2;  // White Bishop
-        case 'R': return 3;  // White Rook
-        case 'Q': return 4;  // White Queen
-        case 'K': return 5;  // White King
-        case 'p': return 6;  // Black Pawn
-        case 'n': return 7;  // Black Knight
-        case 'b': return 8;  // Black Bishop
-        case 'r': return 9;  // Black Rook
-        case 'q': return 10; // Black Queen
-        case 'k': return 11; // Black King
-        default:  return -1; // Invalid piece
+        case 'p': return 0;  // Black Pawn
+        case 'n': return 1;  // Black Knight
+        case 'b': return 2;  // Black Bishop
+        case 'r': return 3;  // Black Rook
+        case 'q': return 4;  // Black Queen
+        case 'k': return 5;  // Black King
+        case 'P': return 6;  // White Pawn
+        case 'N': return 7;  // White Knight
+        case 'B': return 8;  // White Bishop
+        case 'R': return 9;  // White Rook
+        case 'Q': return 10; // White Queen
+        case 'K': return 11; // White King
+        default:  return -1; 
     }
-}
-static int remap(int a)
-{
-    return (a % 6) * 2 + (a / 6);
 }
 
 uint64_t castro_CalculateZobristHash(const Board* board)
@@ -73,13 +69,12 @@ uint64_t castro_CalculateZobristHash(const Board* board)
     uint64_t hash = 0;
 
     for (int pieceIndex = 0; pieceIndex < 12; pieceIndex++) {
-        int remappedIndex = remap(pieceIndex);
         uint64_t bitboard = board->bitboards[pieceIndex];
         
         while (bitboard) {
             int square = poplsb(&bitboard);
             
-            hash ^= Random64[remappedIndex * 64 + square];  
+            hash ^= Random64[pieceIndex * 64 + square];  
         }
     }
 

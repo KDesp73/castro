@@ -7,11 +7,13 @@
 #include "castro.h"
 
 #define FAILF(fen, fmt, ...) \
-    fprintf(stderr, ANSI_RED "FAILED: (%s) " fmt ANSI_RESET "\n", fen, ##__VA_ARGS__)
+    fprintf(stderr, ANSI_RED "FAILED %s:%d: (%s) " fmt ANSI_RESET "\n", __FILE__, __LINE__, fen, ##__VA_ARGS__)
 
 #include "test_undo.h"
 int test_undo(const char* fen, Move move);
 
+#include "test_board_hash.h"
+int test_board_hash(char* initial_position, size_t moves);
 
 // https://www.chessprogramming.org/Perft_Results
 #include "test_perft.h"

@@ -1,3 +1,4 @@
+#include "castro.h"
 #define CLI_IMPLEMENTATION
 #include "IncludeOnly/cli.h"
 #define TEST_IMPLEMENTATION
@@ -35,6 +36,8 @@ void load()
 
     LOAD_TEST("test_is_in_check");
     LOAD_TEST("test_undo");
+
+    LOAD_TEST("test_board_hash");
 }
 
 int _1() {
@@ -47,7 +50,11 @@ int _1() {
         RUN_TEST(test_perft)
     END_TESTS
 }
-int _2() {}
+int _2() {
+    START_TESTS
+        RUN_TEST(test_board_hash)
+    END_TESTS
+}
 int _3() {}
 int _4() {}
 
@@ -55,6 +62,7 @@ int _4() {}
 int main(int argc, char** argv)
 {
     castro_InitMasks();
+    castro_InitZobrist();
 
     TEST_ARGS(argc, argv);
 

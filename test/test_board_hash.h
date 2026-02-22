@@ -1,0 +1,18 @@
+#ifndef test_board_hash_h
+#define test_board_hash_h
+
+#define TEST_test_board_hash\
+	test_board_hash(NULL, 100), \
+	test_board_hash("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 10), \
+	test_board_hash("rnb1kb1r/ppp1p1pp/5n2/3pPp2/7q/2N5/PPPP1PPP/R1BQKBNR b KQkq - 0 1", 10), \
+	test_board_hash("r1bqrbk1/2p2pp1/p1np1n1p/1p2p3/4P3/PBNP1N1P/1PPB1PP1/R2Q1RK1 w - - 3 12", 10), \
+	test_board_hash("3r4/R3KP2/1r3p2/1P2ppk1/7q/1Q1P4/3N1N2/1b6 w - - 0 1", 10), \
+	test_board_hash("rnb1kb1r/ppp1p1pp/5n2/3pPp2/7q/2N5/PPPP1PPP/R1BQKBNR b KQkq - 0 1", 10), \
+	test_board_hash("1R6/1P4k1/5p2/1r3K2/8/7P/6P1/8 w - - 5 55", 10), \
+	test_board_hash("rnbqkbnr/pppp1ppp/8/4p2Q/4P3/8/PPPP1PPP/RNB1KBNR b KQkq - 0 1", 10), \
+	test_board_hash("rnbqkbnr/ppp2p1p/6p1/2Ppp2Q/4P3/8/PP1P1PPP/RNB1KBNR b KQkq d6 0 1", 10), \
+	test_board_hash("rnbqkbnr/ppp2p1p/6p1/2Ppp2Q/4P3/8/PP1P1PPP/RNB1KBNR w KQkq d6 0 1", 10), \
+	test_board_hash("r1bqk2r/ppp2ppp/2n2n2/3Pp3/1b6/1B3N2/PPPP1PPP/RNBQK2R w KQkq - 0 1", 10), \
+	test_board_hash("r1bqk2r/ppp2ppp/2n2n2/3Pp3/1b6/1B3N2/PPPP1PPP/RNBQK2R b KQkq - 0 1", 10)
+
+#endif

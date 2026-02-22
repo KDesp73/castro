@@ -73,10 +73,10 @@ extern "C" {
 #endif
 
 #define CASTRO_VERSION_MAJOR 0
-#define CASTRO_VERSION_MINOR 2
-#define CASTRO_VERSION_PATCH 2
+#define CASTRO_VERSION_MINOR 3
+#define CASTRO_VERSION_PATCH 0
 
-#define CASTRO_VERSION_STRING "0.2.2"
+#define CASTRO_VERSION_STRING "0.3.0"
 
 #define CASTRO_VERSION_HEX ((CASTRO_VERSION_MAJOR * 10000) + (CASTRO_VERSION_MINOR * 100) + CASTRO_VERSION_PATCH)
 
@@ -860,8 +860,6 @@ extern uint64_t zobrist_black_to_move __attribute__((unused));
 
 /**
  * @brief Initializes the Zobrist tables.
- * 
- * WARNING: Not used in practice since Polyglot's standard set of 781 random numbers is used instead.
  */
 void castro_InitZobrist();
 
@@ -887,6 +885,10 @@ uint64_t castro_CalculateZobristHash(const Board* board);
  */
 uint64_t castro_CalculateZobristHashFen(const char* fen);
 
+/**
+ * @brief Translates piece as a character to expected zobrist index
+ */
+int castro_ZobristPieceToIndex(char piece);
 
 /*------------------------------------.
 | *MASKS*                             |
@@ -1734,7 +1736,11 @@ bool castro_IsThreefoldRepetition(Board* board);
  */
 typedef enum {
     MOVE_LEGAL,   ///< Fully legal moves that leave the king safe
-    MOVE_PSEUDO   ///< Pseudo-legal moves, ignoring king safety
+    MOVE_PSEUDO,  ///< Pseudo-legal moves, ignoring king safety
+    MOVE_CAPTURE,
+    MOVE_ATTACK,
+    MOVE_CHECK,
+    MOVE_KILLER
 } MoveType;
 
 /*-----------------------------.
