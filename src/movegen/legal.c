@@ -97,15 +97,13 @@ void castro_GenerateLegalKnightMoves(
     const LegalityContext* ctx,
     Moves* moves)
 {
-    Board temp = *board;
-
     if (ctx->check_count > 1)
         return;
 
     while (pieces) {
         Square from = poplsb(&pieces);
 
-        // Knights cannot move if pinned
+        /* Knights cannot move if pinned */
         if (ctx->pin_masks[from] != ~0ULL)
             continue;
 
@@ -114,16 +112,11 @@ void castro_GenerateLegalKnightMoves(
         if (ctx->check_count == 1)
             targets &= ctx->check_mask;
 
+        /* Pseudo-legal knight moves that pass pin/check filter are always legal
+         * (a knight cannot give discovered check). */
         while (targets) {
             Square to = poplsb(&targets);
-
-            Move move = castro_MoveEncode(from, to, PROMOTION_NONE, FLAG_NORMAL);
-
-            if (castro_MakeMove(&temp, move)) {
-                if (!castro_IsInCheckColor(&temp, color))
-                    castro_MovesAppend(moves, move);
-                castro_UnmakeMove(&temp);
-            }
+            castro_MovesAppend(moves, castro_MoveEncode(from, to, PROMOTION_NONE, FLAG_NORMAL));
         }
     }
 }
@@ -137,32 +130,21 @@ void castro_GenerateLegalBishopMoves(
     const LegalityContext* ctx,
     Moves* moves)
 {
-    Board temp = *board;
-
     if (ctx->check_count > 1)
         return;
 
     while (pieces) {
         Square from = poplsb(&pieces);
 
-        Bitboard targets =
-            castro_GenerateBishopMoves(board, from, color);
-
+        Bitboard targets = castro_GenerateBishopMoves(board, from, color);
         targets &= ctx->pin_masks[from];
-
         if (ctx->check_count == 1)
             targets &= ctx->check_mask;
 
+        /* Slider moving along its ray cannot give discovered check. */
         while (targets) {
             Square to = poplsb(&targets);
-
-            Move move = castro_MoveEncode(from, to, PROMOTION_NONE, FLAG_NORMAL);
-
-            if (castro_MakeMove(&temp, move)) {
-                if (!castro_IsInCheckColor(&temp, color))
-                    castro_MovesAppend(moves, move);
-                castro_UnmakeMove(&temp);
-            }
+            castro_MovesAppend(moves, castro_MoveEncode(from, to, PROMOTION_NONE, FLAG_NORMAL));
         }
     }
 }
@@ -176,32 +158,20 @@ void castro_GenerateLegalRookMoves(
     const LegalityContext* ctx,
     Moves* moves)
 {
-    Board temp = *board;
-
     if (ctx->check_count > 1)
         return;
 
     while (pieces) {
         Square from = poplsb(&pieces);
 
-        Bitboard targets =
-            castro_GenerateRookMoves(board, from, color);
-
+        Bitboard targets = castro_GenerateRookMoves(board, from, color);
         targets &= ctx->pin_masks[from];
-
         if (ctx->check_count == 1)
             targets &= ctx->check_mask;
 
         while (targets) {
             Square to = poplsb(&targets);
-
-            Move move = castro_MoveEncode(from, to, PROMOTION_NONE, FLAG_NORMAL);
-
-            if (castro_MakeMove(&temp, move)) {
-                if (!castro_IsInCheckColor(&temp, color))
-                    castro_MovesAppend(moves, move);
-                castro_UnmakeMove(&temp);
-            }
+            castro_MovesAppend(moves, castro_MoveEncode(from, to, PROMOTION_NONE, FLAG_NORMAL));
         }
     }
 }
@@ -215,32 +185,20 @@ void castro_GenerateLegalQueenMoves(
     const LegalityContext* ctx,
     Moves* moves)
 {
-    Board temp = *board;
-
     if (ctx->check_count > 1)
         return;
 
     while (pieces) {
         Square from = poplsb(&pieces);
 
-        Bitboard targets =
-            castro_GenerateQueenMoves(board, from, color);
-
+        Bitboard targets = castro_GenerateQueenMoves(board, from, color);
         targets &= ctx->pin_masks[from];
-
         if (ctx->check_count == 1)
             targets &= ctx->check_mask;
 
         while (targets) {
             Square to = poplsb(&targets);
-
-            Move move = castro_MoveEncode(from, to, PROMOTION_NONE, FLAG_NORMAL);
-
-            if (castro_MakeMove(&temp, move)) {
-                if (!castro_IsInCheckColor(&temp, color))
-                    castro_MovesAppend(moves, move);
-                castro_UnmakeMove(&temp);
-            }
+            castro_MovesAppend(moves, castro_MoveEncode(from, to, PROMOTION_NONE, FLAG_NORMAL));
         }
     }
 }
@@ -257,21 +215,15 @@ void castro_GenerateLegalKingMoves(
     (void) ctx;
 
     Board temp = *board;
-
     Square king = lsb(pieces);
-
     Bitboard targets = castro_GenerateKingMoves(board, king, color);
-
-    Bitboard opponentAttacks =
-        castro_GeneratePseudoLegalAttacks(board, !color);
-
+    Bitboard opponentAttacks = castro_GeneratePseudoLegalAttacks(board, !color);
     targets &= ~opponentAttacks;
 
+    /* King can unblock a ray; to-square may become attacked after moving. Must verify. */
     while (targets) {
         Square to = poplsb(&targets);
-
         Move move = castro_MoveEncode(king, to, PROMOTION_NONE, FLAG_NORMAL);
-
         if (castro_MakeMove(&temp, move)) {
             if (!castro_IsInCheckColor(&temp, color))
                 castro_MovesAppend(moves, move);

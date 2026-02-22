@@ -1,4 +1,5 @@
 #include "castro.h"
+#include <string.h>
 
 static inline Bitboard get_ray_between(Square from, Square to)
 {
@@ -30,9 +31,7 @@ LegalityContext castro_CalculateLegality(const Board* board)
 
     ctx.check_mask = ~0ULL;
     ctx.check_count = 0;
-
-    for (int i = 0; i < 64; i++)
-        ctx.pin_masks[i] = ~0ULL;
+    memset(ctx.pin_masks, 0xFF, sizeof(ctx.pin_masks));
 
     PieceColor us   = board->turn;
     PieceColor them = !us;
@@ -73,12 +72,11 @@ LegalityContext castro_CalculateLegality(const Board* board)
         Bitboard enemy_blockers    = blockers & enemy;
 
         if (!friendly_blockers && !enemy_blockers) {
-            // Direct check
             ctx.check_count++;
             ctx.check_mask = BB(sniper_sq) | ray;
         }
-        else if (popcount(friendly_blockers) == 1 && !enemy_blockers) {
-            // Single friendly piece between king and sniper → pinned
+        else if (friendly_blockers && !(friendly_blockers & (friendly_blockers - 1)) && !enemy_blockers) {
+            /* Exactly one friendly piece on ray → pinned */
             Square pinned_sq = lsb(friendly_blockers);
             Bitboard pin_ray = ray | BB(sniper_sq);
             ctx.pin_masks[pinned_sq] &= pin_ray;  /* intersect if pinned by multiple */
