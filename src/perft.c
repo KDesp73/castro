@@ -75,3 +75,27 @@ u64 castro_Perft(Board* board, int depth, bool root) {
     free(stack);
     return total;
 }
+
+/* Pseudo-legal perft: generate pseudo-legal moves, make move, if !in_check recurse, unmake.
+ * Same node count as legal perft; faster because we skip legality context and filtering. */
+u64 castro_PerftPseudoLegal(Board* board, int depth)
+{
+    if (depth <= 0) return 1;
+
+    Moves moves = castro_GenerateMoves(board, MOVE_PSEUDO);
+    u64 total = 0;
+
+    for (size_t i = 0; i < moves.count; i++) {
+        if (!castro_MakeMove(board, moves.list[i]))
+            continue;
+        /* After MakeMove, board->turn is the opponent; the side that just moved is !board->turn */
+        if (!castro_IsInCheckColor(board, (PieceColor)(!board->turn))) {
+            if (depth == 1)
+                total++;
+            else
+                total += castro_PerftPseudoLegal(board, depth - 1);
+        }
+        castro_UnmakeMove(board);
+    }
+    return total;
+}

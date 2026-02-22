@@ -301,7 +301,7 @@ typedef enum {
  * 
  * Returns 0ULL if the square is SQUARE_NONE (64).
  */
-#define BB(square) ((square == 64) ? 0ULL : 1ULL << (square))
+#define BB(square) (((square) == 64) ? 0ULL : 1ULL << (square))
 
 /**
  * @brief Returns the index of the least significant bit set (LSB).
@@ -407,6 +407,9 @@ Bitboard castro_KnightAttacks(Square knights, Bitboard emptySquares, Bitboard en
  */
 Bitboard castro_KingAttacks(Square king, Bitboard emptySquares, Bitboard enemySquares);
 
+Bitboard castro_BishopAttacksFromOccupancy(Square square, Bitboard occupancy);
+Bitboard castro_RookAttacksFromOccupancy(Square square, Bitboard occupancy);
+
 /**
  * @brief Computes bishop attacks using a sliding attack method.
  */
@@ -416,6 +419,10 @@ Bitboard castro_BishopAttacks(Square bishops, Bitboard emptySquares, Bitboard en
  * @brief Computes rook attacks using a sliding attack method.
  */
 Bitboard castro_RookAttacks(Square rooks, Bitboard emptySquares, Bitboard enemySquares);
+
+void castro_InitMagic(void);
+Bitboard castro_BishopAttacksMagic(Square square, Bitboard occupancy);
+Bitboard castro_RookAttacksMagic(Square square, Bitboard occupancy);
 
 /**
  * @brief Computes queen attacks as the union of rook and bishop attacks.
@@ -1799,6 +1806,14 @@ Bitboard castro_GenerateKingMoves(const Board* board, Square piece, PieceColor c
 | Legal Move Generation   |
 `------------------------*/
 
+typedef struct {
+    Bitboard check_mask;      // Squares that stop a check
+    Bitboard pin_masks[64];   // Allowed movement mask for every square
+    int check_count;
+} LegalityContext;
+
+LegalityContext castro_CalculateLegality(const Board* board);
+
 /**
  * @brief Returns whether a move is fully legal (doesn't leave the king in check).
  */
@@ -1822,12 +1837,12 @@ Bitboard castro_GenerateLegalMovesBitboard(const Board* board);
 /**
  * @brief Generates legal moves for piece sets by type.
  */
-Moves castro_GenerateLegalPawnMoves(const Board* board, Bitboard pieces, PieceColor color);
-Moves castro_GenerateLegalKnightMoves(const Board* board, Bitboard pieces, PieceColor color);
-Moves castro_GenerateLegalBishopMoves(const Board* board, Bitboard pieces, PieceColor color);
-Moves castro_GenerateLegalRookMoves(const Board* board, Bitboard pieces, PieceColor color);
-Moves castro_GenerateLegalQueenMoves(const Board* board, Bitboard pieces, PieceColor color);
-Moves castro_GenerateLegalKingMoves(const Board* board, Bitboard pieces, PieceColor color);
+void castro_GenerateLegalPawnMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves);
+void castro_GenerateLegalKnightMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves);
+void castro_GenerateLegalBishopMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves);
+void castro_GenerateLegalRookMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves);
+void castro_GenerateLegalQueenMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves);
+void castro_GenerateLegalKingMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves);
 
 /*---------------------------------------------.
 | Convenience inline dispatcher for move types |
@@ -1852,6 +1867,9 @@ typedef unsigned long long u64;
 
 // NOTE: See https://www.chessprogramming.org/Perft
 u64 castro_Perft(Board* board, int depth, bool root);
+
+/** Pseudo-legal perft: same node count as legal perft, faster (no pin/check pre-filter). */
+u64 castro_PerftPseudoLegal(Board* board, int depth);
 
 
 
