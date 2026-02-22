@@ -359,10 +359,6 @@ Moves castro_GenerateMoves(const Board* board, MoveType type)
     case MOVE_CAPTURE:
     case MOVE_ATTACK:
         return castro_GenerateLegalCaptures(board);
-    case MOVE_CHECK:
-    case MOVE_KILLER:
-        /* Checks and killers are ordering hints; generate all legal and use OrderLegalMoves. */
-        return castro_GenerateLegalMoves(board);
     default:
         WARN("Move type not implemented.");
         return NO_MOVES;

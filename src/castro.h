@@ -1782,8 +1782,6 @@ typedef enum {
     MOVE_PSEUDO,  ///< Pseudo-legal moves, ignoring king safety
     MOVE_CAPTURE,
     MOVE_ATTACK,
-    MOVE_CHECK,
-    MOVE_KILLER
 } MoveType;
 
 /*-----------------------------.
@@ -1894,7 +1892,7 @@ void castro_GenerateLegalKingMoves(const Board* board, Bitboard pieces, PieceCol
  * @brief Dispatches to legal or pseudo-legal move generation.
  * 
  * @param board The board to generate moves from
- * @param type MOVE_LEGAL or MOVE_PSEUDO
+ * @param type MoveType
  * @return Moves struct containing the resulting moves
  */
 Moves castro_GenerateMoves(const Board* board, MoveType type);
