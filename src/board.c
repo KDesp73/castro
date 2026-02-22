@@ -29,6 +29,9 @@ Board castro_BoardCopy(const Board* board)
     b.castling_rights = board->castling_rights;
     b.enpassant_square = board->enpassant_square;
     memcpy(b.bitboards, board->bitboards, sizeof(b.bitboards));
+    b.white = board->white;
+    b.black = board->black;
+    b.empty = board->empty;
 
     return b;
 }
@@ -215,30 +218,32 @@ size_t castro_NumberOfPieces(const Board* board, PieceColor color)
     return count;
 }
 
+void castro_BoardUpdateOccupancy(Board* board)
+{
+    board->white =
+        board->bitboards[INDEX_WHITE_PAWN]   | board->bitboards[INDEX_WHITE_KNIGHT] |
+        board->bitboards[INDEX_WHITE_BISHOP] | board->bitboards[INDEX_WHITE_ROOK]   |
+        board->bitboards[INDEX_WHITE_QUEEN]  | board->bitboards[INDEX_WHITE_KING];
+    board->black =
+        board->bitboards[INDEX_BLACK_PAWN]   | board->bitboards[INDEX_BLACK_KNIGHT] |
+        board->bitboards[INDEX_BLACK_BISHOP] | board->bitboards[INDEX_BLACK_ROOK]   |
+        board->bitboards[INDEX_BLACK_QUEEN]  | board->bitboards[INDEX_BLACK_KING];
+    board->empty = ~(board->white | board->black);
+}
+
 Bitboard castro_GetWhite(const Board* board)
 {
-    return board->bitboards[INDEX_WHITE_PAWN]
-         | board->bitboards[INDEX_WHITE_KNIGHT]
-         | board->bitboards[INDEX_WHITE_BISHOP]
-         | board->bitboards[INDEX_WHITE_ROOK]
-         | board->bitboards[INDEX_WHITE_QUEEN]
-         | board->bitboards[INDEX_WHITE_KING];
+    return board->white;
 }
+
 Bitboard castro_GetBlack(const Board* board)
 {
-    return board->bitboards[INDEX_BLACK_PAWN]
-         | board->bitboards[INDEX_BLACK_KNIGHT]
-         | board->bitboards[INDEX_BLACK_BISHOP]
-         | board->bitboards[INDEX_BLACK_ROOK]
-         | board->bitboards[INDEX_BLACK_QUEEN]
-         | board->bitboards[INDEX_BLACK_KING];
+    return board->black;
 }
 
 Bitboard castro_GetEnemyColor(const Board *board, PieceColor us)
 {
-    return (us) 
-        ? castro_GetBlack(board)
-        : castro_GetWhite(board);
+    return us ? board->black : board->white;
 }
 
 Bitboard castro_GetEnemy(const Board *board)
@@ -248,7 +253,7 @@ Bitboard castro_GetEnemy(const Board *board)
 
 Bitboard castro_GetEmpty(const Board* board)
 {
-    return ~(castro_GetWhite(board) | castro_GetBlack(board));
+    return board->empty;
 }
 
 

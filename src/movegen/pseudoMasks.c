@@ -44,7 +44,7 @@ Bitboard castro_KingAttacks(Square king, Bitboard emptySquares, Bitboard enemySq
     return castro_KingMoveMask(king) & emptyOrEnemySquares;
 }
 
-static Bitboard calculateBishopAttacks(int square, Bitboard occupancy) {
+Bitboard castro_BishopAttacksFromOccupancy(Square square, Bitboard occupancy) {
     Bitboard attacks = 0;
     int rank = square / 8;
     int file = square % 8;
@@ -80,13 +80,13 @@ static Bitboard calculateBishopAttacks(int square, Bitboard occupancy) {
 
 Bitboard castro_BishopAttacks(Square bishop, Bitboard emptySquares, Bitboard enemySquares)
 {
-    Bitboard attacks = calculateBishopAttacks(bishop, ~emptySquares);
+    Bitboard attacks = castro_BishopAttacksMagic(bishop, ~emptySquares);
     Bitboard friendly = ~(emptySquares | enemySquares);
 
     return attacks & ~friendly;
 }
 
-static Bitboard calculateRookAttacks(int square, Bitboard occupancy) {
+Bitboard castro_RookAttacksFromOccupancy(Square square, Bitboard occupancy) {
     Bitboard attacks = 0;
     int rank = square / 8;
 
@@ -115,7 +115,7 @@ static Bitboard calculateRookAttacks(int square, Bitboard occupancy) {
 
 Bitboard castro_RookAttacks(Square rook, Bitboard emptySquares, Bitboard enemySquares)
 {
-    Bitboard attacks = calculateRookAttacks(rook, ~emptySquares);
+    Bitboard attacks = castro_RookAttacksMagic(rook, ~emptySquares);
     Bitboard friendly = ~(emptySquares | enemySquares);
 
     return attacks & ~friendly;

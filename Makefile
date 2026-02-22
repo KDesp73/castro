@@ -20,11 +20,11 @@ TEST_BIN = check
 
 # Flags
 INCLUDE = -Isrc -Iextern
-CFLAGS  = -Wall $(INCLUDE) -fPIC
+CFLAGS  = -Wall $(INCLUDE) -fPIC 
 LDFLAGS =
 
 ifeq ($(type), RELEASE)
-	CFLAGS  += -O3
+	CFLAGS  += -O3 -march=native -flto
 else
 	CFLAGS  += -ggdb -Og $(SANITIZERS)
 	LDFLAGS += $(SANITIZERS)

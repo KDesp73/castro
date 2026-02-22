@@ -22,7 +22,10 @@ int test_rook_moves(const char* fen, const char* square, const char* first, ...)
     }
 
     PieceColor color = PieceAt(&board, from).color;
-    Bitboard found = MovesToBitboard(GenerateLegalRookMoves(&board, BB(from), color));
+    Moves legal = {0};
+    LegalityContext ctx = castro_CalculateLegality(&board);
+    castro_GenerateLegalRookMoves(&board, BB(from), color, &ctx, &legal, false);
+    Bitboard found = MovesToBitboard(legal);
     if(found != moves){
         FAILF(fen, "For square %s", square);
         printf("Expected: \n");

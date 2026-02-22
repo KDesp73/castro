@@ -134,6 +134,8 @@ void castro_MoveFreely(Board* board, Move move, PieceColor color)
     }
 
     board->grid[COORDS(from)] = EMPTY_SQUARE;
+
+    castro_BoardUpdateOccupancy(board);
 }
 
 /* ------------------------------------------------------------------ */
@@ -286,7 +288,6 @@ bool castro_MakeMove(Board* board, Move move)
     Piece piece = castro_PieceAt(board, castro_GetFrom(move));
     if (piece.type == EMPTY_SQUARE || piece.color != board->turn) return false;
 
-    /* 1. Remove old castling and en passant from hash */
     board->hash ^= castling_hash(board->castling_rights);
     board->hash ^= ep_hash(board);
 
@@ -308,25 +309,17 @@ bool castro_MakeMove(Board* board, Move move)
     castro_IsPromotion(board, &move);
     castro_AddUndo(board, move);
 
-    /* 2. Move piece — updates hash for piece movement and captures */
     castro_MoveFreely(board, move, board->turn);
 
     board->castling_rights  = castling;
     board->enpassant_square = enpassant;
 
-    /* 3. Add new castling */
     board->hash ^= castling_hash(board->castling_rights);
 
-    /*
-     * 4. Add new en passant.
-     * ep_hash() reads board->turn to find which side can capture.
-     * After the move it's the opponent's turn, so we flip temporarily.
-     */
     board->turn = !board->turn;
     board->hash ^= ep_hash(board);
     board->turn = !board->turn;
 
-    /* 5. Flip side to move */
     board->hash ^= Random64[780];
 
     castro_UpdateHashTable(&board->history.positions, board->hash);
@@ -448,6 +441,8 @@ void castro_UnmakeMove(Board* board)
     board->turn             = !board->turn;  /* back to the mover's turn */
     board->enpassant_square = undo.enpassant;
     board->castling_rights  = undo.castling;
+
+    castro_BoardUpdateOccupancy(board);
 
     /*
      * 2. Add back pre-move meta.

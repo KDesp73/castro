@@ -173,12 +173,12 @@ Bitboard castro_ComputePawnPromotionAttackMask(Square square, PieceColor color)
     Bitboard bb = 1ULL << square;
     Bitboard leftCapture, rightCapture;
 
-    if(color == COLOR_WHITE){
-        leftCapture = (bb << 7) & ~FILE_H & RANK_8;
-        rightCapture = (bb << 9) & ~FILE_A & RANK_8;
+    if (color == COLOR_WHITE) {
+        leftCapture  = ((bb & ~FILE_A) << 7) & RANK_8;
+        rightCapture = ((bb & ~FILE_H) << 9) & RANK_8;
     } else {
-        leftCapture = (bb >> 9) & ~FILE_H & RANK_1;
-        rightCapture = (bb >> 7) & ~FILE_A & RANK_1;
+        leftCapture  = ((bb & ~FILE_H) >> 7) & RANK_1;
+        rightCapture = ((bb & ~FILE_A) >> 9) & RANK_1;
     }
 
     return leftCapture | rightCapture;

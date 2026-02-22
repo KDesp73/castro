@@ -48,7 +48,7 @@ static BenchResult make_result(uint64_t nodes, double elapsed) {
 }
 
 static void print_banner(const char* log_path) {
-    printf("\n %s%sCASTRO%s %sChess Engine Benchmark%s\n", cc(C_BOLD), cc(C_TITLE), cc(C_RESET), cc(C_SUB), cc(C_RESET));
+    printf("\n %s%sCASTRO%s %sMove Generation Benchmark%s\n", cc(C_BOLD), cc(C_TITLE), cc(C_RESET), cc(C_SUB), cc(C_RESET));
     printf(" %sLogging to %s%s\n", cc(C_SUB), log_path, cc(C_RESET));
 }
 
@@ -59,7 +59,7 @@ static void section_open(const char* title) {
 }
 
 static void col_header(const char* label, const char* unit) {
-    printf(" %-28s %12s %10s %14s\n", label, "Count", "Time", unit);
+    printf(" %-26s %12s %10s %14s\n", label, "Count", "Time", unit);
 }
 
 static void row_perft(const char* label, BenchResult r, bool ok, uint64_t expected) {
@@ -132,6 +132,17 @@ static BenchResult run_perft(const char* fen, int depth, uint64_t* out) {
     return make_result(n, elapsed);
 }
 
+static BenchResult run_perft_fast(const char* fen, int depth, uint64_t* out) {
+    Board board;
+    castro_BoardInitFen(&board, fen);
+    double t0 = now_s();
+    uint64_t n = castro_PerftPseudoLegal(&board, depth);
+    double elapsed = now_s() - t0;
+    castro_BoardFree(&board);
+    if (out) *out = n;
+    return make_result(n, elapsed);
+}
+
 static BenchResult bench_movegen(const char* fen, MoveType type) {
     Board board;
     castro_BoardInitFen(&board, fen);
@@ -175,6 +186,7 @@ int main(int argc, char* argv[]) {
     g_log = fopen(log_path, "w");
     castro_InitZobrist();
     castro_InitMasks();
+    castro_InitMagic();
 
     print_banner(log_path);
 

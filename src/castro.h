@@ -301,7 +301,7 @@ typedef enum {
  * 
  * Returns 0ULL if the square is SQUARE_NONE (64).
  */
-#define BB(square) ((square == 64) ? 0ULL : 1ULL << (square))
+#define BB(square) (((square) == 64) ? 0ULL : 1ULL << (square))
 
 /**
  * @brief Returns the index of the least significant bit set (LSB).
@@ -407,6 +407,9 @@ Bitboard castro_KnightAttacks(Square knights, Bitboard emptySquares, Bitboard en
  */
 Bitboard castro_KingAttacks(Square king, Bitboard emptySquares, Bitboard enemySquares);
 
+Bitboard castro_BishopAttacksFromOccupancy(Square square, Bitboard occupancy);
+Bitboard castro_RookAttacksFromOccupancy(Square square, Bitboard occupancy);
+
 /**
  * @brief Computes bishop attacks using a sliding attack method.
  */
@@ -416,6 +419,10 @@ Bitboard castro_BishopAttacks(Square bishops, Bitboard emptySquares, Bitboard en
  * @brief Computes rook attacks using a sliding attack method.
  */
 Bitboard castro_RookAttacks(Square rooks, Bitboard emptySquares, Bitboard enemySquares);
+
+void castro_InitMagic(void);
+Bitboard castro_BishopAttacksMagic(Square square, Bitboard occupancy);
+Bitboard castro_RookAttacksMagic(Square square, Bitboard occupancy);
 
 /**
  * @brief Computes queen attacks as the union of rook and bishop attacks.
@@ -481,13 +488,17 @@ typedef struct {
     int count;      ///< Number of times this position has occurred
 } HashEntry;
 
+/** Capacity of the repetition hash table (power of two for fast modulo). */
+#define HASH_TABLE_CAPACITY 4096
+
 /**
  * @brief Tracks position repetition using Zobrist hashes.
+ * Uses open addressing (linear probing). Empty buckets have hash == 0.
  */
 typedef struct {
-    uint64_t last_added;  ///< Last added hash (for quick duplicate check)
-    HashEntry* entries;   ///< Dynamic array of hash entries
-    size_t count;         ///< Number of stored entries
+    uint64_t last_added;   ///< Last added hash (used when decrementing on unmake)
+    HashEntry* entries;    ///< Buckets: index = hash & (capacity - 1), probe on collision
+    size_t capacity;       ///< Number of buckets (power of two)
 } HashTable;
 
 /**
@@ -518,6 +529,12 @@ void castro_InitHashTableHash(HashTable* table, uint64_t starting_hash);
  * @return true if repetition >= 3 (e.g., threefold repetition), false otherwise
  */
 _Bool castro_UpdateHashTable(HashTable* table, uint64_t hash);
+
+/**
+ * @brief Decrements the repetition count for a position (used on unmake).
+ * Call with the hash that was last added before the move being undone.
+ */
+void castro_HashTableDecrement(HashTable* table, uint64_t hash);
 
 /**
  * @brief Frees all memory used by the hash table.
@@ -630,7 +647,9 @@ typedef enum {
 typedef struct {
     Bitboard bitboards[PIECE_TYPES]; ///< One bitboard per piece type (white/black)
     char grid[8][8];                 ///< ASCII piece grid for quick access
-    Bitboard empty;                 ///< Cached empty square bitboard
+    Bitboard white;                 ///< Cached: all white pieces
+    Bitboard black;                 ///< Cached: all black pieces
+    Bitboard empty;                 ///< Cached: empty squares (~(white|black))
 
     // Game state
     Square enpassant_square;        ///< En passant target square, if any
@@ -726,6 +745,9 @@ Board* castro_BoardInitFenHeap(const char* fen);
  * @brief Frees heap-allocated board (from BoardInitFenHeap).
  */
 void castro_BoardFree(Board* board);
+
+/** Recomputes and stores white, black, empty from bitboards. Call after any direct bitboard change. */
+void castro_BoardUpdateOccupancy(Board* board);
 
 /**
  * @brief Returns a bitboard of all white pieces.
@@ -1137,6 +1159,27 @@ static const int KING_OFFSETS[] = {
  * @brief Checks whether a move is legal and does not leave the king in check.
  */
 _Bool castro_MoveIsValid(const Board* board, Move move, PieceColor color);
+
+/**
+ * @brief Returns true if the move captures a piece (or en passant).
+ */
+_Bool castro_MoveIsCapture(const Board* board, Move move);
+
+/**
+ * @brief Returns true if the move gives check. Temporarily modifies the board (make/unmake).
+ */
+_Bool castro_MoveGivesCheck(Board* board, Move move);
+
+/**
+ * @brief Piece value for MVV-LVA (pawn=1, knight/bishop=3, rook=5, queen=9, king=0).
+ */
+int castro_PieceValueFromType(char piece_type);
+
+/**
+ * @brief Reorders a legal move list for search: hash move first, then captures (MVV-LVA), killers, then checks (if score_checks), then quiet.
+ * Pass NULL_MOVE for hash_move or killers if not used. Set score_checks to false to avoid MakeMove/Unmake per move.
+ */
+void castro_OrderLegalMoves(Board* board, Moves* moves, Move hash_move, Move killer0, Move killer1, bool score_checks);
 
 /**
  * @brief Encodes a move from components into a 32-bit integer.
@@ -1739,8 +1782,6 @@ typedef enum {
     MOVE_PSEUDO,  ///< Pseudo-legal moves, ignoring king safety
     MOVE_CAPTURE,
     MOVE_ATTACK,
-    MOVE_CHECK,
-    MOVE_KILLER
 } MoveType;
 
 /*-----------------------------.
@@ -1799,6 +1840,14 @@ Bitboard castro_GenerateKingMoves(const Board* board, Square piece, PieceColor c
 | Legal Move Generation   |
 `------------------------*/
 
+typedef struct {
+    Bitboard check_mask;      // Squares that stop a check
+    Bitboard pin_masks[64];   // Allowed movement mask for every square
+    int check_count;
+} LegalityContext;
+
+LegalityContext castro_CalculateLegality(const Board* board);
+
 /**
  * @brief Returns whether a move is fully legal (doesn't leave the king in check).
  */
@@ -1808,6 +1857,11 @@ bool castro_IsLegal(const Board* board, Move move);
  * @brief Generates all legal moves for the current board position.
  */
 Moves castro_GenerateLegalMoves(const Board* board);
+
+/**
+ * @brief Generates only legal captures (and en passant). Use for quiescence search.
+ */
+Moves castro_GenerateLegalCaptures(const Board* board);
 
 /**
  * @brief Generates legal moves that originate from a specific square.
@@ -1821,13 +1875,14 @@ Bitboard castro_GenerateLegalMovesBitboard(const Board* board);
 
 /**
  * @brief Generates legal moves for piece sets by type.
+ * If captures_only is true, only moves that capture a piece (or en passant) are added.
  */
-Moves castro_GenerateLegalPawnMoves(const Board* board, Bitboard pieces, PieceColor color);
-Moves castro_GenerateLegalKnightMoves(const Board* board, Bitboard pieces, PieceColor color);
-Moves castro_GenerateLegalBishopMoves(const Board* board, Bitboard pieces, PieceColor color);
-Moves castro_GenerateLegalRookMoves(const Board* board, Bitboard pieces, PieceColor color);
-Moves castro_GenerateLegalQueenMoves(const Board* board, Bitboard pieces, PieceColor color);
-Moves castro_GenerateLegalKingMoves(const Board* board, Bitboard pieces, PieceColor color);
+void castro_GenerateLegalPawnMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves, bool captures_only);
+void castro_GenerateLegalKnightMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves, bool captures_only);
+void castro_GenerateLegalBishopMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves, bool captures_only);
+void castro_GenerateLegalRookMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves, bool captures_only);
+void castro_GenerateLegalQueenMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves, bool captures_only);
+void castro_GenerateLegalKingMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves, bool captures_only);
 
 /*---------------------------------------------.
 | Convenience inline dispatcher for move types |
@@ -1837,7 +1892,7 @@ Moves castro_GenerateLegalKingMoves(const Board* board, Bitboard pieces, PieceCo
  * @brief Dispatches to legal or pseudo-legal move generation.
  * 
  * @param board The board to generate moves from
- * @param type MOVE_LEGAL or MOVE_PSEUDO
+ * @param type MoveType
  * @return Moves struct containing the resulting moves
  */
 Moves castro_GenerateMoves(const Board* board, MoveType type);
@@ -1852,6 +1907,9 @@ typedef unsigned long long u64;
 
 // NOTE: See https://www.chessprogramming.org/Perft
 u64 castro_Perft(Board* board, int depth, bool root);
+
+/** Pseudo-legal perft: same node count as legal perft, faster (no pin/check pre-filter). */
+u64 castro_PerftPseudoLegal(Board* board, int depth);
 
 
 
@@ -2138,6 +2196,7 @@ Move castro_LookupBookMove(uint64_t position_hash, const char* book_path);
 #define InitHashTable castro_InitHashTable
 #define InitHashTableHash castro_InitHashTableHash
 #define UpdateHashTable castro_UpdateHashTable
+#define HashTableDecrement castro_HashTableDecrement
 #define FreeHashTable castro_FreeHashTable
 #define UndoPrint castro_UndoPrint
 #define HistoryRemove castro_HistoryRemove
@@ -2208,6 +2267,10 @@ Move castro_LookupBookMove(uint64_t position_hash, const char* book_path);
 #define MovesCombine castro_MovesCombine
 #define MakeUndo castro_MakeUndo
 #define MoveIsValid castro_MoveIsValid
+#define MoveIsCapture castro_MoveIsCapture
+#define MoveGivesCheck castro_MoveGivesCheck
+#define PieceValueFromType castro_PieceValueFromType
+#define OrderLegalMoves castro_OrderLegalMoves
 #define MoveEncode castro_MoveEncode
 #define MoveEncodeNames castro_MoveEncodeNames
 #define MoveDecode castro_MoveDecode
@@ -2289,6 +2352,7 @@ Move castro_LookupBookMove(uint64_t position_hash, const char* book_path);
 #define GenerateKingMoves castro_GenerateKingMoves
 #define IsLegal castro_IsLegal
 #define GenerateLegalMoves castro_GenerateLegalMoves
+#define GenerateLegalCaptures castro_GenerateLegalCaptures
 #define GenerateLegalMovesSquare castro_GenerateLegalMovesSquare
 #define GenerateLegalMovesBitboard castro_GenerateLegalMovesBitboard
 #define GenerateLegalPawnMoves castro_GenerateLegalPawnMoves
