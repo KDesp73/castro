@@ -108,6 +108,8 @@ void castro_FenImport(Board *board, const char *fen)
 
     // Parse fullmove number
     board->fullmove = atoi(ptr);
+
+    castro_BoardUpdateOccupancy(board);
 }
 
 void castro_FenExport(const Board* board, char buffer[])

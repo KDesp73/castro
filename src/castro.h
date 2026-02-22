@@ -637,7 +637,9 @@ typedef enum {
 typedef struct {
     Bitboard bitboards[PIECE_TYPES]; ///< One bitboard per piece type (white/black)
     char grid[8][8];                 ///< ASCII piece grid for quick access
-    Bitboard empty;                 ///< Cached empty square bitboard
+    Bitboard white;                 ///< Cached: all white pieces
+    Bitboard black;                 ///< Cached: all black pieces
+    Bitboard empty;                 ///< Cached: empty squares (~(white|black))
 
     // Game state
     Square enpassant_square;        ///< En passant target square, if any
@@ -733,6 +735,9 @@ Board* castro_BoardInitFenHeap(const char* fen);
  * @brief Frees heap-allocated board (from BoardInitFenHeap).
  */
 void castro_BoardFree(Board* board);
+
+/** Recomputes and stores white, black, empty from bitboards. Call after any direct bitboard change. */
+void castro_BoardUpdateOccupancy(Board* board);
 
 /**
  * @brief Returns a bitboard of all white pieces.
