@@ -202,6 +202,90 @@ _Bool castro_MoveIsValid(const Board* board, Move move, PieceColor color)
     return 0;
 }
 
+_Bool castro_MoveIsCapture(const Board* board, Move move)
+{
+    uint8_t flag = castro_GetFlag(move);
+    if (flag == FLAG_ENPASSANT || flag == FLAG_PROMOTION_WITH_CAPTURE)
+        return 1;
+    Square to = castro_GetTo(move);
+    Piece p = castro_PieceAt(board, to);
+    return p.type != EMPTY_SQUARE && p.color != board->turn;
+}
+
+_Bool castro_MoveGivesCheck(Board* board, Move move)
+{
+    if (!castro_MakeMove(board, move))
+        return 0;
+    _Bool gives = castro_IsInCheck(board);
+    castro_UnmakeMove(board);
+    return gives;
+}
+
+int castro_PieceValueFromType(char piece_type)
+{
+    switch (tolower((unsigned char)piece_type)) {
+        case 'p': return 1;
+        case 'n': case 'b': return 3;
+        case 'r': return 5;
+        case 'q': return 9;
+        case 'k': return 0;
+        default: return 0;
+    }
+}
+
+/* Score for ordering: hash > good captures > killers > checks (optional) > quiet. */
+static int score_move_for_ordering(Board* board, Move move, Move hash_move, Move killer0, Move killer1, bool score_checks)
+{
+    Square from = castro_GetFrom(move);
+    Square to = castro_GetTo(move);
+
+    if (hash_move != NULL_MOVE && castro_MoveCmp(move, hash_move))
+        return 1000000;
+
+    if (castro_MoveIsCapture(board, move)) {
+        int mvv = castro_PieceValueFromType(castro_PieceAt(board, to).type);
+        if (mvv == 0 && castro_GetFlag(move) == FLAG_ENPASSANT)
+            mvv = 1;
+        int lva = castro_PieceValueFromType(castro_PieceAt(board, from).type);
+        return 100000 + (mvv * 10) - lva;
+    }
+
+    if (killer0 != NULL_MOVE && castro_MoveCmp(move, killer0))
+        return 50000;
+    if (killer1 != NULL_MOVE && castro_MoveCmp(move, killer1))
+        return 40000;
+
+    if (score_checks && castro_MoveGivesCheck(board, move))
+        return 10000;
+
+    return 0;
+}
+
+void castro_OrderLegalMoves(Board* board, Moves* moves, Move hash_move, Move killer0, Move killer1, bool score_checks)
+{
+    if (moves->count <= 1) return;
+
+    int scores[MOVES_CAPACITY];
+    for (size_t i = 0; i < moves->count; i++)
+        scores[i] = score_move_for_ordering(board, moves->list[i], hash_move, killer0, killer1, score_checks);
+
+    /* Selection sort (stable, simple; replace with qsort if list is large). */
+    for (size_t i = 0; i < moves->count - 1; i++) {
+        size_t best = i;
+        for (size_t j = i + 1; j < moves->count; j++)
+            if (scores[j] > scores[best])
+                best = j;
+        if (best != i) {
+            Move tmp = moves->list[i];
+            moves->list[i] = moves->list[best];
+            moves->list[best] = tmp;
+            int t = scores[i];
+            scores[i] = scores[best];
+            scores[best] = t;
+        }
+    }
+}
+
 char castro_PromotionToChar(uint8_t promotion)
 {
     switch (promotion) {

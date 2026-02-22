@@ -1161,6 +1161,27 @@ static const int KING_OFFSETS[] = {
 _Bool castro_MoveIsValid(const Board* board, Move move, PieceColor color);
 
 /**
+ * @brief Returns true if the move captures a piece (or en passant).
+ */
+_Bool castro_MoveIsCapture(const Board* board, Move move);
+
+/**
+ * @brief Returns true if the move gives check. Temporarily modifies the board (make/unmake).
+ */
+_Bool castro_MoveGivesCheck(Board* board, Move move);
+
+/**
+ * @brief Piece value for MVV-LVA (pawn=1, knight/bishop=3, rook=5, queen=9, king=0).
+ */
+int castro_PieceValueFromType(char piece_type);
+
+/**
+ * @brief Reorders a legal move list for search: hash move first, then captures (MVV-LVA), killers, then checks (if score_checks), then quiet.
+ * Pass NULL_MOVE for hash_move or killers if not used. Set score_checks to false to avoid MakeMove/Unmake per move.
+ */
+void castro_OrderLegalMoves(Board* board, Moves* moves, Move hash_move, Move killer0, Move killer1, bool score_checks);
+
+/**
  * @brief Encodes a move from components into a 32-bit integer.
  */
 Move castro_MoveEncode(Square from, Square to, uint8_t promotion, uint8_t flag);
@@ -1840,6 +1861,11 @@ bool castro_IsLegal(const Board* board, Move move);
 Moves castro_GenerateLegalMoves(const Board* board);
 
 /**
+ * @brief Generates only legal captures (and en passant). Use for quiescence search.
+ */
+Moves castro_GenerateLegalCaptures(const Board* board);
+
+/**
  * @brief Generates legal moves that originate from a specific square.
  */
 Moves castro_GenerateLegalMovesSquare(const Board* board, Square square);
@@ -1851,13 +1877,14 @@ Bitboard castro_GenerateLegalMovesBitboard(const Board* board);
 
 /**
  * @brief Generates legal moves for piece sets by type.
+ * If captures_only is true, only moves that capture a piece (or en passant) are added.
  */
-void castro_GenerateLegalPawnMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves);
-void castro_GenerateLegalKnightMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves);
-void castro_GenerateLegalBishopMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves);
-void castro_GenerateLegalRookMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves);
-void castro_GenerateLegalQueenMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves);
-void castro_GenerateLegalKingMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves);
+void castro_GenerateLegalPawnMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves, bool captures_only);
+void castro_GenerateLegalKnightMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves, bool captures_only);
+void castro_GenerateLegalBishopMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves, bool captures_only);
+void castro_GenerateLegalRookMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves, bool captures_only);
+void castro_GenerateLegalQueenMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves, bool captures_only);
+void castro_GenerateLegalKingMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves, bool captures_only);
 
 /*---------------------------------------------.
 | Convenience inline dispatcher for move types |
@@ -2242,6 +2269,10 @@ Move castro_LookupBookMove(uint64_t position_hash, const char* book_path);
 #define MovesCombine castro_MovesCombine
 #define MakeUndo castro_MakeUndo
 #define MoveIsValid castro_MoveIsValid
+#define MoveIsCapture castro_MoveIsCapture
+#define MoveGivesCheck castro_MoveGivesCheck
+#define PieceValueFromType castro_PieceValueFromType
+#define OrderLegalMoves castro_OrderLegalMoves
 #define MoveEncode castro_MoveEncode
 #define MoveEncodeNames castro_MoveEncodeNames
 #define MoveDecode castro_MoveDecode
@@ -2323,6 +2354,7 @@ Move castro_LookupBookMove(uint64_t position_hash, const char* book_path);
 #define GenerateKingMoves castro_GenerateKingMoves
 #define IsLegal castro_IsLegal
 #define GenerateLegalMoves castro_GenerateLegalMoves
+#define GenerateLegalCaptures castro_GenerateLegalCaptures
 #define GenerateLegalMovesSquare castro_GenerateLegalMovesSquare
 #define GenerateLegalMovesBitboard castro_GenerateLegalMovesBitboard
 #define GenerateLegalPawnMoves castro_GenerateLegalPawnMoves

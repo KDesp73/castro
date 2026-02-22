@@ -1,5 +1,6 @@
 #include "tests.h"
 #include <stdarg.h>
+#include "castro.h"
 
 int test_pawn_moves(const char* fen, const char* square, const char* first, ...)
 {
@@ -22,7 +23,10 @@ int test_pawn_moves(const char* fen, const char* square, const char* first, ...)
     }
 
     PieceColor color = PieceAt(&board, from).color;
-    Bitboard found = MovesToBitboard(GenerateLegalPawnMoves(&board, BB(from), color));
+    Moves legal = {0};
+    LegalityContext ctx = castro_CalculateLegality(&board);
+    castro_GenerateLegalPawnMoves(&board, BB(from), color, &ctx, &legal, false);
+    Bitboard found = MovesToBitboard(legal);
     if(found != moves){
         FAILF(fen, "For square %s", square);
         printf("Expected: \n");

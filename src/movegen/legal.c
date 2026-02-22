@@ -34,13 +34,20 @@ void castro_GenerateLegalPawnMoves(
     Bitboard pieces,
     PieceColor color,
     const LegalityContext* ctx,
-    Moves* moves)
+    Moves* moves,
+    bool captures_only)
 {
     Board temp = *board;
+    Bitboard enemy = castro_GetEnemy(board);
+    Bitboard capture_squares = enemy;
+    if (board->enpassant_square != SQUARE_NONE)
+        capture_squares |= BB(board->enpassant_square);
 
     while (pieces) {
         Square from = poplsb(&pieces);
         Bitboard targets = castro_GeneratePawnMoves(board, from, color);
+        if (captures_only)
+            targets &= capture_squares;
 
         while (targets) {
             Square to = poplsb(&targets);
@@ -95,10 +102,13 @@ void castro_GenerateLegalKnightMoves(
     Bitboard pieces,
     PieceColor color,
     const LegalityContext* ctx,
-    Moves* moves)
+    Moves* moves,
+    bool captures_only)
 {
     if (ctx->check_count > 1)
         return;
+
+    Bitboard enemy = castro_GetEnemy(board);
 
     while (pieces) {
         Square from = poplsb(&pieces);
@@ -108,6 +118,8 @@ void castro_GenerateLegalKnightMoves(
             continue;
 
         Bitboard targets = castro_GenerateKnightMoves(board, from, color);
+        if (captures_only)
+            targets &= enemy;
 
         if (ctx->check_count == 1)
             targets &= ctx->check_mask;
@@ -128,15 +140,20 @@ void castro_GenerateLegalBishopMoves(
     Bitboard pieces,
     PieceColor color,
     const LegalityContext* ctx,
-    Moves* moves)
+    Moves* moves,
+    bool captures_only)
 {
     if (ctx->check_count > 1)
         return;
+
+    Bitboard enemy = castro_GetEnemy(board);
 
     while (pieces) {
         Square from = poplsb(&pieces);
 
         Bitboard targets = castro_GenerateBishopMoves(board, from, color);
+        if (captures_only)
+            targets &= enemy;
         targets &= ctx->pin_masks[from];
         if (ctx->check_count == 1)
             targets &= ctx->check_mask;
@@ -156,15 +173,20 @@ void castro_GenerateLegalRookMoves(
     Bitboard pieces,
     PieceColor color,
     const LegalityContext* ctx,
-    Moves* moves)
+    Moves* moves,
+    bool captures_only)
 {
     if (ctx->check_count > 1)
         return;
+
+    Bitboard enemy = castro_GetEnemy(board);
 
     while (pieces) {
         Square from = poplsb(&pieces);
 
         Bitboard targets = castro_GenerateRookMoves(board, from, color);
+        if (captures_only)
+            targets &= enemy;
         targets &= ctx->pin_masks[from];
         if (ctx->check_count == 1)
             targets &= ctx->check_mask;
@@ -183,15 +205,20 @@ void castro_GenerateLegalQueenMoves(
     Bitboard pieces,
     PieceColor color,
     const LegalityContext* ctx,
-    Moves* moves)
+    Moves* moves,
+    bool captures_only)
 {
     if (ctx->check_count > 1)
         return;
+
+    Bitboard enemy = castro_GetEnemy(board);
 
     while (pieces) {
         Square from = poplsb(&pieces);
 
         Bitboard targets = castro_GenerateQueenMoves(board, from, color);
+        if (captures_only)
+            targets &= enemy;
         targets &= ctx->pin_masks[from];
         if (ctx->check_count == 1)
             targets &= ctx->check_mask;
@@ -210,13 +237,16 @@ void castro_GenerateLegalKingMoves(
     Bitboard pieces,
     PieceColor color,
     const LegalityContext* ctx,
-    Moves* moves)
+    Moves* moves,
+    bool captures_only)
 {
     (void) ctx;
 
     Board temp = *board;
     Square king = lsb(pieces);
     Bitboard targets = castro_GenerateKingMoves(board, king, color);
+    if (captures_only)
+        targets &= castro_GetEnemy(board);
     Bitboard opponentAttacks = castro_GeneratePseudoLegalAttacks(board, !color);
     targets &= ~opponentAttacks;
 
@@ -250,47 +280,69 @@ Moves castro_GenerateLegalMoves(const Board* board)
         board->bitboards[color * 6 + INDEX_PAWN],
         color,
         &ctx,
-        &moves);
+        &moves,
+        false);
 
     castro_GenerateLegalKnightMoves(
         board,
         board->bitboards[color * 6 + INDEX_KNIGHT],
         color,
         &ctx,
-        &moves);
+        &moves,
+        false);
 
     castro_GenerateLegalBishopMoves(
         board,
         board->bitboards[color * 6 + INDEX_BISHOP],
         color,
         &ctx,
-        &moves);
+        &moves,
+        false);
 
     castro_GenerateLegalRookMoves(
         board,
         board->bitboards[color * 6 + INDEX_ROOK],
         color,
         &ctx,
-        &moves);
+        &moves,
+        false);
 
     castro_GenerateLegalQueenMoves(
         board,
         board->bitboards[color * 6 + INDEX_QUEEN],
         color,
         &ctx,
-        &moves);
+        &moves,
+        false);
 
     castro_GenerateLegalKingMoves(
         board,
         board->bitboards[color * 6 + INDEX_KING],
         color,
         &ctx,
-        &moves);
+        &moves,
+        false);
 
 #ifndef RELEASE
     BENCH_END();
     BENCH_LOG("GenerateLegalMoves");
 #endif
+
+    return moves;
+}
+
+Moves castro_GenerateLegalCaptures(const Board* board)
+{
+    Moves moves = {0};
+    PieceColor color = board->turn;
+    LegalityContext ctx = castro_CalculateLegality(board);
+
+    castro_GenerateLegalPawnMoves(board, board->bitboards[color * 6 + INDEX_PAWN], color, &ctx, &moves, true);
+    castro_GenerateLegalKnightMoves(board, board->bitboards[color * 6 + INDEX_KNIGHT], color, &ctx, &moves, true);
+    castro_GenerateLegalBishopMoves(board, board->bitboards[color * 6 + INDEX_BISHOP], color, &ctx, &moves, true);
+    castro_GenerateLegalRookMoves(board, board->bitboards[color * 6 + INDEX_ROOK], color, &ctx, &moves, true);
+    castro_GenerateLegalQueenMoves(board, board->bitboards[color * 6 + INDEX_QUEEN], color, &ctx, &moves, true);
+    castro_GenerateLegalKingMoves(board, board->bitboards[color * 6 + INDEX_KING], color, &ctx, &moves, true);
 
     return moves;
 }
@@ -304,6 +356,13 @@ Moves castro_GenerateMoves(const Board* board, MoveType type)
         return castro_GenerateLegalMoves(board);
     case MOVE_PSEUDO:
         return castro_GeneratePseudoLegalMoves(board);
+    case MOVE_CAPTURE:
+    case MOVE_ATTACK:
+        return castro_GenerateLegalCaptures(board);
+    case MOVE_CHECK:
+    case MOVE_KILLER:
+        /* Checks and killers are ordering hints; generate all legal and use OrderLegalMoves. */
+        return castro_GenerateLegalMoves(board);
     default:
         WARN("Move type not implemented.");
         return NO_MOVES;
