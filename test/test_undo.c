@@ -1,6 +1,9 @@
+#define TAG "undo"
+#include "IncludeOnly/test.h"
+#define CASTRO_STRIP_PREFIX
+#include "castro.h"
 #include <stdint.h>
 #include <stdio.h>
-#include "tests.h"
 
 #define DEBUG
 #include "IncludeOnly/logging.h"
@@ -23,38 +26,38 @@ int test_undo(const char* fen, Move move)
 
     for(size_t i = 0; i < PIECE_TYPES; i++){
         if(originalBoard.bitboards[i] != board.bitboards[i]) {
-            FAILF(fen, "Mismatch in bitboard index %zu", i);
+            FAIL("Fen %s. Mismatch in bitboard index %zu", fen, i);
             goto fail;
         }
     }
 
     if(board.enpassant_square != originalBoard.enpassant_square){
-        FAILF(fen, "Mismatch in enpassant square. Expected %d. Found %d", originalBoard.enpassant_square, board.enpassant_square);
+        FAIL("Fen %s. Mismatch in enpassant square. Expected %d. Found %d", fen, originalBoard.enpassant_square, board.enpassant_square);
         goto fail;
     }
 
     if(board.castling_rights != originalBoard.castling_rights){
-        FAILF(fen, "Mismatch in castling rights");
+        FAIL("Fen %s. Mismatch in castling rights", fen);
         goto fail;
     }
 
     if(board.turn != originalBoard.turn) {
-        FAILF(fen, "Mismatch in turn");
+        FAIL("Fen %s. Mismatch in turn", fen);
         goto fail;
     }
 
     if(board.fullmove != originalBoard.fullmove) {
-        FAILF(fen, "Mismatch in fullmove");
+        FAIL("Fen %s. Mismatch in fullmove", fen);
         goto fail;
     }
 
     if(board.halfmove != originalBoard.halfmove) {
-        FAILF(fen, "Mismatch in halfmove");
+        FAIL("Fen %s. Mismatch in halfmove", fen);
         goto fail;
     }
 
     if(CalculateZobristHash(&board) != hash){
-        FAILF(fen, "Hashes don't match");
+        FAIL("Fen %s. Hashes don't match", fen);
         goto fail;
     }
 

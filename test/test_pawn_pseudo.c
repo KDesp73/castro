@@ -1,4 +1,7 @@
-#include "tests.h"
+#define TAG "pawn_pseudo"
+#include "IncludeOnly/test.h"
+#define CASTRO_STRIP_PREFIX
+#include "castro.h"
 #include <stdarg.h>
 
 int test_pawn_pseudo(const char* fen, const char* square, const char* first, ...)
@@ -24,11 +27,7 @@ int test_pawn_pseudo(const char* fen, const char* square, const char* first, ...
     PieceColor color = PieceAt(&board, from).color;
     Bitboard found = GeneratePawnMoves(&board, from, color);
     if(found != moves){
-        FAILF(fen, "For square %s", square);
-        printf("Expected: \n");
-        BitboardPrint(moves);
-        printf("Found: \n");
-        BitboardPrint(found);
+        FAIL("Fen %s. For square %s", fen, square);
         goto fail;
     }
 

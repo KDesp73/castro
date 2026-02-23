@@ -1,5 +1,6 @@
+#define TAG "board_hash"
 #include "IncludeOnly/test.h"
-#include "tests.h"
+#define CASTRO_STRIP_PREFIX
 #include "castro.h"
 #include <stdint.h>
 #include <stdlib.h>

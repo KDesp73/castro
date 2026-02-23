@@ -1,4 +1,7 @@
-#include "tests.h"
+#define TAG "rook_pseudo"
+#include "IncludeOnly/test.h"
+#define CASTRO_STRIP_PREFIX
+#include "castro.h"
 #include <stdarg.h>
 
 int test_rook_pseudo(const char* fen, const char* square, const char* first, ...)
@@ -24,7 +27,7 @@ int test_rook_pseudo(const char* fen, const char* square, const char* first, ...
     PieceColor color = PieceAt(&board, from).color;
     Bitboard found = GenerateRookMoves(&board, from, color);
     if(found != moves){
-        FAILF(fen, "For square %s", square);
+        FAIL("Fen %s. For square %s", fen, square);
         printf("Expected: \n");
         BitboardPrint(moves);
         printf("Found: \n");

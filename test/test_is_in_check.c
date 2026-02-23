@@ -1,4 +1,7 @@
-#include "tests.h"
+#define TAG "is_in_check"
+#include "IncludeOnly/test.h"
+#define CASTRO_STRIP_PREFIX
+#include "castro.h"
 
 int test_is_in_check(const char* fen, bool expected)
 {
@@ -9,7 +12,7 @@ int test_is_in_check(const char* fen, bool expected)
     bool found = IsInCheck(&board);
     if(expected != found){
         BoardPrintBitboard(&board, attacks);
-        FAILF(fen, "Expected %d. Found %d", expected, found);
+        FAIL("Fen %s. Expected %d. Found %d", fen, expected, found);
         goto fail;
     }
 

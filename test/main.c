@@ -1,82 +1,31 @@
 #include "castro.h"
-#define CLI_IMPLEMENTATION
-#include "IncludeOnly/cli.h"
 #define TEST_IMPLEMENTATION
 #include "IncludeOnly/test.h"
-#include "tests.h"
+#include "registry.h"
 
-char* TEST_DIRECTORY = "test";
-
-void load()
-{
-    LOAD_TEST("test_piece_at");
-    LOAD_TEST("test_name_to_square");
-    LOAD_TEST("test_square_to_name");
-
-    LOAD_TEST("test_perft");
-
-    LOAD_TEST("test_pawn_moves");
-    LOAD_TEST("test_knight_moves");
-    LOAD_TEST("test_bishop_moves");
-    LOAD_TEST("test_rook_moves");
-    LOAD_TEST("test_queen_moves");
-    LOAD_TEST("test_king_moves");
-
-    LOAD_TEST("test_pawn_pseudo");
-    LOAD_TEST("test_knight_pseudo");
-    LOAD_TEST("test_bishop_pseudo");
-    LOAD_TEST("test_rook_pseudo");
-    LOAD_TEST("test_queen_pseudo");
-    LOAD_TEST("test_king_pseudo");
-
-    LOAD_TEST("test_is_in_check");
-    LOAD_TEST("test_undo");
-
-    LOAD_TEST("test_board_hash");
-}
-
-int _1() {
-    START_TESTS
-        RUN_TEST(test_perft),
-        1
-    END_TESTS
-}
-int _2() {
-    START_TESTS
-        RUN_TEST(test_board_hash)
-    END_TESTS
-}
-int _3() {}
-int _4() {}
-
+const char* TEST_DIRECTORY = "test";
 
 int main(int argc, char** argv)
 {
     castro_InitMasks();
     castro_InitZobrist();
 
-    TEST_ARGS(argc, argv);
+    test_set_dispatcher(dispatch_test_by_name);
 
-    START_TESTS
-        RUN_TEST(test_piece_at),
-        RUN_TEST(test_name_to_square),
-        RUN_TEST(test_square_to_name),
+    char* b0[] = { "test_perft" };
+    char* b1[] = { "test_pawn_moves", "test_knight_moves", "test_bishop_moves", "test_rook_moves", "test_queen_moves", "test_king_moves" };
+    char* b2[] = { "test_pawn_pseudo", "test_knight_pseudo", "test_bishop_pseudo", "test_rook_pseudo", "test_queen_pseudo", "test_king_pseudo" };
+    char* b3[] = { "test_piece_at", "test_name_to_square", "test_square_to_name", "test_undo", "test_board_hash", "test_is_in_check" };
 
-        RUN_TEST(test_pawn_moves),
-        RUN_TEST(test_knight_moves),
-        RUN_TEST(test_bishop_moves),
-        RUN_TEST(test_rook_moves),
-        RUN_TEST(test_queen_moves),
-        RUN_TEST(test_king_moves),
+    char** batches[] = { b0, b1, b2, b3 };
+    size_t sizes[] = {
+        sizeof(b0) / sizeof(char*),
+        sizeof(b1) / sizeof(char*),
+        sizeof(b2) / sizeof(char*),
+        sizeof(b3) / sizeof(char*)
+    };
 
-        RUN_TEST(test_pawn_pseudo),
-        RUN_TEST(test_knight_pseudo),
-        RUN_TEST(test_bishop_pseudo),
-        RUN_TEST(test_rook_pseudo),
-        RUN_TEST(test_queen_pseudo),
-        RUN_TEST(test_king_pseudo),
+    test_batches(batches, sizeof(batches) / sizeof(char**), sizes);
 
-        RUN_TEST(test_is_in_check),
-        RUN_TEST(test_undo)
-    END_TESTS
+    return test_run(argc, argv);
 }

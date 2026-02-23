@@ -1,6 +1,8 @@
-#include "tests.h"
-#include <stdarg.h>
+#define TAG "pawn_moves"
+#include "IncludeOnly/test.h"
+#define CASTRO_STRIP_PREFIX
 #include "castro.h"
+#include <stdarg.h>
 
 int test_pawn_moves(const char* fen, const char* square, const char* first, ...)
 {
@@ -28,7 +30,7 @@ int test_pawn_moves(const char* fen, const char* square, const char* first, ...)
     castro_GenerateLegalPawnMoves(&board, BB(from), color, &ctx, &legal, false);
     Bitboard found = MovesToBitboard(legal);
     if(found != moves){
-        FAILF(fen, "For square %s", square);
+        FAIL("Fen %s. For square %s", fen, square);
         printf("Expected: \n");
         BoardPrintBitboard(&board, moves);
         printf("Found: \n");

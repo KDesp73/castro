@@ -1,4 +1,7 @@
-#include "tests.h"
+#define TAG "square_to_name"
+#include "IncludeOnly/test.h"
+#define CASTRO_STRIP_PREFIX
+#include "castro.h"
 #include <string.h>
 
 int test_square_to_name(Square square, const char* expected)
