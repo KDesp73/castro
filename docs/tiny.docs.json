@@ -1,0 +1,954 @@
+{
+    "name": "castro",
+    "timestamp": "2026-03-03 00:45:24",
+    "docs": [
+        {
+            "file": "src/castro.h",
+            "docs": {
+                "marker": "module",
+                "args": [
+                    "root"
+                ],
+                "line": 75,
+                "children": [
+                    {
+                        "marker": "function",
+                        "args": [
+                            "version "
+                        ],
+                        "line": 85,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Fills in the provided pointers with the current version numbers."
+                                ],
+                                "line": 86,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "major",
+                                    "Pointer to an int to store the major version"
+                                ],
+                                "line": 88,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "minor",
+                                    "Pointer to an int to store the minor version"
+                                ],
+                                "line": 89,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "patch",
+                                    "Pointer to an int to store the patch version"
+                                ],
+                                "line": 90,
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "file": "src/castro.h",
+            "docs": {
+                "marker": "module",
+                "args": [
+                    "square"
+                ],
+                "line": 99,
+                "children": [
+                    {
+                        "marker": "type",
+                        "args": [
+                            "Square"
+                        ],
+                        "line": 113,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Represents a square on the chessboard (0-63)."
+                                ],
+                                "line": 114,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "macro",
+                        "args": [
+                            "SQUARE_PRINT  "
+                        ],
+                        "line": 117,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Prints a square's name and index to stdout."
+                                ],
+                                "line": 118,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "square",
+                                    "The square to print"
+                                ],
+                                "line": 120,
+                                "children": []
+                            },
+                            {
+                                "marker": "example",
+                                "args": [
+                                    "e4 = E4 28"
+                                ],
+                                "line": 122,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "macro",
+                        "args": [
+                            "COORDS  "
+                        ],
+                        "line": 130,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Macro to convert a square index to (row, col) coordinates."
+                                ],
+                                "line": 131,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "square",
+                                    "Square index in [0, 63]"
+                                ],
+                                "line": 133,
+                                "children": []
+                            },
+                            {
+                                "marker": "example",
+                                "args": [
+                                    "board[COORDS(s)] = ...;` → expands to `board[(s)/8][(s)%8]"
+                                ],
+                                "line": 135,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "function",
+                        "args": [
+                            "SquareToName "
+                        ],
+                        "line": 138,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Converts a square index (0-63) to algebraic notation (e.g. \"e4\")."
+                                ],
+                                "line": 139,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "buffer",
+                                    "[out] A 3-character buffer (e.g., `char name[3]`) to store the result."
+                                ],
+                                "line": 141,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "square",
+                                    "[in] Square index from 0 to 63."
+                                ],
+                                "line": 142,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "function",
+                        "args": [
+                            "NameToSquare  "
+                        ],
+                        "line": 145,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Converts algebraic notation (e.g. \"e4\") to a square index (0-63)."
+                                ],
+                                "line": 146,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "buffer",
+                                    "A null-terminated string containing the square name."
+                                ],
+                                "line": 148,
+                                "children": []
+                            },
+                            {
+                                "marker": "returns",
+                                "args": [
+                                    "Square index corresponding to the name, or SQUARE_NONE if invalid."
+                                ],
+                                "line": 150,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "function",
+                        "args": [
+                            "Rank  "
+                        ],
+                        "line": 153,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Returns the rank (0–7) of a square index."
+                                ],
+                                "line": 154,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "square",
+                                    "The square as an index"
+                                ],
+                                "line": 156,
+                                "children": []
+                            },
+                            {
+                                "marker": "returns",
+                                "args": [
+                                    "int"
+                                ],
+                                "line": 158,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "function",
+                        "args": [
+                            "File  "
+                        ],
+                        "line": 161,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Returns the file (0–7) of a square index."
+                                ],
+                                "line": 162,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "square",
+                                    "The square as an index"
+                                ],
+                                "line": 164,
+                                "children": []
+                            },
+                            {
+                                "marker": "returns",
+                                "args": [
+                                    "int"
+                                ],
+                                "line": 166,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "function",
+                        "args": [
+                            "IsSquareValid  "
+                        ],
+                        "line": 169,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Checks whether a square index is valid (0–63)."
+                                ],
+                                "line": 170,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "square",
+                                    "The square as an index"
+                                ],
+                                "line": 172,
+                                "children": []
+                            },
+                            {
+                                "marker": "returns",
+                                "args": [
+                                    "bool"
+                                ],
+                                "line": 174,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "function",
+                        "args": [
+                            "SquareFromCoords  "
+                        ],
+                        "line": 177,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Converts (rank, file) coordinates to a square index."
+                                ],
+                                "line": 178,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "y",
+                                    "Rank (0 = rank 1, 7 = rank 8)"
+                                ],
+                                "line": 180,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "x",
+                                    "File (0 = file A, 7 = file H)"
+                                ],
+                                "line": 181,
+                                "children": []
+                            },
+                            {
+                                "marker": "returns",
+                                "args": [
+                                    "Square index."
+                                ],
+                                "line": 183,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "function",
+                        "args": [
+                            "SquareFromName "
+                        ],
+                        "line": 186,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Converts a square name (e.g. \"d2\") to an index."
+                                ],
+                                "line": 187,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "name",
+                                    "A 2-character string like \"e4\"."
+                                ],
+                                "line": 189,
+                                "children": []
+                            },
+                            {
+                                "marker": "returns",
+                                "args": [
+                                    "Square index or SQUARE_NONE."
+                                ],
+                                "line": 190,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "macro",
+                        "args": [
+                            "SR  "
+                        ],
+                        "line": 193,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Flips a square vertically (used for mirror board logic)."
+                                ],
+                                "line": 194,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "s",
+                                    "The square to flip"
+                                ],
+                                "line": 196,
+                                "children": []
+                            },
+                            {
+                                "marker": "example",
+                                "args": [
+                                    "SR(E2) returns the square index of E7."
+                                ],
+                                "line": 198,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "const",
+                        "args": [
+                            "SQUARE_NONE"
+                        ],
+                        "line": 283,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Special marker for an invalid or uninitialized square"
+                                ],
+                                "line": 284,
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "file": "src/castro.h",
+            "docs": {
+                "marker": "module",
+                "args": [
+                    "bitboard"
+                ],
+                "line": 289,
+                "children": [
+                    {
+                        "marker": "type",
+                        "args": [
+                            "Bitboard"
+                        ],
+                        "line": 294,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "A 64-bit bitboard where each bit represents a square."
+                                ],
+                                "line": 295,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "enum",
+                        "args": [
+                            "Direction"
+                        ],
+                        "line": 298,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Cardinal and diagonal directions for sliding piece movement or bitboard shifting."
+                                ],
+                                "line": 299,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "macro",
+                        "args": [
+                            "BB  "
+                        ],
+                        "line": 311,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Converts a square index to a bitboard with a single set bit."
+                                ],
+                                "line": 312,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "square"
+                                ],
+                                "line": 314,
+                                "children": []
+                            },
+                            {
+                                "marker": "returns",
+                                "args": [
+                                    "Bitboard (0ULL if the square is SQUARE_NONE)"
+                                ],
+                                "line": 316,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "function",
+                        "args": [
+                            "lsb  "
+                        ],
+                        "line": 319,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Returns the index of the least significant bit set (LSB)."
+                                ],
+                                "line": 320,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "b",
+                                    "Input bitboard."
+                                ],
+                                "line": 322,
+                                "children": []
+                            },
+                            {
+                                "marker": "returns",
+                                "args": [
+                                    "Square index (0–63) of the lowest bit set."
+                                ],
+                                "line": 324,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "function",
+                        "args": [
+                            "msb "
+                        ],
+                        "line": 327,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Returns the index of the most significant bit set (MSB)."
+                                ],
+                                "line": 328,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "b",
+                                    "Input bitboard."
+                                ],
+                                "line": 330,
+                                "children": []
+                            },
+                            {
+                                "marker": "returns",
+                                "args": [
+                                    "Square index (0–63) of the highest bit set."
+                                ],
+                                "line": 331,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "function",
+                        "args": [
+                            "shift  "
+                        ],
+                        "line": 334,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Shifts a bitboard in a specified direction."
+                                ],
+                                "line": 335,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "b",
+                                    "Input bitboard."
+                                ],
+                                "line": 337,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "D",
+                                    "Direction to shift in."
+                                ],
+                                "line": 338,
+                                "children": []
+                            },
+                            {
+                                "marker": "returns",
+                                "args": [
+                                    "Resulting shifted bitboard."
+                                ],
+                                "line": 340,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "function",
+                        "args": [
+                            "poplsb  "
+                        ],
+                        "line": 343,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Pops and returns the index of the least significant bit set. The bit is cleared from the input bitboard."
+                                ],
+                                "line": 344,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "b",
+                                    "Pointer to bitboard."
+                                ],
+                                "line": 346,
+                                "children": []
+                            },
+                            {
+                                "marker": "returns",
+                                "args": [
+                                    "Square index that was popped."
+                                ],
+                                "line": 348,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "function",
+                        "args": [
+                            "popcount  "
+                        ],
+                        "line": 351,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Counts the number of bits set in the bitboard."
+                                ],
+                                "line": 352,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "bb",
+                                    "Input bitboard."
+                                ],
+                                "line": 354,
+                                "children": []
+                            },
+                            {
+                                "marker": "returns",
+                                "args": [
+                                    "Number of set bits."
+                                ],
+                                "line": 356,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "function",
+                        "args": [
+                            "on "
+                        ],
+                        "line": 359,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Sets the bit corresponding to the square in the bitboard."
+                                ],
+                                "line": 360,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "bitboard",
+                                    "Pointer to the bitboard"
+                                ],
+                                "line": 362,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "square",
+                                    "The square we want to turn on"
+                                ],
+                                "line": 363,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "function",
+                        "args": [
+                            "off "
+                        ],
+                        "line": 366,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Clears the bit corresponding to the square in the bitboard."
+                                ],
+                                "line": 367,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "bitboard",
+                                    "Pointer to the bitboard"
+                                ],
+                                "line": 369,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "square",
+                                    "The square we want to turn off"
+                                ],
+                                "line": 370,
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "file": "src/castro.h",
+            "docs": {
+                "marker": "module",
+                "args": [
+                    "pseudo"
+                ],
+                "line": 375,
+                "children": [
+                    {
+                        "marker": "function",
+                        "args": [
+                            "PawnAttacks  "
+                        ],
+                        "line": 378,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Computes pseudo-legal pawn attacks."
+                                ],
+                                "line": 379,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "pawn",
+                                    "Square of pawn."
+                                ],
+                                "line": 381,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "enemySquares",
+                                    "Bitboard of enemy pieces."
+                                ],
+                                "line": 382,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "color",
+                                    "0 = white, 1 = black."
+                                ],
+                                "line": 383,
+                                "children": []
+                            },
+                            {
+                                "marker": "returns",
+                                "args": [
+                                    "The bitboard containing the pawn attacks"
+                                ],
+                                "line": 385,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "function",
+                        "args": [
+                            "PawnPushes  "
+                        ],
+                        "line": 388,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Computes pseudo-legal pawn forward pushes."
+                                ],
+                                "line": 389,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "pawn",
+                                    "Square of pawn."
+                                ],
+                                "line": 391,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "emptySquares",
+                                    "Bitboard of empty squares."
+                                ],
+                                "line": 392,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "color",
+                                    "0 = white, 1 = black."
+                                ],
+                                "line": 393,
+                                "children": []
+                            },
+                            {
+                                "marker": "returns",
+                                "args": [
+                                    "The bitboard containing the pawn pushes"
+                                ],
+                                "line": 395,
+                                "children": []
+                            }
+                        ]
+                    },
+                    {
+                        "marker": "function",
+                        "args": [
+                            "PawnPromotions  "
+                        ],
+                        "line": 398,
+                        "children": [
+                            {
+                                "marker": "desc",
+                                "args": [
+                                    "Computes pawn promotions (non-capturing)."
+                                ],
+                                "line": 399,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "pawns",
+                                    "Bitboard of pawns eligible to promote."
+                                ],
+                                "line": 401,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "emptySquares",
+                                    "Bitboard of empty target squares."
+                                ],
+                                "line": 402,
+                                "children": []
+                            },
+                            {
+                                "marker": "param",
+                                "args": [
+                                    "color",
+                                    "0 = white, 1 = black."
+                                ],
+                                "line": 403,
+                                "children": []
+                            },
+                            {
+                                "marker": "returns",
+                                "args": [
+                                    "The bitboard containing the pawn promotions"
+                                ],
+                                "line": 405,
+                                "children": []
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en" x-data="{ darkMode: localStorage.getItem('theme') === 'dark' }" :class="{ 'dark': darkMode }">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>castro Documentation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .highlight { background-color: #fef08a; border-radius: 2px; padding: 0 2px; }
+        .dark .highlight { background-color: #854d0e; color: white; }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans transition-colors duration-200" 
+      x-data="{ 
+    search: '',
+    
+    toggleTheme() {
+        this.darkMode = !this.darkMode;
+        localStorage.setItem('theme', this.darkMode ? 'dark' : 'light');
+    },
+
+    shouldShowModule(file, module, children) {
+        if (!this.search) return true;
+        const s = this.search.toLowerCase();
+        if (file.toLowerCase().includes(s) || (module && module.toLowerCase().includes(s))) return true;
+        return Array.isArray(children) && children.some(c => c && c.toLowerCase().includes(s));
+    },
+
+    shouldShowChild(childName, moduleName) {
+        if (!this.search) return true;
+        const s = this.search.toLowerCase();
+        return (childName && childName.toLowerCase().includes(s)) || 
+               (moduleName && moduleName.toLowerCase().includes(s));
+    }
+}">
+
+    <header class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">castro</h1>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-widest">Generated on 2026-03-03 00:45:24</p>
+                </div>
+                <button @click="toggleTheme()" class="md:hidden p-2 rounded-lg bg-gray-100 dark:bg-gray-700">
+                    <span x-show="!darkMode">🌙</span><span x-show="darkMode">☀️</span>
+                </button>
+            </div>
+            
+            <div class="flex items-center gap-4 w-full md:w-auto">
+                <div class="relative w-full md:w-96">
+                    <input type="text" x-model="search" placeholder="Search modules, classes, or methods..." 
+                           class="w-full pl-10 pr-4 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
+                    <svg class="w-5 h-5 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                <button @click="toggleTheme()" class="hidden md:block p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                    <span x-show="!darkMode" title="Dark Mode">🌙</span>
+                    <span x-show="darkMode" title="Light Mode">☀️</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 gap-8">
+            
+            
+            
+                
+                    
+                
+            
+            
+
+            <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-all"
+                     x-show="shouldShowModule('src/castro.h', 'root', ["version "])"
+                     x-cloak>
+                
+                <div class="bg-gray-800 dark:bg-black text-white px-6 py-3 flex justify-between items-center">
+                    <h2 class="font-mono text-sm" :class="search && 'src/castro.h'.toLowerCase().includes(search.toLowerCase()) ? 'text-yellow-300' : ''">src/castro.h</h2>
+                </div>
+
+                <div class="p-6">
+                    
+                    <div class="mb-6 flex items-center justify-between">
+                        <div class="flex items-center">
+                            <span class="bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 text-xs font-bold px-2 py-1 rounded uppercase mr-2">module</span>
+                            <span class="text-xl font-bold" :class="search && 'root'.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                root
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('version ', 'root')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">function</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'version '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        version 
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L85</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Fills in the provided pointers with the current version numbers.</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">major</code>
+                                            <span class="text-gray-500 dark:text-gray-400">Pointer to an int to store the major version</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">minor</code>
+                                            <span class="text-gray-500 dark:text-gray-400">Pointer to an int to store the minor version</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">patch</code>
+                                            <span class="text-gray-500 dark:text-gray-400">Pointer to an int to store the patch version</span>
+                                        </div>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+            </section>
+            
+            
+            
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+            
+            
+
+            <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-all"
+                     x-show="shouldShowModule('src/castro.h', 'square', ["Square", "SQUARE_PRINT  ", "COORDS  ", "SquareToName ", "NameToSquare  ", "Rank  ", "File  ", "IsSquareValid  ", "SquareFromCoords  ", "SquareFromName ", "SR  ", "SQUARE_NONE"])"
+                     x-cloak>
+                
+                <div class="bg-gray-800 dark:bg-black text-white px-6 py-3 flex justify-between items-center">
+                    <h2 class="font-mono text-sm" :class="search && 'src/castro.h'.toLowerCase().includes(search.toLowerCase()) ? 'text-yellow-300' : ''">src/castro.h</h2>
+                </div>
+
+                <div class="p-6">
+                    
+                    <div class="mb-6 flex items-center justify-between">
+                        <div class="flex items-center">
+                            <span class="bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 text-xs font-bold px-2 py-1 rounded uppercase mr-2">module</span>
+                            <span class="text-xl font-bold" :class="search && 'square'.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                square
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('Square', 'square')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">type</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'Square'.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        Square
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L113</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Represents a square on the chessboard (0-63).</p>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('SQUARE_PRINT  ', 'square')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">macro</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'SQUARE_PRINT  '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        SQUARE_PRINT  
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L117</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Prints a square&#39;s name and index to stdout.</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">square</code>
+                                            <span class="text-gray-500 dark:text-gray-400">The square to print</span>
+                                        </div>
+                                    
+                                
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('COORDS  ', 'square')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">macro</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'COORDS  '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        COORDS  
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L130</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Macro to convert a square index to (row, col) coordinates.</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">square</code>
+                                            <span class="text-gray-500 dark:text-gray-400">Square index in [0, 63]</span>
+                                        </div>
+                                    
+                                
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('SquareToName ', 'square')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">function</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'SquareToName '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        SquareToName 
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L138</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Converts a square index (0-63) to algebraic notation (e.g. &#34;e4&#34;).</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">buffer</code>
+                                            <span class="text-gray-500 dark:text-gray-400">[out] A 3-character buffer (e.g., `char name[3]`) to store the result.</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">square</code>
+                                            <span class="text-gray-500 dark:text-gray-400">[in] Square index from 0 to 63.</span>
+                                        </div>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('NameToSquare  ', 'square')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">function</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'NameToSquare  '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        NameToSquare  
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L145</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Converts algebraic notation (e.g. &#34;e4&#34;) to a square index (0-63).</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">buffer</code>
+                                            <span class="text-gray-500 dark:text-gray-400">A null-terminated string containing the square name.</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm border-t border-gray-100 dark:border-gray-700 pt-2 mt-2">
+                                            <span class="text-green-600 dark:text-green-400 font-bold text-xs uppercase tracking-tight">Returns</span>
+                                            <code class="text-gray-700 dark:text-gray-300 block mt-1">Square index corresponding to the name, or SQUARE_NONE if invalid.</code>
+                                        </div>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('Rank  ', 'square')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">function</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'Rank  '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        Rank  
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L153</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Returns the rank (0–7) of a square index.</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">square</code>
+                                            <span class="text-gray-500 dark:text-gray-400">The square as an index</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm border-t border-gray-100 dark:border-gray-700 pt-2 mt-2">
+                                            <span class="text-green-600 dark:text-green-400 font-bold text-xs uppercase tracking-tight">Returns</span>
+                                            <code class="text-gray-700 dark:text-gray-300 block mt-1">int</code>
+                                        </div>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('File  ', 'square')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">function</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'File  '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        File  
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L161</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Returns the file (0–7) of a square index.</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">square</code>
+                                            <span class="text-gray-500 dark:text-gray-400">The square as an index</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm border-t border-gray-100 dark:border-gray-700 pt-2 mt-2">
+                                            <span class="text-green-600 dark:text-green-400 font-bold text-xs uppercase tracking-tight">Returns</span>
+                                            <code class="text-gray-700 dark:text-gray-300 block mt-1">int</code>
+                                        </div>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('IsSquareValid  ', 'square')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">function</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'IsSquareValid  '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        IsSquareValid  
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L169</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Checks whether a square index is valid (0–63).</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">square</code>
+                                            <span class="text-gray-500 dark:text-gray-400">The square as an index</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm border-t border-gray-100 dark:border-gray-700 pt-2 mt-2">
+                                            <span class="text-green-600 dark:text-green-400 font-bold text-xs uppercase tracking-tight">Returns</span>
+                                            <code class="text-gray-700 dark:text-gray-300 block mt-1">bool</code>
+                                        </div>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('SquareFromCoords  ', 'square')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">function</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'SquareFromCoords  '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        SquareFromCoords  
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L177</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Converts (rank, file) coordinates to a square index.</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">y</code>
+                                            <span class="text-gray-500 dark:text-gray-400">Rank (0 = rank 1, 7 = rank 8)</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">x</code>
+                                            <span class="text-gray-500 dark:text-gray-400">File (0 = file A, 7 = file H)</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm border-t border-gray-100 dark:border-gray-700 pt-2 mt-2">
+                                            <span class="text-green-600 dark:text-green-400 font-bold text-xs uppercase tracking-tight">Returns</span>
+                                            <code class="text-gray-700 dark:text-gray-300 block mt-1">Square index.</code>
+                                        </div>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('SquareFromName ', 'square')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">function</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'SquareFromName '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        SquareFromName 
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L186</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Converts a square name (e.g. &#34;d2&#34;) to an index.</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">name</code>
+                                            <span class="text-gray-500 dark:text-gray-400">A 2-character string like &#34;e4&#34;.</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm border-t border-gray-100 dark:border-gray-700 pt-2 mt-2">
+                                            <span class="text-green-600 dark:text-green-400 font-bold text-xs uppercase tracking-tight">Returns</span>
+                                            <code class="text-gray-700 dark:text-gray-300 block mt-1">Square index or SQUARE_NONE.</code>
+                                        </div>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('SR  ', 'square')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">macro</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'SR  '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        SR  
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L193</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Flips a square vertically (used for mirror board logic).</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">s</code>
+                                            <span class="text-gray-500 dark:text-gray-400">The square to flip</span>
+                                        </div>
+                                    
+                                
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('SQUARE_NONE', 'square')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">const</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'SQUARE_NONE'.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        SQUARE_NONE
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L283</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Special marker for an invalid or uninitialized square</p>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+            </section>
+            
+            
+            
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+                    
+                
+            
+            
+
+            <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-all"
+                     x-show="shouldShowModule('src/castro.h', 'bitboard', ["Bitboard", "Direction", "BB  ", "lsb  ", "msb ", "shift  ", "poplsb  ", "popcount  ", "on ", "off "])"
+                     x-cloak>
+                
+                <div class="bg-gray-800 dark:bg-black text-white px-6 py-3 flex justify-between items-center">
+                    <h2 class="font-mono text-sm" :class="search && 'src/castro.h'.toLowerCase().includes(search.toLowerCase()) ? 'text-yellow-300' : ''">src/castro.h</h2>
+                </div>
+
+                <div class="p-6">
+                    
+                    <div class="mb-6 flex items-center justify-between">
+                        <div class="flex items-center">
+                            <span class="bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 text-xs font-bold px-2 py-1 rounded uppercase mr-2">module</span>
+                            <span class="text-xl font-bold" :class="search && 'bitboard'.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                bitboard
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('Bitboard', 'bitboard')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">type</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'Bitboard'.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        Bitboard
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L294</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">A 64-bit bitboard where each bit represents a square.</p>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('Direction', 'bitboard')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">enum</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'Direction'.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        Direction
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L298</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Cardinal and diagonal directions for sliding piece movement or bitboard shifting.</p>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('BB  ', 'bitboard')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">macro</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'BB  '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        BB  
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L311</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Converts a square index to a bitboard with a single set bit.</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">square</code>
+                                            <span class="text-gray-500 dark:text-gray-400"></span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm border-t border-gray-100 dark:border-gray-700 pt-2 mt-2">
+                                            <span class="text-green-600 dark:text-green-400 font-bold text-xs uppercase tracking-tight">Returns</span>
+                                            <code class="text-gray-700 dark:text-gray-300 block mt-1">Bitboard (0ULL if the square is SQUARE_NONE)</code>
+                                        </div>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('lsb  ', 'bitboard')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">function</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'lsb  '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        lsb  
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L319</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Returns the index of the least significant bit set (LSB).</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">b</code>
+                                            <span class="text-gray-500 dark:text-gray-400">Input bitboard.</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm border-t border-gray-100 dark:border-gray-700 pt-2 mt-2">
+                                            <span class="text-green-600 dark:text-green-400 font-bold text-xs uppercase tracking-tight">Returns</span>
+                                            <code class="text-gray-700 dark:text-gray-300 block mt-1">Square index (0–63) of the lowest bit set.</code>
+                                        </div>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('msb ', 'bitboard')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">function</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'msb '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        msb 
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L327</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Returns the index of the most significant bit set (MSB).</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">b</code>
+                                            <span class="text-gray-500 dark:text-gray-400">Input bitboard.</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm border-t border-gray-100 dark:border-gray-700 pt-2 mt-2">
+                                            <span class="text-green-600 dark:text-green-400 font-bold text-xs uppercase tracking-tight">Returns</span>
+                                            <code class="text-gray-700 dark:text-gray-300 block mt-1">Square index (0–63) of the highest bit set.</code>
+                                        </div>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('shift  ', 'bitboard')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">function</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'shift  '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        shift  
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L334</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Shifts a bitboard in a specified direction.</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">b</code>
+                                            <span class="text-gray-500 dark:text-gray-400">Input bitboard.</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">D</code>
+                                            <span class="text-gray-500 dark:text-gray-400">Direction to shift in.</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm border-t border-gray-100 dark:border-gray-700 pt-2 mt-2">
+                                            <span class="text-green-600 dark:text-green-400 font-bold text-xs uppercase tracking-tight">Returns</span>
+                                            <code class="text-gray-700 dark:text-gray-300 block mt-1">Resulting shifted bitboard.</code>
+                                        </div>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('poplsb  ', 'bitboard')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">function</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'poplsb  '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        poplsb  
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L343</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Pops and returns the index of the least significant bit set. The bit is cleared from the input bitboard.</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">b</code>
+                                            <span class="text-gray-500 dark:text-gray-400">Pointer to bitboard.</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm border-t border-gray-100 dark:border-gray-700 pt-2 mt-2">
+                                            <span class="text-green-600 dark:text-green-400 font-bold text-xs uppercase tracking-tight">Returns</span>
+                                            <code class="text-gray-700 dark:text-gray-300 block mt-1">Square index that was popped.</code>
+                                        </div>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('popcount  ', 'bitboard')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">function</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'popcount  '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        popcount  
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L351</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Counts the number of bits set in the bitboard.</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">bb</code>
+                                            <span class="text-gray-500 dark:text-gray-400">Input bitboard.</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm border-t border-gray-100 dark:border-gray-700 pt-2 mt-2">
+                                            <span class="text-green-600 dark:text-green-400 font-bold text-xs uppercase tracking-tight">Returns</span>
+                                            <code class="text-gray-700 dark:text-gray-300 block mt-1">Number of set bits.</code>
+                                        </div>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('on ', 'bitboard')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">function</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'on '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        on 
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L359</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Sets the bit corresponding to the square in the bitboard.</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">bitboard</code>
+                                            <span class="text-gray-500 dark:text-gray-400">Pointer to the bitboard</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">square</code>
+                                            <span class="text-gray-500 dark:text-gray-400">The square we want to turn on</span>
+                                        </div>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('off ', 'bitboard')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">function</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'off '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        off 
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L366</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Clears the bit corresponding to the square in the bitboard.</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">bitboard</code>
+                                            <span class="text-gray-500 dark:text-gray-400">Pointer to the bitboard</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">square</code>
+                                            <span class="text-gray-500 dark:text-gray-400">The square we want to turn off</span>
+                                        </div>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+            </section>
+            
+            
+            
+                
+                    
+                
+                    
+                
+                    
+                
+            
+            
+
+            <section class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-all"
+                     x-show="shouldShowModule('src/castro.h', 'pseudo', ["PawnAttacks  ", "PawnPushes  ", "PawnPromotions  "])"
+                     x-cloak>
+                
+                <div class="bg-gray-800 dark:bg-black text-white px-6 py-3 flex justify-between items-center">
+                    <h2 class="font-mono text-sm" :class="search && 'src/castro.h'.toLowerCase().includes(search.toLowerCase()) ? 'text-yellow-300' : ''">src/castro.h</h2>
+                </div>
+
+                <div class="p-6">
+                    
+                    <div class="mb-6 flex items-center justify-between">
+                        <div class="flex items-center">
+                            <span class="bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 text-xs font-bold px-2 py-1 rounded uppercase mr-2">module</span>
+                            <span class="text-xl font-bold" :class="search && 'pseudo'.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                pseudo
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('PawnAttacks  ', 'pseudo')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">function</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'PawnAttacks  '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        PawnAttacks  
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L378</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Computes pseudo-legal pawn attacks.</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">pawn</code>
+                                            <span class="text-gray-500 dark:text-gray-400">Square of pawn.</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">enemySquares</code>
+                                            <span class="text-gray-500 dark:text-gray-400">Bitboard of enemy pieces.</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">color</code>
+                                            <span class="text-gray-500 dark:text-gray-400">0 = white, 1 = black.</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm border-t border-gray-100 dark:border-gray-700 pt-2 mt-2">
+                                            <span class="text-green-600 dark:text-green-400 font-bold text-xs uppercase tracking-tight">Returns</span>
+                                            <code class="text-gray-700 dark:text-gray-300 block mt-1">The bitboard containing the pawn attacks</code>
+                                        </div>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('PawnPushes  ', 'pseudo')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">function</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'PawnPushes  '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        PawnPushes  
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L388</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Computes pseudo-legal pawn forward pushes.</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">pawn</code>
+                                            <span class="text-gray-500 dark:text-gray-400">Square of pawn.</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">emptySquares</code>
+                                            <span class="text-gray-500 dark:text-gray-400">Bitboard of empty squares.</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">color</code>
+                                            <span class="text-gray-500 dark:text-gray-400">0 = white, 1 = black.</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm border-t border-gray-100 dark:border-gray-700 pt-2 mt-2">
+                                            <span class="text-green-600 dark:text-green-400 font-bold text-xs uppercase tracking-tight">Returns</span>
+                                            <code class="text-gray-700 dark:text-gray-300 block mt-1">The bitboard containing the pawn pushes</code>
+                                        </div>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="border-l-4 border-indigo-200 dark:border-indigo-800 pl-4 py-1 transition-all"
+                             x-show="shouldShowChild('PawnPromotions  ', 'pseudo')">
+                            
+                            <div class="flex items-center justify-between mb-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 uppercase">function</span>
+                                    <h3 class="font-bold text-gray-800 dark:text-gray-200 text-lg" :class="search && 'PawnPromotions  '.toLowerCase().includes(search.toLowerCase()) ? 'bg-yellow-200 dark:bg-yellow-900' : ''">
+                                        PawnPromotions  
+                                    </h3>
+                                </div>
+                                <span class="text-[10px] font-mono text-gray-400 dark:text-gray-500">L398</span>
+                            </div>
+
+                            <div class="ml-4 space-y-2 mt-2">
+                                
+                                    
+                                        <p class="text-gray-600 dark:text-gray-400 italic text-sm">Computes pawn promotions (non-capturing).</p>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">pawns</code>
+                                            <span class="text-gray-500 dark:text-gray-400">Bitboard of pawns eligible to promote.</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">emptySquares</code>
+                                            <span class="text-gray-500 dark:text-gray-400">Bitboard of empty target squares.</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm flex items-start gap-2">
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold px-1 bg-pink-50 dark:bg-pink-900/30 rounded">color</code>
+                                            <span class="text-gray-500 dark:text-gray-400">0 = white, 1 = black.</span>
+                                        </div>
+                                    
+                                
+                                    
+                                        <div class="text-sm border-t border-gray-100 dark:border-gray-700 pt-2 mt-2">
+                                            <span class="text-green-600 dark:text-green-400 font-bold text-xs uppercase tracking-tight">Returns</span>
+                                            <code class="text-gray-700 dark:text-gray-300 block mt-1">The bitboard containing the pawn promotions</code>
+                                        </div>
+                                    
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+            </section>
+            
+        </div>
+        
+        <div x-show="search !== '' && !document.querySelectorAll('section[style*=\'display: block\']').length" 
+             class="text-center py-20" x-cloak>
+            <p class="text-gray-400 text-lg">No matches found for "<span x-text="search" class="font-bold"></span>"</p>
+        </div>
+    </main>
+</body>
+</html>
