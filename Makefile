@@ -98,11 +98,10 @@ docs:
 	tinydocs-cli \
 		--files src/castro.h \
 		--markers docs/tiny.markers.json \
-		-o docs \
-		--name castro \
 		--ignore .gitignore \
+		-o docs \
 		--comment-style "//" \
-		--generate
+		--name castro
 
 .PHONY: help
 help: ## Show help message
