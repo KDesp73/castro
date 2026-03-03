@@ -155,7 +155,7 @@ Square castro_NameToSquare(const char buffer[3]);
 //
 // @param square The square as an index
 //
-// @returns int
+// @returns int The rank index
 int castro_Rank(Square square);
 
 // @function File
@@ -163,7 +163,7 @@ int castro_Rank(Square square);
 //
 // @param square The square as an index
 //
-// @returns int
+// @returns int The file index
 int castro_File(Square square);
 
 // @function IsSquareValid
@@ -171,7 +171,7 @@ int castro_File(Square square);
 //
 // @param square The square as an index
 //
-// @returns bool
+// @returns bool If the square is valid or not
 bool castro_IsSquareValid(Square square);
 
 // @function SquareFromCoords
@@ -311,7 +311,7 @@ typedef enum {
 // @macro BB
 // @desc Converts a square index to a bitboard with a single set bit.
 //
-// @param square
+// @param square The Square to covert into a bitboard
 // 
 // @returns Bitboard (0ULL if the square is SQUARE_NONE)
 #define BB(square) (((square) == 64) ? 0ULL : 1ULL << (square))
@@ -504,7 +504,7 @@ Bitboard castro_RookAttacksMagic(Square square, Bitboard occupancy);
 // @param kingPosition Bitboard with one bit set where the king is.
 // @param enemyAttacks Bitboard of all enemy attacks.
 //
-// @returns bool
+// @returns bool Whether the king is in check or not
 bool castro_IsKingInCheck(Bitboard kingPosition, Bitboard enemyAttacks);
 
 Bitboard _PinnedPieces(Bitboard kingPosition, Bitboard slidingAttacks, Bitboard occupancy);
@@ -858,7 +858,7 @@ int castro_CountPieces(const Board* board, PieceColor color, PieceType type);
 // @param board Pointer to the board
 // @param castling_rights The byte representing the castling rights
 // 
-// @returns int
+// @returns int 0 means false and every positive integer means true
 int castro_HasCastlingRights(const Board* board, uint8_t castling_rights);
 
 // @function RevokeCastlingRights
@@ -875,7 +875,7 @@ void castro_RevokeCastlingRights(Board* board, uint8_t castling_rights);
 // @param square The square we want to check
 // @param color The color of the side that might attack the square
 //
-// @returns bool
+// @returns bool Whether the square is attacked or not
 bool castro_IsSquareAttacked(const Board* board, Square square, PieceColor color);
 
 // @function IsSquareEmpty
@@ -884,7 +884,7 @@ bool castro_IsSquareAttacked(const Board* board, Square square, PieceColor color
 // @param board Pointer to the board
 // @param square The square we want to check
 //
-// @returns bool
+// @returns bool Whether the square is empty or not
 bool castro_IsSquareEmpty(const Board* board, Square square);
 
 // @function castro_IsSquareOccupiedBy
@@ -894,7 +894,7 @@ bool castro_IsSquareEmpty(const Board* board, Square square);
 // @param square The square we want to check
 // @param color The color to check for
 //
-// @returns bool
+// @returns bool Whether the square is occupied or not
 bool castro_IsSquareOccupiedBy(const Board* board, Square square, PieceColor color);
 
 // @function castro_NumberOfPieces
@@ -903,7 +903,7 @@ bool castro_IsSquareOccupiedBy(const Board* board, Square square, PieceColor col
 // @param board Pointer to the board
 // @param color The color to count
 //
-// @returns size_t
+// @returns size_t The piece count
 size_t castro_NumberOfPieces(const Board* board, PieceColor color);
 
 // @function castro_IsInCheckColor
@@ -912,7 +912,7 @@ size_t castro_NumberOfPieces(const Board* board, PieceColor color);
 // @param board Pointer to the board
 // @param color The color to check
 //
-// @returns bool
+// @returns bool Whether the <color> king is in check
 bool castro_IsInCheckColor(const Board* board, PieceColor color);
 
 // @function castro_IsInCheck
@@ -920,7 +920,7 @@ bool castro_IsInCheckColor(const Board* board, PieceColor color);
 //
 // @param board Pointer to the board
 //
-// @returns bool
+// @returns bool Whether the current player's king is in check
 bool castro_IsInCheck(const Board* board);
 
 
@@ -929,7 +929,7 @@ bool castro_IsInCheck(const Board* board);
 //
 // @param board Pointer to the source board
 //
-// @returns Board
+// @returns Board The copy as a stack variable
 Board castro_BoardCopy(const Board* board);
 
 //
@@ -957,8 +957,6 @@ void castro_BitboardPrint(Bitboard bitboard);
 // @param board Pointer to the board
 // @param squares Array of squares to print
 // @param count Number of squares in the array
-//
-// @returns void
 void castro_BoardPrintSquares(const Board* board, Square* squares, size_t count);
 
 // @function castro_BoardPrintBitboard
@@ -966,8 +964,6 @@ void castro_BoardPrintSquares(const Board* board, Square* squares, size_t count)
 //
 // @param board Pointer to the board
 // @param highlight The bitboard to overlay/highlight
-//
-// @returns void
 void castro_BoardPrintBitboard(const Board* board, Bitboard highlight);
 
 // @function castro_BoardPrint
@@ -975,24 +971,18 @@ void castro_BoardPrintBitboard(const Board* board, Bitboard highlight);
 //
 // @param board Pointer to the board
 // @param first The first square to highlight (followed by variadic list)
-//
-// @returns void
 void castro_BoardPrint(const Board* board, Square first, ...);
 
 // @function castro_BoardPrintBitboards
 // @desc Prints all bitboards in the board structure (for debugging).
 //
 // @param board The board structure
-//
-// @returns void
 void castro_BoardPrintBitboards(Board board);
 
 // @function castro_BoardPrintGrid
 // @desc Prints the character grid of the board.
 //
 // @param board Pointer to the board
-//
-// @returns void
 void castro_BoardPrintGrid(const Board* board);
 
 
@@ -1062,7 +1052,7 @@ int castro_ZobristPieceToIndex(char piece);
 // @module masks
 
 // @type Bitboard
-// @desc TODO
+// @desc A 64-bit unsigned integer representing the squares of the chessboard. Each bit corresponds to a square (0-63), where a set bit (1) indicates the presence of a piece or a targeted square, and a cleared bit (0) indicates its absence. This allows for high-performance board manipulation using bitwise operators.
 typedef uint64_t Bitboard;
 
 #define FILE_A  0x0101010101010101ULL  // File A (a1, a2, ..., a8)
@@ -1120,47 +1110,212 @@ typedef enum {
     HORIZONTAL
 } RayType;
 
-void castro_InitMasks();
+// @function InitMasks
+// @desc Initializes all masks
+void castro_InitMasks(void);
 
+// @function GeneralOccupancy
+// @desc Computes the general occupancy into a bitboard
+//
+// @param whitePieces The bitboard containing the positions of the white pieces
+// @param blackPieces The bitboard containing the positions of the black pieces
+//
+// @returns Bitboard The combined bitboard
 Bitboard castro_GeneralOccupancy(Bitboard whitePieces, Bitboard blackPieces);
+
+// @function BlockerMasks
+// @desc Calculates the blocker mask for a sliding piece
+//
+// @param slidingPiece The bitboard with the sliding piece's square bit turned on
+// @param occupancy The general occupancy bitboard
+//
+// @returns Bitboard The blocker mask
 Bitboard castro_BlockerMasks(Bitboard slidingPiece, Bitboard occupancy);
 
 /*** Ray Masks ***/
-Bitboard castro_ComputeDiagonalMask(Square square);
-Bitboard castro_ComputeAntiDiagonalMask(Square square);
-Bitboard castro_ComputeHorizontalMask(Square);
-Bitboard castro_ComputeVerticalMask(Square);
 
+// @function ComputeDiagonalMask
+// @desc Generates a mask for the diagonal passing through the given square
+// @param square The target square index
+// @returns Bitboard The resulting diagonal mask
+Bitboard castro_ComputeDiagonalMask(Square square);
+
+// @function ComputeAntiDiagonalMask
+// @desc Generates a mask for the anti-diagonal passing through the given square
+// @param square The target square index
+// @returns Bitboard The resulting anti-diagonal mask
+Bitboard castro_ComputeAntiDiagonalMask(Square square);
+
+// @function ComputeHorizontalMask
+// @desc Generates a mask for the rank (row) of the given square
+// @param square The target square index
+// @returns Bitboard The resulting rank mask
+Bitboard castro_ComputeHorizontalMask(Square square);
+
+// @function ComputeVerticalMask
+// @desc Generates a mask for the file (column) of the given square
+// @param square The target square index
+// @returns Bitboard The resulting file mask
+Bitboard castro_ComputeVerticalMask(Square square);
+
+// @function DiagonalMask
+// @desc Retrieves the pre-computed diagonal mask for a square
+// @param square The target square index
+// @returns Bitboard The cached diagonal mask
 Bitboard castro_DiagonalMask(Square square);
+
+// @function AntiDiagonalMask
+// @desc Retrieves the pre-computed anti-diagonal mask for a square
+// @param square The target square index
+// @returns Bitboard The cached anti-diagonal mask
 Bitboard castro_AntiDiagonalMask(Square square);
+
+// @function HorizontalMask
+// @desc Retrieves the pre-computed horizontal mask for a square
+// @param square The target square index
+// @returns Bitboard The cached horizontal mask
 Bitboard castro_HorizontalMask(Square square);
+
+// @function VerticalMask
+// @desc Retrieves the pre-computed vertical mask for a square
+// @param square The target square index
+// @returns Bitboard The cached vertical mask
 Bitboard castro_VerticalMask(Square square);
 
 /*** Piece Masks ***/
+
+// @function ComputePawnPushMask
+// @desc Calculates the single-square forward push for a pawn
+// @param square The starting square of the pawn
+// @param color The color of the pawn (determines direction)
+// @returns Bitboard The resulting push mask
 Bitboard castro_ComputePawnPushMask(Square square, PieceColor color);
+
+// @function ComputePawnDoublePushMask
+// @desc Calculates the two-square initial push for a pawn
+// @param square The starting square of the pawn
+// @param color The color of the pawn
+// @returns Bitboard The resulting double-push mask
 Bitboard castro_ComputePawnDoublePushMask(Square square, PieceColor color);
+
+// @function ComputePawnPromotionMask
+// @desc Generates a mask for squares where a pawn push results in promotion
+// @param square The starting square of the pawn
+// @param color The color of the pawn
+// @returns Bitboard The resulting promotion mask
 Bitboard castro_ComputePawnPromotionMask(Square square, PieceColor color);
+
+// @function ComputePawnPromotionAttackMask
+// @desc Generates a mask for diagonal attacks that result in a promotion
+// @param square The starting square of the pawn
+// @param color The color of the pawn
+// @returns Bitboard The resulting promotion attack mask
 Bitboard castro_ComputePawnPromotionAttackMask(Square square, PieceColor color);
+
+// @function ComputePawnAttackMask
+// @desc Calculates standard diagonal attack squares for a pawn
+// @param square The starting square of the pawn
+// @param color The color of the pawn
+// @returns Bitboard The resulting attack mask
 Bitboard castro_ComputePawnAttackMask(Square square, PieceColor color);
+
+// @function ComputeKnightMoveMask
+// @desc Generates all possible L-shaped jumps for a knight on a given square
+// @param square The starting square of the knight
+// @returns Bitboard The resulting knight move mask
 Bitboard castro_ComputeKnightMoveMask(Square square);
+
+// @function ComputeBishopMoveMask
+// @desc Calculates all diagonal sliding moves for a bishop (ignoring blockers)
+// @param square The starting square of the bishop
+// @returns Bitboard The resulting bishop move mask
 Bitboard castro_ComputeBishopMoveMask(Square square);
+
+// @function ComputeRookMoveMask
+// @desc Calculates all horizontal and vertical sliding moves for a rook (ignoring blockers)
+// @param square The starting square of the rook
+// @returns Bitboard The resulting rook move mask
 Bitboard castro_ComputeRookMoveMask(Square square);
+
+// @function ComputeQueenMoveMask
+// @desc Calculates the union of rook and bishop moves for a queen
+// @param square The starting square of the queen
+// @returns Bitboard The resulting queen move mask
 Bitboard castro_ComputeQueenMoveMask(Square square);
+
+// @function ComputeKingMoveMask
+// @desc Generates a mask for all adjacent squares reachable by a king
+// @param square The starting square of the king
+// @returns Bitboard The resulting king move mask
 Bitboard castro_ComputeKingMoveMask(Square square);
 
+// @function PawnPushMask
+// @desc Retrieves pre-computed single push mask
+// @param square starting square
+// @param color piece color
+// @returns Bitboard cached mask
 Bitboard castro_PawnPushMask(Square square, PieceColor color);
+
+// @function PawnDoublePushMask
+// @desc Retrieves pre-computed double push mask
+// @param square starting square
+// @param color piece color
+// @returns Bitboard cached mask
 Bitboard castro_PawnDoublePushMask(Square square, PieceColor color);
+
+// @function PawnPromotionMask
+// @desc Retrieves pre-computed promotion mask
+// @param square starting square
+// @param color piece color
+// @returns Bitboard cached mask
 Bitboard castro_PawnPromotionMask(Square square, PieceColor color);
+
+// @function PawnPromotionAttackMask
+// @desc Retrieves pre-computed promotion attack mask
+// @param square starting square
+// @param color piece color
+// @returns Bitboard cached mask
 Bitboard castro_PawnPromotionAttackMask(Square square, PieceColor color);
+
+// @function PawnAttackMask
+// @desc Retrieves pre-computed pawn attack mask
+// @param square starting square
+// @param color piece color
+// @returns Bitboard cached mask
 Bitboard castro_PawnAttackMask(Square square, PieceColor color);
+
+// @function KnightMoveMask
+// @desc Retrieves pre-computed knight move mask
+// @param square starting square
+// @returns Bitboard cached mask
 Bitboard castro_KnightMoveMask(Square square);
+
+// @function BishopMoveMask
+// @desc Retrieves pre-computed bishop move mask
+// @param square starting square
+// @returns Bitboard cached mask
 Bitboard castro_BishopMoveMask(Square square);
+
+// @function RookMoveMask
+// @desc Retrieves pre-computed rook move mask
+// @param square starting square
+// @returns Bitboard cached mask
 Bitboard castro_RookMoveMask(Square square);
+
+// @function QueenMoveMask
+// @desc Retrieves pre-computed queen move mask
+// @param square starting square
+// @returns Bitboard cached mask
 Bitboard castro_QueenMoveMask(Square square);
+
+// @function KingMoveMask
+// @desc Retrieves pre-computed king move mask
+// @param square starting square
+// @returns Bitboard cached mask
 Bitboard castro_KingMoveMask(Square square);
 
 /*--------------------------------------.
-| *MOVE*                                |
+// @module move
 | ------------------------------------- |
 | Moves are 32-bit integers             |
 | where bits:                           |
@@ -1172,9 +1327,8 @@ Bitboard castro_KingMoveMask(Square square);
 
 // TODO: Make Move 16bits if an application is not found for the flags
 
-/**
- * @desc Flags representing special move types.
- */
+// @enum Flag
+// @desc Flags representing special move types.
 typedef enum {
     FLAG_NORMAL = 0,              ///< Regular move
     FLAG_CASTLING,                ///< Castling move
@@ -1184,9 +1338,8 @@ typedef enum {
     FLAG_PROMOTION_WITH_CAPTURE   ///< Promotion with capture
 } Flag;
 
-/**
- * @desc Types of piece promotions.
- */
+// @enum Promotion
+// @desc Types of piece promotions.
 typedef enum {
     PROMOTION_NONE = 0,           ///< No promotion
     PROMOTION_KNIGHT,
@@ -1195,9 +1348,8 @@ typedef enum {
     PROMOTION_QUEEN
 } Promotion;
 
-/**
- * @desc Bit flags representing castling rights.
- */
+// @enum Castling bytes
+// @desc Bit flags representing castling rights.
 enum {
     CASTLE_WHITE_KINGSIDE  = 0b0001,
     CASTLE_WHITE_QUEENSIDE = 0b0010,
@@ -1205,9 +1357,8 @@ enum {
     CASTLE_BLACK_QUEENSIDE = 0b1000
 };
 
-/**
- * @desc Used to store minimal board state when making a null move.
- */
+// @type NullMoveState
+// @desc Used to store minimal board state when making a null move.
 typedef struct {
     PieceColor turn;
     int halfmoveClock;
@@ -1215,53 +1366,61 @@ typedef struct {
     Square epSquare;
 } NullMoveState;
 
-/// Stores the state of the board before a null move is made
+// @var nullState
+// @desc Stores the state of the board before a null move is made
 extern NullMoveState nullState;
 
-/**
- * @desc Encoded move type (bitfield). Format:
- * - bits 0–5:   from square
- * - bits 6–11:  to square
- * - bits 12–14: promotion type
- * - bits 15–17: move flag
- */
+// @type Move
+// @desc Encoded move type (bitfield). Format:
+// - bits 0–5:   from square
+// - bits 6–11:  to square
+// - bits 12–14: promotion type
+// - bits 15–17: move flag
 typedef uint32_t Move;
 
-/// Special constant representing no move
+// @const NULL_MOVE
+// @desc Special constant representing no move
 #define NULL_MOVE ((Move) 0)
 
-/// Max number of moves in a move list
+// @const MOVES_CAPACITY
+// @desc Max number of moves in a move list
 #define MOVES_CAPACITY 256
 
-/**
- * @desc Represents a dynamic list of moves.
- */
+// @type Moves
+// @desc Represents a dynamic list of moves.
 typedef struct {
     Move list[MOVES_CAPACITY];
     size_t count;
 } Moves;
 
-/// Empty move list constant
+// @const NO_MOVES
+// @desc Empty move list constant
 #define NO_MOVES ((Moves){.count = 0})
 
-/**
- * @desc Appends a move to a move list.
- */
+// @function MovesAppend
+// @desc Appends a move to a move list.
+// @param moves Pointer to the Moves list structure.
+// @param move The specific move to add to the list.
 void castro_MovesAppend(Moves* moves, Move move);
 
-/**
- * @desc Appends one move list to another.
- */
+// @function MovesAppendList
+// @desc Appends one move list to another.
+// @param dest Pointer to the destination Moves list.
+// @param src The source Moves list to copy from.
 void castro_MovesAppendList(Moves* dest, Moves src);
 
-/**
- * @desc Combines two move lists into a new one.
- */
+// @function MovesCombine
+// @desc Combines two move lists into a new one.
+// @param m1 The first move list.
+// @param m2 The second move list.
+// @returns Moves A new move list containing elements from both m1 and m2.
 Moves castro_MovesCombine(Moves m1, Moves m2);
 
-/**
- * @desc Creates an Undo struct representing a move played on a board.
- */
+// @function MakeUndo
+// @desc Creates an Undo struct representing a move played on a board.
+// @param board Pointer to the current board state.
+// @param move The move intended to be played.
+// @returns Undo A structure containing all information needed to revert the move.
 Undo castro_MakeUndo(const Board* board, Move move);
 
 /*-----------------------------------------------.
@@ -1288,9 +1447,8 @@ static const int KING_OFFSETS[] = {
     -9, -8, -7, -1, 1, 7, 8, 9
 };
 
-/**
- * @desc Decodes a move into its components (used inside a scope).
- */
+// @macro MOVE_DECODE
+// @desc Decodes a move into its components (used inside a scope).
 #define MOVE_DECODE(move) \
     Square src, dst; \
     uint8_t promotion, flag; \
@@ -1300,269 +1458,343 @@ static const int KING_OFFSETS[] = {
 | Move encoding/decoding/util  |
 `-----------------------------*/
 
-/**
- * @desc Checks whether a move is legal and does not leave the king in check.
- */
+// @function MoveIsValid
+// @desc Checks whether a move is legal and does not leave the king in check.
+// @param board Pointer to the constant board state.
+// @param move The move to validate.
+// @param color The color of the player making the move.
+// @returns _Bool True if the move is legal.
 _Bool castro_MoveIsValid(const Board* board, Move move, PieceColor color);
 
-/**
- * @desc Returns true if the move captures a piece (or en passant).
- */
+// @function MoveIsCapture
+// @desc Returns true if the move captures a piece (or en passant).
+// @param board Pointer to the constant board state.
+// @param move The move to check.
+// @returns _Bool True if the target square contains an opponent piece.
 _Bool castro_MoveIsCapture(const Board* board, Move move);
 
-/**
- * @desc Returns true if the move gives check. Temporarily modifies the board (make/unmake).
- */
+// @function MoveGivesCheck
+// @desc Returns true if the move gives check. Temporarily modifies the board (make/unmake).
+// @param board Pointer to the board state (will be modified and restored).
+// @param move The move to test.
+// @returns _Bool True if the move results in the opponent's king being under attack.
 _Bool castro_MoveGivesCheck(Board* board, Move move);
 
-/**
- * @desc Piece value for MVV-LVA (pawn=1, knight/bishop=3, rook=5, queen=9, king=0).
- */
+// @function PieceValueFromType
+// @desc Piece value for MVV-LVA (pawn=1, knight/bishop=3, rook=5, queen=9, king=0).
+// @param piece_type The character representation of the piece.
+// @returns int The relative value used for move ordering.
 int castro_PieceValueFromType(char piece_type);
 
-/**
- * @desc Reorders a legal move list for search: hash move first, then captures (MVV-LVA), killers, then checks (if score_checks), then quiet.
- * Pass NULL_MOVE for hash_move or killers if not used. Set score_checks to false to avoid MakeMove/Unmake per move.
- */
+// @function OrderLegalMoves
+// @desc Reorders a legal move list for search: hash move first, then captures (MVV-LVA), killers, then checks, then quiet moves.
+// @param board Pointer to the current board.
+// @param moves Pointer to the list of moves to be sorted in place.
+// @param hash_move The move retrieved from the transposition table (use NULL_MOVE if none).
+// @param killer0 The first killer move for the current ply.
+// @param killer1 The second killer move for the current ply.
+// @param score_checks Boolean to determine if check detection should be part of the ordering.
 void castro_OrderLegalMoves(Board* board, Moves* moves, Move hash_move, Move killer0, Move killer1, bool score_checks);
 
-/**
- * @desc Encodes a move from components into a 32-bit integer.
- */
+// @function MoveEncode
+// @desc Encodes a move from components into a 32-bit integer.
+// @param from The starting square index.
+// @param to The destination square index.
+// @param promotion The piece type to promote to (if applicable).
+// @param flag Metadata flags (capture, double push, etc.).
+// @returns Move The encoded 32-bit move.
 Move castro_MoveEncode(Square from, Square to, uint8_t promotion, uint8_t flag);
 
-/**
- * @desc Encodes a move from algebraic names ("e2", "e4", etc.).
- */
+// @function MoveEncodeNames
+// @desc Encodes a move from algebraic names ("e2", "e4", etc.).
+// @param from String representing the starting square.
+// @param to String representing the destination square.
+// @param promotion Promotion type index.
+// @param flag Move flag index.
+// @returns Move The encoded 32-bit move.
 Move castro_MoveEncodeNames(const char* from, const char* to, uint8_t promotion, uint8_t flag);
 
-/**
- * @desc Decodes a move into from-square, to-square, promotion, and flag.
- */
+// @function MoveDecode
+// @desc Decodes a move into from-square, to-square, promotion, and flag.
+// @param move The encoded 32-bit move.
+// @param from Pointer to store the extracted starting square.
+// @param to Pointer to store the extracted destination square.
+// @param promotion Pointer to store the extracted promotion type.
+// @param flag Pointer to store the extracted flag.
 void castro_MoveDecode(Move move, Square* from, Square* to, uint8_t* promotion, uint8_t* flag);
 
-/**
- * @desc Sets the move flag field.
- */
+// @function MoveSetFlag
+// @desc Sets the move flag field in an existing move.
+// @param move Pointer to the move to modify.
+// @param flag The flag value to set.
 void castro_MoveSetFlag(Move* move, Flag flag);
 
-/**
- * @desc Sets the promotion field in a move.
- */
+// @function MoveSetPromotion
+// @desc Sets the promotion field in an existing move.
+// @param move Pointer to the move to modify.
+// @param promotion The promotion piece type.
 void castro_MoveSetPromotion(Move* move, Promotion promotion);
 
 /*-------------------------------.
 | Bitboard Move Application API  |
 `-------------------------------*/
 
-/**
- * @desc Applies a move on a bitboard.
- */
+// @function DoMove
+// @desc Applies a move on a bitboard by updating the piece positions.
+// @param current Pointer to the specific bitboard (e.g., WhitePawns) to be updated.
+// @param move The encoded move containing source and destination squares.
+// @returns Bitboard The updated bitboard state after the move is applied.
 Bitboard castro_DoMove(Bitboard* current, Move move);
 
-/**
- * @desc Undoes a move on a bitboard.
- */
+// @function UndoMove
+// @desc Undoes a move on a bitboard, reverting the piece to its previous position.
+// @param current Pointer to the bitboard to be reverted.
+// @param move The encoded move that was previously applied.
+// @returns Bitboard The restored bitboard state.
 Bitboard castro_UndoMove(Bitboard* current, Move move);
 
 /*-----------------------------.
 | Full board move application  |
 `-----------------------------*/
 
-/**
- * @desc Makes a move and updates board state accordingly.
- */
+// @function MakeMove
+// @desc Makes a move and updates board state accordingly. 
+// Handles piece movement, captures, and state updates (castling rights, en passant, etc.).
+// @param board Pointer to the board state to modify.
+// @param move The encoded move to execute.
+// @returns bool True if the move was successfully made (e.g., if it didn't leave the king in check).
 bool castro_MakeMove(Board* board, Move move);
 
-/**
- * @desc Unmakes the last move and restores previous board state.
- */
+// @function UnmakeMove
+// @desc Unmakes the last move and restores previous board state using stored history.
+// @param board Pointer to the board state to restore.
 void castro_UnmakeMove(Board* board);
 
-/**
- * @desc Performs a null move (used in search algorithms).
- */
+// @function MakeNullMove
+// @desc Performs a null move (swapping sides without moving a piece). 
+// Used primarily in search algorithms like Null Move Pruning.
+// @param board Pointer to the board state to modify.
 void castro_MakeNullMove(Board* board);
 
-/**
- * @desc Reverts a null move.
- */
+// @function UnmakeNullMove
+// @desc Reverts a null move and restores the original side to move and state.
+// @param board Pointer to the board state to restore.
 void castro_UnmakeNullMove(Board* board);
 
 /*-------------------------------.
 | Move-type specific helpers     |
 `-------------------------------*/
 
-/**
- * @desc Executes castling move.
- */
+// @function Castle
+// @desc Executes a castling move, updating both the king and the rook positions on the bitboards.
+// @param board Pointer to the board state to modify.
+// @param move The encoded castling move.
+// @returns bool True if the castling was successfully executed.
 bool castro_Castle(Board* board, Move move);
 
-/**
- * @desc Checks if a move is a castling move.
- */
+// @function IsCastle
+// @desc Checks if a move is a castling move based on piece type and move flags.
+// @param board Pointer to the current board state.
+// @param move Pointer to the move to check.
+// @returns bool True if the move is a king-side or queen-side castle.
 bool castro_IsCastle(const Board* board, Move* move);
 
-/**
- * @desc Executes en passant capture.
- */
+// @function Enpassant
+// @desc Executes an en passant capture, removing the opponent's pawn and moving the current pawn.
+// @param board Pointer to the board state.
+// @param move The encoded en passant move.
+// @returns bool True if the capture was successful.
 bool castro_Enpassant(Board* board, Move move);
 
-/**
- * @desc Checks if a move is an en passant capture.
- */
+// @function IsEnpassant
+// @desc Checks if a move is an en passant capture by checking the target square and pawn flags.
+// @param board Pointer to the board state.
+// @param move Pointer to the move to check.
+// @returns bool True if the move satisfies en passant requirements.
 bool castro_IsEnpassant(const Board* board, Move* move);
 
-/**
- * @desc Checks if a move is a two-square pawn advance.
- */
+// @function IsDoublePawnPush
+// @desc Checks if a move is a two-square pawn advance from the starting rank.
+// @param board Pointer to the board state.
+// @param move The move to check.
+// @returns bool True if the pawn moved two squares forward.
 bool castro_IsDoublePawnPush(Board* board, Move move);
 
-/**
- * @desc Checks if a move is a promotion.
- */
+// @function IsPromotion
+// @desc Checks if a move is a pawn promotion.
+// @param board Pointer to the board state.
+// @param move Pointer to the move to check.
+// @returns bool True if the move results in a pawn reaching the last rank.
 bool castro_IsPromotion(Board* board, Move* move);
 
-/**
- * @desc Checks if a move is a capture (regular or en passant).
- */
+// @function IsCapture
+// @desc Checks if a move is a capture (regular or en passant).
+// @param board Pointer to the board state.
+// @param move The move to check.
+// @returns bool True if the move results in an opponent's piece being removed.
 bool castro_IsCapture(const Board* board, Move move);
 
-/**
- * @desc Checks if executing a move leaves the king in check.
- */
+// @function IsInCheckAfterMove
+// @desc Simulates a move to check if it leaves the friendly king in check (illegal move detection).
+// @param board Pointer to the board state.
+// @param move The move to simulate.
+// @returns bool True if the king is under attack after the move.
 bool castro_IsInCheckAfterMove(Board *board, Move move);
 
-/**
- * @desc Makes a move with full legality rules.
- */
+// @function MoveMake
+// @desc Makes a move with full legality rules, ensuring the move is valid and updates all board state.
+// @param board Pointer to the board state.
+// @param move The move to execute.
+// @returns _Bool True if the move was legal and executed successfully.
 _Bool castro_MoveMake(Board* board, Move move);
 
-/**
- * @desc Applies a move directly (ignores turn/check legality).
- */
+// @function MoveFreely
+// @desc Applies a move directly to the bitboards, ignoring turn-order or check legality.
+// @param board Pointer to the board state.
+// @param move The move to apply.
+// @param color The color of the piece being moved.
 void castro_MoveFreely(Board* board, Move move, PieceColor color);
 
-/**
- * @desc Prints a move to stdout in algebraic format.
- */
+// @function MovePrint
+// @desc Prints a move to stdout in algebraic format (e.g., "e2e4").
+// @param move The move to print.
 void castro_MovePrint(Move move);
 
-/**
- * @desc Converts an algebraic string (e.g., "e2e4") to a move.
- */
+// @function StringToMove
+// @desc Converts an algebraic string (e.g., "e2e4") to an encoded 32-bit Move integer.
+// @param str The source algebraic string.
+// @returns Move The resulting encoded move.
 Move castro_StringToMove(const char* str);
 
-/**
- * @desc Converts a move to a string in algebraic format (e.g., "e2e4").
- */
+// @function MoveToString
+// @desc Converts a move to a string in algebraic format (e.g., "e2e4").
+// @param move The move to convert.
+// @param buffer Pointer to the character buffer to store the result.
 void castro_MoveToString(Move move, char* buffer);
 
 /*--------------------.
 | Move comparisons    |
 `--------------------*/
 
-/**
- * @desc Compares two moves for equality (ignores metadata).
- */
+// @function MoveCmp
+// @desc Compares two moves for equality by checking only the source and destination squares, ignoring internal metadata like flags or search scores.
+// @param m1 The first move to compare.
+// @param m2 The second move to compare.
+// @returns bool True if the squares match.
 bool castro_MoveCmp(Move m1, Move m2);
 
-/**
- * @desc Compares two moves strictly (includes metadata).
- */
+// @function MoveCmpStrict
+// @desc Compares two moves strictly, ensuring that the squares, promotion piece, and all metadata flags are identical.
+// @param m1 The first move to compare.
+// @param m2 The second move to compare.
+// @returns bool True if every bit of the encoded moves is identical.
 bool castro_MoveCmpStrict(Move m1, Move m2);
 
 /*--------------------.
 | Move field getters  |
 `--------------------*/
 
-/**
- * @desc Gets the source square of a move.
- */
+// @function GetFrom
+// @desc Extracts and returns the source (starting) square index from an encoded move.
+// @param move The encoded 32-bit move.
+// @returns Square The source square index (0-63).
 Square castro_GetFrom(Move move);
 
-/**
- * @desc Gets the destination square of a move.
- */
+// @function GetTo
+// @desc Extracts and returns the destination (target) square index from an encoded move.
+// @param move The encoded 32-bit move.
+// @returns Square The destination square index (0-63).
 Square castro_GetTo(Move move);
 
-/**
- * @desc Gets the promotion type of a move.
- */
+// @function GetPromotion
+// @desc Retrieves the promotion piece type from the move bitfield.
+// @param move The encoded 32-bit move.
+// @returns uint8_t The promotion piece identifier (e.g., Knight, Bishop, Rook, Queen).
 uint8_t castro_GetPromotion(Move move);
 
-/**
- * @desc Gets the move flag.
- */
+// @function GetFlag
+// @desc Extracts the metadata flag associated with the move (e.g., double pawn push, en passant, or castling).
+// @param move The encoded 32-bit move.
+// @returns uint8_t The move flag value.
 uint8_t castro_GetFlag(Move move);
 
 /*----------------------------.
 | Board state update helpers  |
 `----------------------------*/
 
-/**
- * @desc Updates the 50-move counter based on the move.
- */
+// @function UpdateHalfmove
+// @desc Updates the 50-move counter (halfmove clock). The counter is reset if a pawn is moved or a capture occurs; otherwise, it is incremented.
+// @param board Pointer to the board state to update.
+// @param move The move being executed.
+// @param piece_count_before Total piece count on the board before the move.
+// @param piece_count_after Total piece count on the board after the move.
+// @param piece The character type of the piece that was moved.
 void castro_UpdateHalfmove(Board* board, Move move, size_t piece_count_before, size_t piece_count_after, char piece);
 
-/**
- * @desc Updates castling rights after a move.
- */
+// @function UpdateCastlingRights
+// @desc Updates the castling rights bitmask after a move. Rights are lost if the king or a rook moves, or if a rook is captured on its starting square.
+// @param board Pointer to the current board.
+// @param move The move that may affect castling rights.
+// @returns uint8_t The updated castling rights bitmask.
 uint8_t castro_UpdateCastlingRights(Board* board, Move move);
 
-/**
- * @desc Updates en passant target square.
- */
+// @function UpdateEnpassantSquare
+// @desc Updates the en passant target square. This is set if a pawn makes a double-square push, otherwise it is cleared.
+// @param board Pointer to the current board.
+// @param move The move being executed.
+// @returns Square The square index of the new en passant target, or a null-square constant if none.
 Square castro_UpdateEnpassantSquare(Board* board, Move move);
 
 /*-------------------------.
 | Bitboard-Move conversion |
 `-------------------------*/
 
-/**
- * @desc Converts a bitboard of destinations to move list from a source square.
- */
+// @function BitboardToMoves
+// @desc Iterates through all set bits in a destination bitboard and appends a corresponding move to a Moves list, using the provided source square.
+// @param bitboard The bitboard representing valid target squares.
+// @param from The starting square shared by all generated moves.
+// @returns Moves A move list containing all individual moves derived from the bitboard.
 Moves castro_BitboardToMoves(Bitboard bitboard, Square from);
 
-/**
- * @desc Converts a move list to a bitboard of destinations.
- */
+// @function MovesToBitboard
+// @desc Aggregates the destination squares of all moves in a list into a single bitboard representation.
+// @param moves The list of moves to process.
+// @returns Bitboard A bitboard where each bit is set if it is a destination square in the move list.
 Bitboard castro_MovesToBitboard(Moves moves);
 
 /*-------------------------.
 | Board Debugging Helpers  |
 `-------------------------*/
 
-/**
- * @desc Prints a move on a board (highlighted view).
- */
+// @function BoardPrintMove
+// @desc Prints a move on a board (highlighted view).
+// @param board Pointer to the current board
+// @param move The move to highlight on the board
 void castro_BoardPrintMove(const Board* board, Move move);
 
-/// Debug macro alias for MovePrint
+// @macro MOVE_PRINT
+// @desc Debug macro alias for MovePrint
 #define MOVE_PRINT(move) MovePrint(move)
 
 
 /*------------------------------------.
-| *PIECE*                             |
+// @module piece
 |-------------------------------------|
 | Piece abstraction and utilities     |
 `------------------------------------*/
 
-/**
- * @desc Represents a chess piece.
- * 
- * Each piece is defined by a type (character) and a color.
- * - Uppercase letters: white pieces (e.g., 'P', 'N')
- * - Lowercase letters: black pieces (e.g., 'p', 'n')
- */
+// @type Piece
+// @desc Represents a chess piece.
+// Each piece is defined by a type (character) and a color.
+// - Uppercase letters: white pieces (e.g., 'P', 'N')
+// - Lowercase letters: black pieces (e.g., 'p', 'n')
 typedef struct {
     char type;         ///< Character representing the piece ('P', 'n', etc.)
     PieceColor color;  ///< COLOR_WHITE or COLOR_BLACK
 } Piece;
 
-/**
- * @desc Prints the contents of a Piece struct (for debugging).
- */
+// @macro PIECE_PRINT
+// @desc Prints the contents of a Piece struct (for debugging).
 #define PIECE_PRINT(piece)\
     printf("%s = {.type=%c, .color=%d}\n", #piece, piece.type, piece.color)
 
@@ -1570,57 +1802,48 @@ typedef struct {
 | Piece type identification     |
 `------------------------------*/
 
-/**
- * @desc Checks if a piece is a pawn.
- */
+// @macro IS_PAWN
+// @desc Checks if a piece is a pawn.
 #define IS_PAWN(piece) \
     (tolower(piece.type) == 'p')
 
-/**
- * @desc Checks if a piece is a knight.
- */
+// @macro IS_KNIGHT
+// @desc Checks if a piece is a knight.
 #define IS_KNIGHT(piece) \
     (tolower(piece.type) == 'n')
 
-/**
- * @desc Checks if a piece is a bishop.
- */
+// @macro IS_BISHOP
+// @desc Checks if a piece is a bishop.
 #define IS_BISHOP(piece) \
     (tolower(piece.type) == 'b')
 
-/**
- * @desc Checks if a piece is a rook.
- */
+// @macro IS_ROOK
+// @desc Checks if a piece is a rook.
 #define IS_ROOK(piece) \
     (tolower(piece.type) == 'r')
 
-/**
- * @desc Checks if a piece is a queen.
- */
+// @macro IS_QUEEN
+// @desc Checks if a piece is a queen.
 #define IS_QUEEN(piece) \
     (tolower(piece.type) == 'q')
 
-/**
- * @desc Checks if a piece is a king.
- */
+// @macro IS_KING
+// @desc Checks if a piece is a king.
 #define IS_KING(piece) \
     (tolower(piece.type) == 'k')
 
-/**
- * @desc Checks if a piece has a given color.
- */
+// @macro IS_COLOR
+// @desc Checks if a piece has a given color.
 #define IS_COLOR(piece, c) \
     (piece.color == c)
 
-/**
- * @desc Checks if a piece is white.
- */
+// @macro IS_WHITE
+// @desc Checks if a piece is white.
 #define IS_WHITE(piece) \
     IS_COLOR(piece, COLOR_WHITE)
 
-/**
- * @desc Checks if a piece is black.
- */
+// @macro IS_BLACK
+// @desc Checks if a piece is black.
 #define IS_BLACK(piece) \
     IS_COLOR(piece, COLOR_BLACK)
 
@@ -1628,34 +1851,28 @@ typedef struct {
 | Piece utility functions       |
 `------------------------------*/
 
-/**
- * @desc Gets the color of a piece given its character representation.
- * 
- * @param piece The character representing a piece
- * @return COLOR_WHITE, COLOR_BLACK, or COLOR_NONE
- */
+// @function GetPieceColor
+// @desc Gets the color of a piece given its character representation (e.g., 'P' for white, 'p' for black).
+// @param piece The character representing a piece.
+// @returns int COLOR_WHITE, COLOR_BLACK, or COLOR_NONE if the character is invalid.
 int castro_GetPieceColor(char piece);
 
-/**
- * @desc Returns the Piece located at a specific square on the board.
- * 
- * @param board Pointer to the board
- * @param square Square index (0–63)
- * @return Piece struct representing the piece at that square
- */
+// @function PieceAt
+// @desc Returns the Piece located at a specific square on the board by inspecting the active bitboards.
+// @param board Pointer to the board state.
+// @param square Square index (0–63).
+// @returns Piece A struct representing the piece type and color at that square.
 Piece castro_PieceAt(const Board* board, Square square);
 
-/**
- * @desc Compares two Piece structs for type and color equality.
- * 
- * @param p1 First piece
- * @param p2 Second piece
- * @return true if both pieces are the same type and color
- */
+// @function PieceCmp
+// @desc Compares two Piece structs for type and color equality.
+// @param p1 First piece to compare.
+// @param p2 Second piece to compare.
+// @returns bool True if both pieces share the same type and color.
 bool castro_PieceCmp(Piece p1, Piece p2);
 
 /*------------------------------------.
-| *NOTATION*                          |
+// @module notation
 |-------------------------------------|
 | Handles FEN/PGN I/O and SAN parsing |
 `------------------------------------*/
@@ -1664,45 +1881,38 @@ bool castro_PieceCmp(Piece p1, Piece p2);
 | FEN Support  |
 `-------------*/
 
-/**
- * @desc Imports a FEN string into a board.
- * 
- * Sets up position, castling rights, side to move, en passant, etc.
- * 
- * @param board Pointer to the board to initialize
- * @param fen FEN string
- */
+// @function FenImport
+// @desc Imports a FEN string into a board.
+// Sets up position, castling rights, side to move, en passant, etc.
+// 
+// @param board Pointer to the board to initialize
+// @param fen FEN string
 void castro_FenImport(Board* board, const char* fen);
 
-/**
- * @desc Exports the current board state to a FEN string.
- * 
- * @param board Board to serialize
- * @param fen Output buffer (must be large enough)
- */
+// @function FenExport
+// @desc Exports the current board state to a FEN string.
+// 
+// @param board Board to serialize
+// @param fen Output buffer (must be large enough)
 void castro_FenExport(const Board* board, char fen[]);
 
-/**
- * @desc Maximum length for PGN header fields (Event, Site, etc.)
- */
+// @const MAX_HEADER_LENGTH
+// @desc Maximum length for PGN header fields (Event, Site, etc.)
 #define MAX_HEADER_LENGTH 256
 
 /*-----------------.
 | SAN and PGN I/O  |
 `-----------------*/
 
-/**
- * @desc Represents a move in Standard Algebraic Notation (e.g., "e4", "Nf3").
- */
+// @type SanMove
+// @desc Represents a move in Standard Algebraic Notation (e.g., "e4", "Nf3").
 typedef struct {
     char move[16];
 } SanMove;
 
-/**
- * @desc PGN/notation-based game format.
- * 
- * Stores metadata and the list of SAN moves.
- */
+// @type Game
+// @desc PGN/notation-based game format.
+// Stores metadata and the list of SAN moves.
 typedef struct {
     char event[MAX_HEADER_LENGTH];   ///< Event name
     char site[MAX_HEADER_LENGTH];    ///< Site/location
@@ -1715,19 +1925,18 @@ typedef struct {
     size_t move_count;               ///< Number of moves made
 } Game;
 
-/**
- * @desc Parses a SAN move and applies it to the board and game state.
- * 
- * @param board Current board
- * @param game Game context
- * @param move_str SAN move string (e.g., "e4", "O-O")
- * @return true on success
- */
+// @function move_name
+// @desc Parses a SAN move and applies it to the board and game state.
+// 
+// @param board Current board
+// @param game Game context
+// @param move_str SAN move string (e.g., "e4", "O-O")
+//
+// @return true on success
 bool castro_move_name(const Board* board, Game* game, const char* move_str);
 
-/**
- * @desc Shorthand for move_name(board, game, move)
- */
+// @macro MOVE
+// @desc Shorthand for move_name(board, game, move)
 #define MOVE(board, game, move) \
         move_name(board, game, move)
 
@@ -1735,86 +1944,123 @@ bool castro_move_name(const Board* board, Game* game, const char* move_str);
 | Game metadata handling  |
 `------------------------*/
 
-/**
- * @desc Initializes a Game object with basic metadata and FEN.
- */
-void castro_GameInit(Game* game, 
-    const char* event,
-    const char* site,
-    const char* white,
-    const char* black,
-    const char* fen
-);
+// @function GameInit
+// @desc Initializes a Game object with basic metadata and a starting FEN string.
+// @param game Pointer to the Game structure to initialize.
+// @param event The name of the tournament or event.
+// @param site The location of the game.
+// @param white The name of the player playing white.
+// @param black The name of the player playing black.
+// @param fen The starting position in Forsyth-Edwards Notation.
+void castro_GameInit(Game* game, const char* event, const char* site, const char* white, const char* black, const char* fen);
 
-/**
- * @desc Runs a game move-by-move, showing each updated board (for debugging/visualization).
- */
+// @function GameRun
+// @desc Runs a game move-by-move, showing each updated board. Useful for debugging or terminal-based visualization.
+// @param game The game object to execute.
 void castro_GameRun(Game game);
 
-/**
- * @desc Prints the full PGN representation of a game.
- */
+// @function GamePrint
+// @desc Prints the full PGN representation of a game, including metadata tags and the formatted move list.
+// @param game The game object to print.
 void castro_GamePrint(Game game);
 
-/**
- * @desc Appends a SAN move to the game.
- */
+// @function GameAddMove
+// @desc Appends a move in Standard Algebraic Notation (SAN) to the game's move history.
+// @param game Pointer to the Game structure.
+// @param move The SanMove object to append.
 void castro_GameAddMove(Game* game, SanMove move);
 
-/**
- * @desc Setters for PGN metadata fields.
- */
+// @function GameSetEvent
+// @desc Setters for PGN metadata: Sets the event field.
+// @param game Pointer to the Game structure.
+// @param event The event string.
 void castro_GameSetEvent(Game* game, const char* event);
+
+// @function GameSetSite
+// @desc Setters for PGN metadata: Sets the site field.
+// @param game Pointer to the Game structure.
+// @param site The site string.
 void castro_GameSetSite(Game* game, const char* site);
+
+// @function GameSetDate
+// @desc Setters for PGN metadata: Sets the date field.
+// @param game Pointer to the Game structure.
+// @param date The date string (typically YYYY.MM.DD).
 void castro_GameSetDate(Game* game, const char* date);
+
+// @function GameSetWhite
+// @desc Setters for PGN metadata: Sets the white player's name.
+// @param game Pointer to the Game structure.
+// @param white The player's name.
 void castro_GameSetWhite(Game* game, const char* white);
+
+// @function GameSetBlack
+// @desc Setters for PGN metadata: Sets the black player's name.
+// @param game Pointer to the Game structure.
+// @param black The player's name.
 void castro_GameSetBlack(Game* game, const char* black);
+
+// @function GameSetFen
+// @desc Setters for PGN metadata: Sets the starting FEN position.
+// @param game Pointer to the Game structure.
+// @param fen The FEN string.
 void castro_GameSetFen(Game* game, const char* fen);
+
+// @function GameSetResult
+// @desc Setters for PGN metadata: Sets the game result (e.g., "1-0", "0-1", "1/2-1/2").
+// @param game Pointer to the Game structure.
+// @param result The result string.
 void castro_GameSetResult(Game* game, const char* result);
 
 /*--------------------------.
 | PGN Import/Export Support |
 `--------------------------*/
 
-/**
- * @desc Parses a PGN string and populates the game object.
- */
+// @function PgnImport
+// @desc Parses a standard PGN string and populates the Game object with its metadata and move history.
+// @param game Pointer to the Game structure to be populated.
+// @param pgn The source string containing the PGN data.
 void castro_PgnImport(Game* game, const char* pgn);
 
-/**
- * @desc Serializes a Game to PGN format.
- */
+// @function PgnExport
+// @desc Serializes the current Game state into a PGN formatted string.
+// @param game Pointer to the Game structure to serialize.
+// @param pgn Buffer to store the resulting PGN string.
 void castro_PgnExport(Game* game, char* pgn);
 
-/**
- * @desc Saves a PGN game to a file.
- */
+// @function PgnExportFile
+// @desc Serializes the Game to PGN format and writes it directly to a specified file path.
+// @param game Pointer to the Game structure to save.
+// @param path The filesystem path where the PGN file will be created or overwritten.
 void castro_PgnExportFile(Game* game, const char* path);
 
 /*-----------------------------.
 | SAN <-> Move conversions     |
 `-----------------------------*/
 
-/**
- * @desc Converts a Move to a SAN notation string (e.g., "Nf3", "O-O").
- */
+// @function Notate
+// @desc Converts a Move to a SAN notation string (e.g., "Nf3", "O-O"). This requires the board state to determine move ambiguity (e.g., which knight moved) and whether the move results in check or checkmate.
+// @param board Pointer to the current board state.
+// @param move The internal encoded move to be converted.
+// @param san Pointer to the SanMove structure where the resulting string will be stored.
 void castro_Notate(Board* board, Move move, SanMove* san);
 
-/**
- * @desc Converts a SAN move to an internal Move.
- */
+// @function SanToMove
+// @desc Converts a SAN move string back into an internal 32-bit Move. It validates the notation against the current board to find the correct source square and piece type.
+// @param board Pointer to the current board state.
+// @param san The SanMove structure containing the notation string.
+// @returns Move The internal bit-encoded representation of the move.
 Move castro_SanToMove(Board* board, SanMove san);
 
 
 /*------------------------------------.
-| *RESULT*                            |
+// @module result
 |-------------------------------------|
 | Game termination and result logic   |
 `------------------------------------*/
 
-/**
- * @desc Enumeration of possible game outcomes.
- */
+// @enum Result
+// @desc Enumeration of possible game outcomes.
 typedef enum {
     RESULT_NONE = 0,                               ///< Game is still ongoing
     RESULT_WHITE_WON,                              ///< White won by checkmate or resignation
@@ -1826,14 +2072,12 @@ typedef enum {
     RESULT_COUNT                                    ///< Internal count for range checking
 } Result;
 
-/**
- * @desc String representations of results for PGN output.
- * 
- * Matches the Result enum index:
- * - "*" for ongoing
- * - "1-0", "0-1" for wins
- * - "1/2-1/2" for all draws
- */
+// @const result_score
+// @desc String representations of results for PGN output.
+// Matches the Result enum index:
+// - "*" for ongoing
+// - "1-0", "0-1" for wins
+// - "1/2-1/2" for all draws
 static const char result_score[][8] = {
     "*",
     "1-0",
@@ -1844,11 +2088,9 @@ static const char result_score[][8] = {
     "1/2-1/2"
 };
 
-/**
- * @desc Human-readable messages describing the result.
- * 
- * Matches the Result enum index.
- */
+// @const result_message
+// @desc Human-readable messages describing the result.
+// Matches the Result enum index.
 static const char result_message[][256] = {
     "No result yet",
     "White won",
@@ -1863,65 +2105,53 @@ static const char result_message[][256] = {
 | Result Detection Functions   |
 `-----------------------------*/
 
-/**
- * @desc Determines the current result of the game.
- * 
- * Checks for checkmate, stalemate, 3-fold repetition, 50-move rule, or insufficient material.
- * 
- * @param board Current board state
- * @return Corresponding Result enum
- */
+// @function IsResult
+// @desc Determines the current result of the game.
+// 
+// Checks for checkmate, stalemate, 3-fold repetition, 50-move rule, or insufficient material.
+// 
+// @param board Current board state
+// @return Corresponding Result enum
 Result castro_IsResult(Board* board);
 
-/**
- * @desc Determines if the current position is checkmate.
- * 
- * @param board Pointer to the board
- * @return true if checkmate
- */
+// @function IsCheckmate
+// @desc Determines if the current position is checkmate.
+// 
+// @param board Pointer to the board
+// @return true if checkmate
 bool castro_IsCheckmate(const Board* board);
 
-/**
- * @desc Determines if the current position is stalemate.
- * 
- * @param board Pointer to the board
- * @return true if stalemate
- */
+// @function IsStalemate
+// @desc Determines if the current position is stalemate.
+// 
+// @param board Pointer to the board
+// @return true if stalemate
 bool castro_IsStalemate(const Board* board);
 
-/**
- * @desc Checks if neither player has sufficient material to checkmate.
- * 
- * Includes cases like:
- * - King vs King
- * - King and Bishop vs King
- * - King and Knight vs King
- * 
- * @param board Pointer to the board
- * @return true if the game should be drawn due to insufficient material
- */
+// @function IsInsufficientMaterial
+// @desc Checks if neither player has sufficient material to checkmate.
+// 
+// @param board Pointer to the board
+// @return true if the game should be drawn due to insufficient material
 bool castro_IsInsufficientMaterial(const Board* board);
 
-/**
- * @desc Determines if the current position has occurred three times (3-fold repetition).
- * 
- * Uses the board's `History` and `HashTable` to detect repeated positions.
- * 
- * @param board Pointer to the board
- * @return true if position repeated three times
- */
+// @function IsThreefoldRepetition
+// @desc Determines if the current position has occurred three times (3-fold repetition).
+// Uses the board's `History` and `HashTable` to detect repeated positions.
+// 
+// @param board Pointer to the board
+// @return true if position repeated three times
 bool castro_IsThreefoldRepetition(Board* board);
 
 /*------------------------------------.
-| *MOVEGEN*                           |
+// @module movegen
 |-------------------------------------|
 | Move generation for legal and       |
 | pseudo-legal moves in the engine    |
 `------------------------------------*/
 
-/**
- * @desc Enumeration of move types to control legality enforcement.
- */
+// @enum MoveType
+// @desc Enumeration of move types to control legality enforcement.
 typedef enum {
     MOVE_LEGAL,   ///< Fully legal moves that leave the king safe
     MOVE_PSEUDO,  ///< Pseudo-legal moves, ignoring king safety
@@ -1933,129 +2163,271 @@ typedef enum {
 | Pseudo-Legal Move Generation |
 `-----------------------------*/
 
-/**
- * @desc Generates all pseudo-legal moves for the current position.
- * 
- * Includes moves that may leave the king in check.
- */
+// @function GeneratePseudoLegalMoves
+// @desc Generates all pseudo-legal moves for the current position. Includes moves that may leave the king in check.
+// @param board Pointer to the constant board state.
+// @returns Moves A list containing all possible moves before legality filtering.
 Moves castro_GeneratePseudoLegalMoves(const Board* board);
 
-/**
- * @desc Generates a bitboard representing all pseudo-legal moves.
- */
+// @function GeneratePseudoLegalMovesBitboard
+// @desc Generates a bitboard representing all pseudo-legal destination squares for all pieces of the side to move.
+// @param board Pointer to the constant board state.
+// @returns Bitboard A 64-bit integer where each set bit is a reachable square.
 Bitboard castro_GeneratePseudoLegalMovesBitboard(const Board* board);
 
-/**
- * @desc Pseudo-legal push moves for pawns.
- */
+// @function GeneratePseudoLegalPawnMoves
+// @desc Pseudo-legal push moves for pawns, including single and double pushes.
+// @param pawns Bitboard of the pawns to move.
+// @param enemy Bitboard of all enemy pieces.
+// @param color The color of the pawns.
+// @returns Bitboard Destination squares for pawn pushes.
 Bitboard castro_GeneratePseudoLegalPawnMoves(Bitboard pawns, Bitboard enemy, PieceColor color);
 
-/**
- * @desc Pseudo-legal pawn attacks.
- * 
- * If `strict` is true, diagonal movement is restricted to squares with capturable enemies.
- */
+// @function GeneratePseudoLegalPawnAttacks
+// @desc Pseudo-legal pawn attacks. If strict is true, diagonal movement is restricted to squares with capturable enemies.
+// @param pawns Bitboard of the attacking pawns.
+// @param enemy Bitboard of all enemy pieces.
+// @param color The color of the pawns.
+// @param strict Boolean to enforce capture-only diagonal movement.
+// @returns Bitboard Squares under attack by pawns.
 Bitboard castro_GeneratePseudoLegalPawnAttacks(Bitboard pawns, Bitboard enemy, PieceColor color, bool strict);
 
-/**
- * @desc Pseudo-legal attacks for specific pieces.
- */
+// @function GeneratePseudoLegalKnightAttacks
+// @desc Pseudo-legal attacks for knights.
+// @param knights Bitboard of knights.
+// @param empty Bitboard of empty squares.
+// @param enemy Bitboard of enemy pieces.
+// @returns Bitboard Targeted squares.
 Bitboard castro_GeneratePseudoLegalKnightAttacks(Bitboard knights, Bitboard empty, Bitboard enemy);
+
+// @function GeneratePseudoLegalBishopAttacks
+// @desc Pseudo-legal attacks for bishops.
+// @param bishops Bitboard of bishops.
+// @param empty Bitboard of empty squares.
+// @param enemy Bitboard of enemy pieces.
+// @returns Bitboard Targeted squares.
 Bitboard castro_GeneratePseudoLegalBishopAttacks(Bitboard bishops, Bitboard empty, Bitboard enemy);
+
+// @function GeneratePseudoLegalRookAttacks
+// @desc Pseudo-legal attacks for rooks.
+// @param rooks Bitboard of rooks.
+// @param empty Bitboard of empty squares.
+// @param enemy Bitboard of enemy pieces.
+// @returns Bitboard Targeted squares.
 Bitboard castro_GeneratePseudoLegalRookAttacks(Bitboard rooks, Bitboard empty, Bitboard enemy);
+
+// @function GeneratePseudoLegalQueenAttacks
+// @desc Pseudo-legal attacks for queens.
+// @param queens Bitboard of queens.
+// @param empty Bitboard of empty squares.
+// @param enemy Bitboard of enemy pieces.
+// @returns Bitboard Targeted squares.
 Bitboard castro_GeneratePseudoLegalQueenAttacks(Bitboard queens, Bitboard empty, Bitboard enemy);
+
+// @function GeneratePseudoLegalKingAttacks
+// @desc Pseudo-legal attacks for kings.
+// @param kings Bitboard of kings.
+// @param empty Bitboard of empty squares.
+// @param enemy Bitboard of enemy pieces.
+// @returns Bitboard Targeted squares.
 Bitboard castro_GeneratePseudoLegalKingAttacks(Bitboard kings, Bitboard empty, Bitboard enemy);
 
-/**
- * @desc Generates all pseudo-legal attacks for a given color.
- */
+// @function GeneratePseudoLegalAttacks
+// @desc Generates a combined bitboard of all squares attacked by a given color.
+// @param board Pointer to the constant board state.
+// @param color The color of the attacking side.
+// @returns Bitboard All squares currently under attack by the specified color.
 Bitboard castro_GeneratePseudoLegalAttacks(const Board* board, PieceColor color);
 
-/**
- * @desc Generates potential moves for a single piece square.
- */
+// @function GeneratePawnMoves
+// @desc Generates potential destination squares for a single pawn.
+// @param board Pointer to the board state.
+// @param piece Square index of the pawn.
+// @param color Color of the pawn.
+// @returns Bitboard Target squares.
 Bitboard castro_GeneratePawnMoves(const Board* board, Square piece, PieceColor color);
+
+// @function GenerateKnightMoves
+// @desc Generates potential destination squares for a single knight.
+// @param board Pointer to the board state.
+// @param piece Square index of the knight.
+// @param color Color of the knight.
+// @returns Bitboard Target squares.
 Bitboard castro_GenerateKnightMoves(const Board* board, Square piece, PieceColor color);
+
+// @function GenerateBishopMoves
+// @desc Generates potential destination squares for a single bishop.
+// @param board Pointer to the board state.
+// @param piece Square index of the bishop.
+// @param color Color of the bishop.
+// @returns Bitboard Target squares.
 Bitboard castro_GenerateBishopMoves(const Board* board, Square piece, PieceColor color);
+
+// @function GenerateRookMoves
+// @desc Generates potential destination squares for a single rook.
+// @param board Pointer to the board state.
+// @param piece Square index of the rook.
+// @param color Color of the rook.
+// @returns Bitboard Target squares.
 Bitboard castro_GenerateRookMoves(const Board* board, Square piece, PieceColor color);
+
+// @function GenerateQueenMoves
+// @desc Generates potential destination squares for a single queen.
+// @param board Pointer to the board state.
+// @param piece Square index of the queen.
+// @param color Color of the queen.
+// @returns Bitboard Target squares.
 Bitboard castro_GenerateQueenMoves(const Board* board, Square piece, PieceColor color);
+
+// @function GenerateKingMoves
+// @desc Generates potential destination squares for a single king.
+// @param board Pointer to the board state.
+// @param piece Square index of the king.
+// @param color Color of the king.
+// @returns Bitboard Target squares.
 Bitboard castro_GenerateKingMoves(const Board* board, Square piece, PieceColor color);
 
 /*------------------------.
 | Legal Move Generation   |
 `------------------------*/
 
+// @struct LegalityContext
+// @desc Contains pre-calculated data used to accelerate legality checks, such as check evasions and pins.
 typedef struct {
-    Bitboard check_mask;      // Squares that stop a check
-    Bitboard pin_masks[64];   // Allowed movement mask for every square
-    int check_count;
+Bitboard check_mask;
+Bitboard pin_masks[64];
+int check_count;
 } LegalityContext;
 
+// @function CalculateLegality
+// @desc Pre-calculates the check and pin masks for the current board state.
+// @param board Pointer to the board state.
+// @returns LegalityContext The calculated context for fast move generation.
 LegalityContext castro_CalculateLegality(const Board* board);
 
-/**
- * @desc Returns whether a move is fully legal (doesn't leave the king in check).
- */
+// @function IsLegal
+// @desc Returns whether a move is fully legal, ensuring it doesn't leave the friendly king in check.
+// @param board Pointer to the constant board state.
+// @param move The move to validate.
+// @returns bool True if the move is legal.
 bool castro_IsLegal(const Board* board, Move move);
 
-/**
- * @desc Generates all legal moves for the current board position.
- */
+// @function GenerateLegalMoves
+// @desc Generates all strictly legal moves for the current board position.
+// @param board Pointer to the constant board state.
+// @returns Moves A list containing all valid moves.
 Moves castro_GenerateLegalMoves(const Board* board);
 
-/**
- * @desc Generates only legal captures (and en passant). Use for quiescence search.
- */
+// @function GenerateLegalCaptures
+// @desc Generates only legal captures (including en passant). Ideal for quiescence search algorithms.
+// @param board Pointer to the constant board state.
+// @returns Moves A list containing all legal capture moves.
 Moves castro_GenerateLegalCaptures(const Board* board);
 
-/**
- * @desc Generates legal moves that originate from a specific square.
- */
+// @function GenerateLegalMovesSquare
+// @desc Generates all legal moves that originate from a specific square.
+// @param board Pointer to the board.
+// @param square The source square index.
+// @returns Moves List of legal moves for the piece on that square.
 Moves castro_GenerateLegalMovesSquare(const Board* board, Square square);
 
-/**
- * @desc Returns a bitboard of all legal destination squares.
- */
+// @function GenerateLegalMovesBitboard
+// @desc Returns a bitboard of all legal destination squares for the side to move.
+// @param board Pointer to the board.
+// @returns Bitboard A 64-bit mask of all valid target squares.
 Bitboard castro_GenerateLegalMovesBitboard(const Board* board);
 
-/**
- * @desc Generates legal moves for piece sets by type.
- * If captures_only is true, only moves that capture a piece (or en passant) are added.
- */
+// @function GenerateLegalPawnMoves
+// @desc Generates legal pawn moves, applying check and pin constraints.
+// @param board Pointer to the board.
+// @param pieces Bitboard of pawns.
+// @param color Color of the side to move.
+// @param ctx Pointer to the pre-calculated legality context.
+// @param moves Pointer to the list to append moves to.
+// @param captures_only If true, only captures are generated.
 void castro_GenerateLegalPawnMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves, bool captures_only);
+
+// @function GenerateLegalKnightMoves
+// @desc Generates legal knight moves, applying check and pin constraints.
+// @param board Pointer to the board.
+// @param pieces Bitboard of knights.
+// @param color Color of the side to move.
+// @param ctx Pointer to the legality context.
+// @param moves Pointer to the list to append moves to.
+// @param captures_only If true, only captures are generated.
 void castro_GenerateLegalKnightMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves, bool captures_only);
+
+// @function GenerateLegalBishopMoves
+// @desc Generates legal bishop moves, applying check and pin constraints.
+// @param board Pointer to the board.
+// @param pieces Bitboard of bishops.
+// @param color Color of the side to move.
+// @param ctx Pointer to the legality context.
+// @param moves Pointer to the list to append moves to.
+// @param captures_only If true, only captures are generated.
 void castro_GenerateLegalBishopMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves, bool captures_only);
+
+// @function GenerateLegalRookMoves
+// @desc Generates legal rook moves, applying check and pin constraints.
+// @param board Pointer to the board.
+// @param pieces Bitboard of rooks.
+// @param color Color of the side to move.
+// @param ctx Pointer to the legality context.
+// @param moves Pointer to the list to append moves to.
+// @param captures_only If true, only captures are generated.
 void castro_GenerateLegalRookMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves, bool captures_only);
+
+// @function GenerateLegalQueenMoves
+// @desc Generates legal queen moves, applying check and pin constraints.
+// @param board Pointer to the board.
+// @param pieces Bitboard of queens.
+// @param color Color of the side to move.
+// @param ctx Pointer to the legality context.
+// @param moves Pointer to the list to append moves to.
+// @param captures_only If true, only captures are generated.
 void castro_GenerateLegalQueenMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves, bool captures_only);
+
+// @function GenerateLegalKingMoves
+// @desc Generates legal king moves, ensuring the king does not move into check.
+// @param board Pointer to the board.
+// @param pieces Bitboard of kings.
+// @param color Color of the side to move.
+// @param ctx Pointer to the legality context.
+// @param moves Pointer to the list to append moves to.
+// @param captures_only If true, only captures are generated.
 void castro_GenerateLegalKingMoves(const Board* board, Bitboard pieces, PieceColor color, const LegalityContext* ctx, Moves* moves, bool captures_only);
 
 /*---------------------------------------------.
 | Convenience inline dispatcher for move types |
 `---------------------------------------------*/
 
-/**
- * @desc Dispatches to legal or pseudo-legal move generation.
- * 
- * @param board The board to generate moves from
- * @param type MoveType
- * @return Moves struct containing the resulting moves
- */
+// @function GenerateMoves
+// @desc Dispatches to legal or pseudo-legal move generation.
+// 
+// @param board The board to generate moves from
+// @param type MoveType
+// @return Moves struct containing the resulting moves
 Moves castro_GenerateMoves(const Board* board, MoveType type);
 
 // @module perft
 
+// @type u64
 typedef unsigned long long u64;
 
-// NOTE: See https://www.chessprogramming.org/Perft
+// @function Perft
+// @desc See @link https://www.chessprogramming.org/Perft
 u64 castro_Perft(Board* board, int depth, bool root);
 
-/** Pseudo-legal perft: same node count as legal perft, faster (no pin/check pre-filter). */
+// @function PerftPseudoLegal
+// @desc Pseudo-legal perft: same node count as legal perft, faster (no pin/check pre-filter).
 u64 castro_PerftPseudoLegal(Board* board, int depth);
-
-
 
 // @module polyglot
 
+// @type PolyglotEntry
+// @desc Represents a single entry in a Polyglot-formatted opening book (.bin).
+// This structure maps a specific board position to a recommended move with
+// associated metadata for move selection.
 typedef struct {
     uint64_t zobrist_hash;
     uint16_t move;
@@ -2063,12 +2435,16 @@ typedef struct {
     uint32_t learn;
 } PolyglotEntry;
 
-// NOTE: See http://hgm.nubati.net/book_format.html
+// @macro U64
+// @desc cross-platform u64 macro
 #ifdef _MSC_VER
 #  define U64(u) (u##ui64)
 #else
 #  define U64(u) (u##ULL)
 #endif
+
+// @const Random64
+// @desc See @link http://hgm.nubati.net/book_format.html
 static const uint64_t Random64[781] = {
    U64(0x9D39247E33776D41), U64(0x2AF7398005AAA5C7), U64(0x44DB015024623547), U64(0x9C15F73E62A76AE2),
    U64(0x75834465489C0C89), U64(0x3290AC3A203001BF), U64(0x0FBBAD1F61042279), U64(0xE83A908FF2FB60CA),
@@ -2289,14 +2665,17 @@ static const uint64_t Random64[781] = {
 // If the move is "0" (a1a1) then it should simply be ignored. 
 // It seems to me that in that case one might as well delete the entry from the book. 
 
-/**
- * @desc Converts polyglot's 16bit format to my 32bit one
- */
+// @function ConvertMove
+// @desc Converts a move from the Polyglot 16-bit format (typically used in .bin opening books) to the Castro 32-bit internal move format.
+// @param polyglotMove The 16-bit integer representing the move in Polyglot format.
+// @returns Move The encoded 32-bit internal move representation.
 Move castro_ConvertMove(uint16_t polyglotMove);
 
-/**
- * @desc Returns the next book move based on the current polyglot hash
- */
+// @function LookupBookMove
+// @desc Probes an external Polyglot opening book file to find a move matching the current position's Zobrist hash. If multiple moves exist, it typically selects one based on weight.
+// @param position_hash The 64-bit Zobrist hash of the current board position.
+// @param book_path The filesystem path to the Polyglot .bin opening book.
+// @returns Move The selected book move, or a null move if no match is found.
 Move castro_LookupBookMove(uint64_t position_hash, const char* book_path);
 
 

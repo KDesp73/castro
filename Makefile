@@ -93,6 +93,17 @@ compile_commands.json: $(SRC_FILES) ## Generate compile_commands.json with Bear
 	@echo "[INFO] Generating compile_commands.json"
 	bear -- make all
 
+.PHONY: docs
+docs:
+	tinydocs-cli \
+		--files src/castro.h \
+		--markers docs/tiny.markers.json \
+		-o docs \
+		--name castro \
+		--ignore .gitignore \
+		--comment-style "//" \
+		--generate
+
 .PHONY: help
 help: ## Show help message
 	@echo "Available targets:"
