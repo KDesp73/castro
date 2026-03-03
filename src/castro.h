@@ -55,8 +55,11 @@
  * 13. PERFT
  * 14. POLYGLOT
  *
- * Written by Konstantinos Despoinidis <despoinidisk@gmail.com> (KDesp73)
  */
+
+// @module castro
+// @author Konstantinos Despoinidis <despoinidisk@gmail.com> (KDesp73)
+// @license MIT
 
 #ifndef CASTRO_H
 #define CASTRO_H
@@ -71,8 +74,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-// @module root
 
 #define CASTRO_VERSION_MAJOR 0
 #define CASTRO_VERSION_MINOR 3
@@ -2415,7 +2416,7 @@ Moves castro_GenerateMoves(const Board* board, MoveType type);
 typedef unsigned long long u64;
 
 // @function Perft
-// @desc See @link https://www.chessprogramming.org/Perft
+// @desc See [https://www.chessprogramming.org/Perft](https://www.chessprogramming.org/Perft)
 u64 castro_Perft(Board* board, int depth, bool root);
 
 // @function PerftPseudoLegal
@@ -2444,7 +2445,7 @@ typedef struct {
 #endif
 
 // @const Random64
-// @desc See @link http://hgm.nubati.net/book_format.html
+// @desc See [http://hgm.nubati.net/book_format.html](http://hgm.nubati.net/book_format.html)
 static const uint64_t Random64[781] = {
    U64(0x9D39247E33776D41), U64(0x2AF7398005AAA5C7), U64(0x44DB015024623547), U64(0x9C15F73E62A76AE2),
    U64(0x75834465489C0C89), U64(0x3290AC3A203001BF), U64(0x0FBBAD1F61042279), U64(0xE83A908FF2FB60CA),
