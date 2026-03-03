@@ -2,66 +2,77 @@
     {
         "prefix": "@",
         "name": "module",
+        "type": "module",
         "arg": "required",
         "argc": 1
     },
     {
         "prefix": "@",
         "name": "struct",
+        "type": "struct",
         "arg": "required",
         "argc": 1
     },
     {
         "prefix": "@",
         "name": "type",
+        "type": "type",
         "arg": "required",
         "argc": 1
     },
     {
         "prefix": "@",
         "name": "enum",
+        "type": "type",
         "arg": "required",
         "argc": 1
     },
     {
         "prefix": "@",
         "name": "macro",
+        "type": "function",
         "arg": "required",
         "argc": 1
     },
     {
         "prefix": "@",
         "name": "const",
+        "type": "any",
         "arg": "required",
         "argc": 1
     },
     {
         "prefix": "@",
         "name": "function",
+        "type": "function",
         "arg": "required",
         "argc": 1
     },
     {
         "prefix": "@",
         "name": "desc",
+        "type": "description",
         "arg": "required",
         "argc": 1
     },
     {
         "prefix": "@",
         "name": "param",
+        "type": "parameter",
         "arg": "required",
         "argc": 2
     },
     {
         "prefix": "@",
         "name": "returns",
+        "type": "return",
         "arg": "required",
         "argc": 1
     },
     {
         "prefix": "@",
         "name": "example",
+        "type": "example",
         "arg": "required",
         "argc": 1
     }

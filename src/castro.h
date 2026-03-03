@@ -405,172 +405,206 @@ Bitboard castro_PawnPushes(Square pawn, Bitboard emptySquares, uint8_t color);
 // @returns The bitboard containing the pawn promotions
 Bitboard castro_PawnPromotions(Square pawns, Bitboard emptySquares, uint8_t color);
 
-/**
- * @desc Computes pawn promotion captures.
- * 
- * @param pawns Bitboard of pawns eligible to promote by capture.
- * @param opponentPieces Bitboard of capturable opponent pieces.
- * @param color 0 = white, 1 = black.
- */
+// @function PawnPromotionCaptures
+// @desc Computes pawn promotion captures.
+// 
+// @param pawns Bitboard of pawns eligible to promote by capture.
+// @param opponentPieces Bitboard of capturable opponent pieces.
+// @param color 0 = white, 1 = black.
+//
+// @returns The bitboard containing the pawn promotion captures
 Bitboard castro_PawnPromotionCaptures(Square pawns, Bitboard opponentPieces, uint8_t color);
 
-/**
- * @desc Computes knight attacks from a given square.
- */
+// @function KnightAttacks
+// @desc Computes knight attacks from a given square.
+//
+// @param knights Bitboard of knights
+// @param emptySquares Bitboard with the empty squares on the board
+// @param enemySquares Bitboard containing the enemy pieces positions
+//
+// @returns The bitboard containing the knight attacks
 Bitboard castro_KnightAttacks(Square knights, Bitboard emptySquares, Bitboard enemySquares);
 
-/**
- * @desc Computes king attacks from a given square.
- */
+// @function KingAttacks
+// @desc Computes king attacks from a given square.
+//
+// @param king Bitboard containing the king's position
+// @param emptySquares Bitboard with the empty squares on the board
+// @param enemySquares Bitboard containing the enemy pieces positions
+//
+// @returns The bitboard containing the king attacks
 Bitboard castro_KingAttacks(Square king, Bitboard emptySquares, Bitboard enemySquares);
 
+// @function BishopAttacksFromOccupancy
+// @desc Computes bishop attacks based on an occupancy bitboard
+// 
+// @param square The square to calculate from
+// @param occupancy The occupancy bitboard
+//
+// @returns The bitboard containing the diagonal attacks
 Bitboard castro_BishopAttacksFromOccupancy(Square square, Bitboard occupancy);
+
+// @function RookAttacksFromOccupancy
+// @desc Computes rook attacks based on an occupancy bitboard
+// 
+// @param square The square to calculate from
+// @param occupancy The occupancy bitboard
+//
+// @returns The bitboard containing the rook attacks
 Bitboard castro_RookAttacksFromOccupancy(Square square, Bitboard occupancy);
 
-/**
- * @desc Computes bishop attacks using a sliding attack method.
- */
-Bitboard castro_BishopAttacks(Square bishops, Bitboard emptySquares, Bitboard enemySquares);
+// @function BishopAttacks
+// @desc Computes bishop attacks using a sliding attack method.
+//
+// @param bishops The bishop's position
+// @param emptySquares Bitboard with the empty squares on the board
+// @param enemySquares Bitboard containing the enemy pieces positions
+//
+// @returns The bitboard containing the bishop attacks
+Bitboard castro_BishopAttacks(Square bishop, Bitboard emptySquares, Bitboard enemySquares);
 
-/**
- * @desc Computes rook attacks using a sliding attack method.
- */
-Bitboard castro_RookAttacks(Square rooks, Bitboard emptySquares, Bitboard enemySquares);
+// @function RookAttacks
+// @desc Computes rook attacks using a sliding attack method.
+//
+// @param rook The rook's position
+// @param emptySquares Bitboard with the empty squares on the board
+// @param enemySquares Bitboard containing the enemy pieces positions
+//
+// @returns The bitboard containing the rook attacks
+Bitboard castro_RookAttacks(Square rook, Bitboard emptySquares, Bitboard enemySquares);
 
+// @function QueenAttacks
+// @desc Computes queen attacks as the union of rook and bishop attacks.
+//
+// @param queen The queen's position
+// @param emptySquares Bitboard with the empty squares on the board
+// @param enemySquares Bitboard containing the enemy pieces positions
+//
+// @returns The bitboard containing the queen attacks
+Bitboard castro_QueenAttacks(Square queen, Bitboard emptySquares, Bitboard enemySquares);
+
+// @function InitMagic
+// @desc This function initializes the magic tables
 void castro_InitMagic(void);
+
+// @function BishopAttacksMagic
+// @desc
 Bitboard castro_BishopAttacksMagic(Square square, Bitboard occupancy);
+
+// @function RookAttacksMagic
+// @desc
 Bitboard castro_RookAttacksMagic(Square square, Bitboard occupancy);
 
-/**
- * @desc Computes queen attacks as the union of rook and bishop attacks.
- */
-Bitboard castro_QueenAttacks(Square queens, Bitboard emptySquares, Bitboard enemySquares);
 
+// @module kingsafety
 
-/*------------------------.
-| *KING SAFETY / CHECKS*  |
-`------------------------*/
-
-/**
- * @desc Checks whether the king is in check.
- * 
- * @param kingPosition Bitboard with one bit set where the king is.
- * @param enemyAttacks Bitboard of all enemy attacks.
- */
+// @function IsKingInCheck
+// @desc Checks whether the king is in check.
+// 
+// @param kingPosition Bitboard with one bit set where the king is.
+// @param enemyAttacks Bitboard of all enemy attacks.
+//
+// @returns bool
 bool castro_IsKingInCheck(Bitboard kingPosition, Bitboard enemyAttacks);
 
-/**
- * @desc Returns the bitboard of pinned pieces relative to the king.
- * 
- * @param kingPosition Bitboard with king’s square.
- * @param slidingAttacks Bitboard of enemy rooks/bishops/queens.
- * @param occupancy Bitboard of all occupied squares.
- */
 Bitboard _PinnedPieces(Bitboard kingPosition, Bitboard slidingAttacks, Bitboard occupancy);
 
 
-/*-------------.
-| *PRINTING*   |
-`-------------*/
+// @module printing
 
-/**
- * @desc Prints a 32-bit unsigned integer (e.g. in binary or hex).
- */
+// @function Uint32Print
+// @desc Prints a 32-bit unsigned integer (e.g. in binary or hex).
+// @param value The uint32_t number
 void castro_Uint32Print(uint32_t value);
 
-/**
- * @desc Prints a 64-bit unsigned integer (e.g. in binary or hex).
- */
+// @function Uint64Print
+// @desc Prints a 64-bit unsigned integer (e.g. in binary or hex).
+// @param value The uint64_t number
 void castro_Uint64Print(uint64_t value);
 
-/**
- * @desc Prints a visual representation of a bitboard.
- * 
- * Useful for debugging. Marks set bits on an 8x8 grid.
- */
+// @function BitboardPrint
+// @desc Prints a visual representation of a bitboard.
+// Useful for debugging. Marks set bits on an 8x8 grid
+// @param bitboard The bitboard to print
 void castro_BitboardPrint(Bitboard bitboard);
 
 
 /*------------------------------------.
-| *HASHING*                           |
+// @module hashing
 |-------------------------------------|
 | Position repetition tracking        |
 `------------------------------------*/
 
-/**
- * @desc Represents a single hash entry (position and repetition count).
- */
+// @type HashEntry
+// @desc Represents a single hash entry (position and repetition count).
 typedef struct {
     uint64_t hash;  ///< Zobrist hash of the position
     int count;      ///< Number of times this position has occurred
 } HashEntry;
 
-/** Capacity of the repetition hash table (power of two for fast modulo). */
+// @const HASH_TABLE_CAPACITY
+// @desc Capacity of the repetition hash table (power of two for fast modulo).
 #define HASH_TABLE_CAPACITY 4096
 
-/**
- * @desc Tracks position repetition using Zobrist hashes.
- * Uses open addressing (linear probing). Empty buckets have hash == 0.
- */
+// @type HashTable
+// @desc Tracks position repetition using Zobrist hashes.
+// Uses open addressing (linear probing). Empty buckets have hash == 0.
 typedef struct {
     uint64_t last_added;   ///< Last added hash (used when decrementing on unmake)
     HashEntry* entries;    ///< Buckets: index = hash & (capacity - 1), probe on collision
     size_t capacity;       ///< Number of buckets (power of two)
 } HashTable;
 
-/**
- * @desc Initializes a hash table from a FEN string.
- * 
- * Parses the FEN, computes the initial Zobrist hash, and sets up the table.
- * 
- * @param table Pointer to an uninitialized HashTable
- * @param starting_fen FEN string of the initial position
- */
+// @function InitHashTable
+// @desc Initializes a hash table from a FEN string.
+// Parses the FEN, computes the initial Zobrist hash, and sets up the table.
+// 
+// @param table Pointer to an uninitialized HashTable
+// @param starting_fen FEN string of the initial position
 void castro_InitHashTable(HashTable* table, const char* starting_fen);
 
-/**
- * @desc Initializes a hash table directly from a known Zobrist hash.
- * 
- * @param table Pointer to HashTable
- * @param starting_hash Precomputed Zobrist hash of the position
- */
+// @function InitHashTableHash
+// @desc Initializes a hash table directly from a known Zobrist hash.
+// 
+// @param table Pointer to HashTable
+// @param starting_hash Precomputed Zobrist hash of the position
 void castro_InitHashTableHash(HashTable* table, uint64_t starting_hash);
 
-/**
- * @desc Adds a new position hash or updates an existing entry.
- * 
- * If the hash already exists, increments the count.
- * 
- * @param table Pointer to HashTable
- * @param hash New Zobrist hash to insert
- * @return true if repetition >= 3 (e.g., threefold repetition), false otherwise
- */
+// @function UpdateHashTable
+// @desc Adds a new position hash or updates an existing entry.
+// If the hash already exists, increments the count.
+// 
+// @param table Pointer to HashTable
+// @param hash New Zobrist hash to insert
+//
+// @returns true if repetition >= 3 (e.g., threefold repetition), false otherwise
 _Bool castro_UpdateHashTable(HashTable* table, uint64_t hash);
 
-/**
- * @desc Decrements the repetition count for a position (used on unmake).
- * Call with the hash that was last added before the move being undone.
- */
+// @function HashTableDecrement
+// @desc Decrements the repetition count for a position (used on unmake).
+// Call with the hash that was last added before the move being undone.
+//
+// @param table Pointer to HashTable
+// @param hash The hash of the position to decrement its repetition count
 void castro_HashTableDecrement(HashTable* table, uint64_t hash);
 
-/**
- * @desc Frees all memory used by the hash table.
- */
+// @function FreeHashTable
+// @desc Frees all memory used by the hash table.
 void castro_FreeHashTable(HashTable* table);
 
 
 /*------------------------------------.
-| *HISTORY*                           |
+// @module history
 |-------------------------------------|
 | Move history and undo management    |
 `------------------------------------*/
 
-/// Maximum number of moves stored in history
+// @const MAX_MOVES
+// @desc Maximum number of moves stored in history
 #define MAX_MOVES (2 * 1024)
 
-/**
- * @desc Stores the necessary data to undo a move.
- */
+// @type Undo
+// @desc Stores the necessary data to undo a move.
 typedef struct {
     uint32_t move;       ///< Encoded move representation
     uint8_t castling;    ///< Castling rights before the move
@@ -579,41 +613,42 @@ typedef struct {
     char captured;       ///< Captured piece type (if any), 0 if none
 } Undo;
 
-/// Null undo object representing no previous move
+// @const NULL_UNDO
+// @desc Null undo object representing no previous move
 #define NULL_UNDO (Undo){.move = NULL_MOVE}
 
-/**
- * @desc Prints the contents of an Undo struct (for debugging).
- */
+// @function UndoPrint
+// @desc Prints the contents of an Undo struct (for debugging).
+//
+// @param undo The undo struct to print
 void castro_UndoPrint(Undo undo);
 
-/**
- * @desc Stores full game history for repetition detection and undo functionality.
- */
+// @type History
+// @desc Stores full game history for repetition detection and undo functionality.
 typedef struct {
     HashTable positions;       ///< Hash table tracking seen positions
     Undo moves[MAX_MOVES];     ///< Stack of undo records
     size_t count;              ///< Number of moves in history
 } History;
 
-/**
- * @desc Removes the last move from history (pop operation).
- * 
- * Updates position table and count.
- */
+// @function HistoryRemove
+// @desc Removes the last move from history (pop operation).
+// Updates position table and count.
+//
+// @param history Pointer to a history struct
 void castro_HistoryRemove(History* history);
 
-/**
- * @desc Returns the most recent Undo record from history.
- * 
- * @param history History object
- * @return Undo struct of the last move; undefined if history is empty.
- */
+// @function HistoryGetLast
+// @desc Returns the most recent Undo record from history.
+// 
+// @param history Pointer to a history struct
+//
+// @returns Undo struct of the last move; undefined if history is empty.
 Undo castro_HistoryGetLast(History history);
 
 
 /*------------------------------------.
-| *BOARD*                             |
+// @module board
 |-------------------------------------|
 | Game state and board representation |
 `------------------------------------*/
@@ -633,7 +668,8 @@ Undo castro_HistoryGetLast(History history);
 #define WHITE_QUEEN  'Q'
 #define WHITE_PAWN   'P'
 
-/// Piece type used for indexing and logic
+// @enum PieceType
+// @desc Piece type used for indexing and logic
 typedef enum {
     PAWN,
     KNIGHT,
@@ -643,13 +679,20 @@ typedef enum {
     KING
 } PieceType;
 
-/// Used to indicate no piece on a square
+// @const EMPTY_SQUARE
+// @desc Used to indicate no piece on a square
 #define EMPTY_SQUARE ' '
 
-/// Standard starting position in Forsyth-Edwards Notation (FEN)
+// @const STARTING_FEN
+// @desc Standard starting position in Forsyth-Edwards Notation (FEN)
 #define STARTING_FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
+// @const BOARD_SIZE
+// @desc The board dimensions
 #define BOARD_SIZE   8
+
+// @const PIECE_TYPES
+// @desc The number of different pieces
 #define PIECE_TYPES  12
 
 /*---------------------------.
@@ -658,45 +701,45 @@ typedef enum {
 | piece lookup               |
 `---------------------------*/
 
-/**
- * @desc Core board structure combining bitboards and grid for performance and simplicity.
- */
+// @type Board
+// @desc Core board structure combining bitboards and grid for performance and simplicity.
 typedef struct {
     Bitboard bitboards[PIECE_TYPES]; ///< One bitboard per piece type (white/black)
     char grid[8][8];                 ///< ASCII piece grid for quick access
-    Bitboard white;                 ///< Cached: all white pieces
-    Bitboard black;                 ///< Cached: all black pieces
-    Bitboard empty;                 ///< Cached: empty squares (~(white|black))
+    Bitboard white;                  ///< Cached: all white pieces
+    Bitboard black;                  ///< Cached: all black pieces
+    Bitboard empty;                  ///< Cached: empty squares (~(white|black))
 
     // Game state
-    Square enpassant_square;        ///< En passant target square, if any
-    bool turn;                      ///< true = white to move, false = black
-    uint8_t castling_rights;        ///< Castling rights bitfield
-    size_t halfmove;                ///< Halfmove clock for 50-move rule
-    size_t fullmove;                ///< Fullmove number (starts at 1)
+    Square enpassant_square;         ///< En passant target square, if any
+    bool turn;                       ///< true = white to move, false = black
+    uint8_t castling_rights;         ///< Castling rights bitfield
+    size_t halfmove;                 ///< Halfmove clock for 50-move rule
+    size_t fullmove;                 ///< Fullmove number (starts at 1)
 
-    History history;                ///< Move history
-    uint64_t hash;                  ///< Zobrist hash of current position
+    History history;                 ///< Move history
+    uint64_t hash;                   ///< Zobrist hash of current position
 } Board;
 
-/**
- * @desc Records an undo step into the board's history.
- * 
- * @param board The board to update
- * @param move The move to be undone later
- * @return true on success
- */
+// @function AddUndo
+// @desc Records an undo step into the board's history.
+// 
+// @param board The board to update
+// @param move The move to be undone later
+//
+// @returns true on success
 bool castro_AddUndo(Board* board, uint32_t move);
 
-/**
- * @desc Loads and removes the last undo record.
- * 
- * @param board The board to restore
- * @return Undo information for the last move
- */
+// @function LoadLastUndo
+// @desc Loads and removes the last undo record.
+// 
+// @param board The board to restore
+//
+// @returns Undo information for the last move
 Undo castro_LoadLastUndo(Board* board);
 
-/// All 12 supported pieces, as characters
+// @const PIECES
+// @desc All 12 supported pieces, as characters
 #define PIECES "pnbrqkPNBRQK"
 
 /// Bitboard index constants for each piece type
@@ -723,32 +766,32 @@ enum {
 #define INDEX_QUEEN  INDEX_BLACK_QUEEN
 #define INDEX_KING   INDEX_BLACK_KING
 
-/// Color of pieces
+// @enum PieceColor
+// @desc Color of pieces
 typedef enum {
     COLOR_NONE = -1,
     COLOR_BLACK = 0,
     COLOR_WHITE
 } PieceColor;
 
-/**
- * @desc Converts a promotion code to its corresponding character.
- * 
- * @param promotion Numeric code (0 = queen, 1 = rook, etc.)
- * @return Promotion piece character ('q', 'r', ...)
- */
+// @function PromotionToChar
+// @desc Converts a promotion code to its corresponding character.
+// 
+// @param promotion Numeric code (0 = queen, 1 = rook, etc.)
+//
+// @returns Promotion piece character ('q', 'r', ...)
 char castro_PromotionToChar(uint8_t promotion);
 
-/**
- * @desc Converts a promotion piece character to a numeric code.
- * 
- * @param promotion Piece character (e.g., 'q', 'n')
- * @return Numeric code
- */
+// @function CharToPromotion
+// @desc Converts a promotion piece character to a numeric code.
+// 
+// @param promotion Piece character (e.g., 'q', 'n')
+//
+// @returns Numeric code
 uint8_t castro_CharToPromotion(char promotion);
 
-/**
- * @desc Initializes a board from a FEN string.
- */
+// @function BoardInitFen
+// @desc Initializes a board from a FEN string.
 void castro_BoardInitFen(Board* board, const char* fen);
 
 /**
