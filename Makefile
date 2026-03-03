@@ -101,7 +101,8 @@ docs:
 		--ignore .gitignore \
 		-o docs \
 		--comment-style "//" \
-		--name castro
+		--name castro \
+		--generate
 
 .PHONY: help
 help: ## Show help message
