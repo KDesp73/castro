@@ -43,6 +43,13 @@
     },
     {
         "prefix": "@",
+        "name": "var",
+        "type": "any",
+        "arg": "required",
+        "argc": 1
+    },
+    {
+        "prefix": "@",
         "name": "function",
         "type": "function",
         "arg": "required",

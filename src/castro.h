@@ -510,25 +510,6 @@ bool castro_IsKingInCheck(Bitboard kingPosition, Bitboard enemyAttacks);
 Bitboard _PinnedPieces(Bitboard kingPosition, Bitboard slidingAttacks, Bitboard occupancy);
 
 
-// @module printing
-
-// @function Uint32Print
-// @desc Prints a 32-bit unsigned integer (e.g. in binary or hex).
-// @param value The uint32_t number
-void castro_Uint32Print(uint32_t value);
-
-// @function Uint64Print
-// @desc Prints a 64-bit unsigned integer (e.g. in binary or hex).
-// @param value The uint64_t number
-void castro_Uint64Print(uint64_t value);
-
-// @function BitboardPrint
-// @desc Prints a visual representation of a bitboard.
-// Useful for debugging. Marks set bits on an 8x8 grid
-// @param bitboard The bitboard to print
-void castro_BitboardPrint(Bitboard bitboard);
-
-
 /*------------------------------------.
 // @module hashing
 |-------------------------------------|
@@ -792,192 +773,296 @@ uint8_t castro_CharToPromotion(char promotion);
 
 // @function BoardInitFen
 // @desc Initializes a board from a FEN string.
+// Must be freed with BoardFree().
+//
+// @param board Pointer to the board
+// @param fen The FEN string
 void castro_BoardInitFen(Board* board, const char* fen);
 
-/**
- * @desc Heap-allocates and initializes a board from FEN.
- * 
- * Must be freed with BoardFree().
- */
+// @function BoardInitFenHeap
+// @desc Heap-allocates and initializes a board from FEN.
+// Must be freed with BoardFree().
+// 
+// @param fen The FEN string
+//
+// @returns Board* The pointer to the newly created board
 Board* castro_BoardInitFenHeap(const char* fen);
 
-/**
- * @desc Frees heap-allocated board (from BoardInitFenHeap).
- */
+// @function BoardFree
+// @desc Frees heap-allocated board (from BoardInitFenHeap).
+//
+// @param board The pointer to the board
 void castro_BoardFree(Board* board);
 
-/** Recomputes and stores white, black, empty from bitboards. Call after any direct bitboard change. */
+// @function BoardUpdateOccupancy
+// @desc Recomputes and stores white, black, empty from bitboards.
+// Call after any direct bitboard change.
+//
+// @param board The pointer to the board
 void castro_BoardUpdateOccupancy(Board* board);
 
-/**
- * @desc Returns a bitboard of all white pieces.
- */
+// @function GetWhite
+// @desc Returns a bitboard of all white pieces.
+//
+// @param board Pointer to the board
+//
+// @returns Bitboard The bitboard containing the white occupancy
 Bitboard castro_GetWhite(const Board* board);
 
-/**
- * @desc Returns a bitboard of all black pieces.
- */
+// @function GetBlack
+// @desc Returns a bitboard of all black pieces.
+//
+// @param board Pointer to the board
+//
+// @returns Bitboard The bitboard containing the black occupancy
 Bitboard castro_GetBlack(const Board* board);
 
-/**
- * @desc Returns a bitboard of all opponent pieces.
- */
+// @function GetEnemyColor
+// @desc Returns a bitboard of all opponent pieces.
+//
+// @param board Pointer to the board
+// @param us The color of the active player
+//
+// @returns Bitboard The bitboard containing the occupancy of the enemy
 Bitboard castro_GetEnemyColor(const Board* board, PieceColor us);
 
-/**
- * @desc Returns a bitboard of all enemy pieces (based on current turn).
- */
+// @function GetEnemy
+// @desc Returns a bitboard of all enemy pieces (based on current turn).
+//
+// @param board Pointer to the board
+//
+// @returns Bitboard The bitboard containing the occupancy of the enemy
 Bitboard castro_GetEnemy(const Board* board);
 
-/**
- * @desc Returns a bitboard of all empty squares.
- */
+// @function GetEmpty
+// @desc Returns a bitboard of all empty squares.
+//
+// @param board Pointer to the board
+//
+// @returns Bitboard The bitboard containing the empty squares
 Bitboard castro_GetEmpty(const Board* board);
 
-/**
- * @desc Counts the number of a specific piece color/type on the board.
- */
+// @function CountPieces
+// @desc Counts the number of a specific piece color/type on the board.
+//
+// @param board Pointer to the board
+// @param color The color of the pieces to count
+// @param type The type of piece to count
+//
+// @return int The final count
 int castro_CountPieces(const Board* board, PieceColor color, PieceType type);
 
-/**
- * @desc Checks if a board has certain castling rights.
- */
+// @function HasCastlingRights
+// @desc Checks if a board has certain castling rights.
+//
+// @param board Pointer to the board
+// @param castling_rights The byte representing the castling rights
+// 
+// @returns int
 int castro_HasCastlingRights(const Board* board, uint8_t castling_rights);
 
-/**
- * @desc Revokes specific castling rights from a board.
- */
+// @function RevokeCastlingRights
+// @desc Revokes specific castling rights from a board.
+//
+// @param board Pointer to the board
+// @param castling_rights The byte contining the castle rights to revoke
 void castro_RevokeCastlingRights(Board* board, uint8_t castling_rights);
 
-/**
- * @desc Checks if a square is attacked by a given color.
- */
+// @function IsSquareAttacked
+// @desc Checks if a square is attacked by a given color.
+//
+// @param board Pointer to the board
+// @param square The square we want to check
+// @param color The color of the side that might attack the square
+//
+// @returns bool
 bool castro_IsSquareAttacked(const Board* board, Square square, PieceColor color);
 
-/**
- * @desc Checks if a square is empty.
- */
+// @function IsSquareEmpty
+// @desc Checks if a square is empty.
+//
+// @param board Pointer to the board
+// @param square The square we want to check
+//
+// @returns bool
 bool castro_IsSquareEmpty(const Board* board, Square square);
 
-/**
- * @desc Checks if a square is occupied by a given color.
- */
+// @function castro_IsSquareOccupiedBy
+// @desc Checks if a square is occupied by a given color.
+//
+// @param board Pointer to the board
+// @param square The square we want to check
+// @param color The color to check for
+//
+// @returns bool
 bool castro_IsSquareOccupiedBy(const Board* board, Square square, PieceColor color);
 
-/**
- * @desc Returns the number of pieces on the board for a given color.
- */
+// @function castro_NumberOfPieces
+// @desc Returns the number of pieces on the board for a given color.
+//
+// @param board Pointer to the board
+// @param color The color to count
+//
+// @returns size_t
 size_t castro_NumberOfPieces(const Board* board, PieceColor color);
 
-/**
- * @desc Checks if a color is in check.
- */
+// @function castro_IsInCheckColor
+// @desc Checks if a specific color is in check.
+//
+// @param board Pointer to the board
+// @param color The color to check
+//
+// @returns bool
 bool castro_IsInCheckColor(const Board* board, PieceColor color);
 
-/**
- * @desc Checks if the player to move is in check.
- */
+// @function castro_IsInCheck
+// @desc Checks if the player currently to move is in check.
+//
+// @param board Pointer to the board
+//
+// @returns bool
 bool castro_IsInCheck(const Board* board);
 
-/**
- * @desc Prints a list of squares (e.g. legal moves) on the board.
- */
-void castro_BoardPrintSquares(const Board* board, Square* squares, size_t count);
 
-/**
- * @desc Highlights a bitboard on the board (used for debugging).
- */
-void castro_BoardPrintBitboard(const Board* board, Bitboard highlight);
-
-/**
- * @desc Prints the board with a list of highlighted squares.
- * 
- * Usage: `BoardPrint(board, E4, G5, A2, ...)`
- */
-void castro_BoardPrint(const Board* board, Square first, ...);
-
-/**
- * @desc Prints all bitboards in the board structure (for debugging).
- */
-void castro_BoardPrintBitboards(Board board);
-
-/**
- * @desc Prints the character grid of the board.
- */
-void castro_BoardPrintGrid(const Board* board);
-
-/**
- * @desc Returns a deep copy of the board.
- */
+// @function castro_BoardCopy
+// @desc Returns a deep copy of the board.
+//
+// @param board Pointer to the source board
+//
+// @returns Board
 Board castro_BoardCopy(const Board* board);
 
+//
+// @module printing
+
+// @function Uint32Print
+// @desc Prints a 32-bit unsigned integer (e.g. in binary or hex).
+// @param value The uint32_t number
+void castro_Uint32Print(uint32_t value);
+
+// @function Uint64Print
+// @desc Prints a 64-bit unsigned integer (e.g. in binary or hex).
+// @param value The uint64_t number
+void castro_Uint64Print(uint64_t value);
+
+// @function BitboardPrint
+// @desc Prints a visual representation of a bitboard.
+// Useful for debugging. Marks set bits on an 8x8 grid
+// @param bitboard The bitboard to print
+void castro_BitboardPrint(Bitboard bitboard);
+
+// @function castro_BoardPrintSquares
+// @desc Prints a list of squares (e.g. legal moves) on the board.
+//
+// @param board Pointer to the board
+// @param squares Array of squares to print
+// @param count Number of squares in the array
+//
+// @returns void
+void castro_BoardPrintSquares(const Board* board, Square* squares, size_t count);
+
+// @function castro_BoardPrintBitboard
+// @desc Highlights a bitboard on the board (used for debugging).
+//
+// @param board Pointer to the board
+// @param highlight The bitboard to overlay/highlight
+//
+// @returns void
+void castro_BoardPrintBitboard(const Board* board, Bitboard highlight);
+
+// @function castro_BoardPrint
+// @desc Prints the board with a list of highlighted squares.
+//
+// @param board Pointer to the board
+// @param first The first square to highlight (followed by variadic list)
+//
+// @returns void
+void castro_BoardPrint(const Board* board, Square first, ...);
+
+// @function castro_BoardPrintBitboards
+// @desc Prints all bitboards in the board structure (for debugging).
+//
+// @param board The board structure
+//
+// @returns void
+void castro_BoardPrintBitboards(Board board);
+
+// @function castro_BoardPrintGrid
+// @desc Prints the character grid of the board.
+//
+// @param board Pointer to the board
+//
+// @returns void
+void castro_BoardPrintGrid(const Board* board);
+
+
 /*------------------------------------.
-| *ZOBRIST*                           |
+// @module zobrist
 |-------------------------------------|
 | Zobrist hashing for board states    |
 `------------------------------------*/
 
-/// Total number of castling rights encoded (K, Q, k, q)
+// @const CASTLING_OPTIONS
+// @desc Total number of castling rights encoded (K, Q, k, q)
 #define CASTLING_OPTIONS 4
 
-/**
- * @desc Zobrist random numbers for each piece on each square.
- * 
- * Dimensions:
- * - PIECE_TYPES: 12 (black/white * 6 types)
- * - BOARD_SIZE: 8x8 squares
- * 
- * Indexed as [piece][rank][file]
- */
+// @var zobrist_table
+// @desc Zobrist random numbers for each piece on each square.
+// Dimensions:
+// - PIECE_TYPES: 12 (black/white * 6 types)
+// - BOARD_SIZE: 8x8 squares
+// Indexed as [piece][rank][file]
 extern uint64_t zobrist_table[PIECE_TYPES][BOARD_SIZE][BOARD_SIZE] __attribute__((unused));
 
-/// Zobrist keys for each of the 4 castling rights (K, Q, k, q)
+// @var zobrist_castling
+// @desc Zobrist keys for each of the 4 castling rights (K, Q, k, q)
 extern uint64_t zobrist_castling[CASTLING_OPTIONS] __attribute__((unused));
 
-/// Zobrist keys for each en passant file (a-h)
+// @var zobrist_en_passant
+// @desc Zobrist keys for each en passant file (a-h)
 extern uint64_t zobrist_en_passant[BOARD_SIZE] __attribute__((unused));
 
-/// Zobrist key to represent "black to move"
+// @var zobrist_black_to_move
+// @desc Zobrist key to represent "black to move"
 extern uint64_t zobrist_black_to_move __attribute__((unused));
 
-/**
- * @desc Initializes the Zobrist tables.
- */
-void castro_InitZobrist();
+// @var InitZobrist
+// @desc Initializes the Zobrist tables.
+void castro_InitZobrist(void);
 
-/**
- * @desc Calculates the Zobrist hash of a board.
- * 
- * This includes:
- * - Pieces on the board
- * - Side to move
- * - Castling rights
- * - En passant square
- * 
- * @param board Pointer to the Board structure
- * @return 64-bit Zobrist hash
- */
+// @function CalculateZobristHash
+// @desc Calculates the Zobrist hash of a board.
+// This includes:
+// - Pieces on the board
+// - Side to move
+// - Castling rights
+// - En passant square
+// 
+// @param board Pointer to the Board structure
+//
+// @returns 64-bit Zobrist hash
 uint64_t castro_CalculateZobristHash(const Board* board);
 
-/**
- * @desc Convenience function to calculate a Zobrist hash directly from a FEN string.
- * 
- * @param fen Forsyth-Edwards Notation string
- * @return 64-bit Zobrist hash
- */
+// @function CalculateZobristHashFen
+// @desc Convenience function to calculate a Zobrist hash directly from a FEN string.
+// 
+// @param fen Forsyth-Edwards Notation string
+//
+// @returns 64-bit Zobrist hash
 uint64_t castro_CalculateZobristHashFen(const char* fen);
 
-/**
- * @desc Translates piece as a character to expected zobrist index
- */
+// @function ZobristPieceToIndex
+// @desc Translates piece as a character to expected zobrist index
+//
+// @param piece The piece as a character (example: white queen -> 'Q')
+//
+// @returns int The index
 int castro_ZobristPieceToIndex(char piece);
 
-/*------------------------------------.
-| *MASKS*                             |
-| ----------------------------------- |
-|                                     |
-`------------------------------------*/
+// @module masks
 
+// @type Bitboard
+// @desc TODO
 typedef uint64_t Bitboard;
 
 #define FILE_A  0x0101010101010101ULL  // File A (a1, a2, ..., a8)
@@ -1957,11 +2042,7 @@ void castro_GenerateLegalKingMoves(const Board* board, Bitboard pieces, PieceCol
  */
 Moves castro_GenerateMoves(const Board* board, MoveType type);
 
-/*------------------------------------.
-| *PERFT*                             |
-| ----------------------------------- |
-|                                     |
-`------------------------------------*/
+// @module perft
 
 typedef unsigned long long u64;
 
@@ -1973,11 +2054,7 @@ u64 castro_PerftPseudoLegal(Board* board, int depth);
 
 
 
-/*------------------------------------.
-| *POLYGLOT*                          |
-| ----------------------------------- |
-|                                     |
-`------------------------------------*/
+// @module polyglot
 
 typedef struct {
     uint64_t zobrist_hash;
@@ -2191,30 +2268,26 @@ static const uint64_t Random64[781] = {
    U64(0xF8D626AAAF278509),
 };
 
-
-/*
- *  "move" is a bit field with the following meaning (bit 0 is the least significant bit)
- *
- *  bits                meaning
- *  ===================================
- *  0,1,2               to file
- *  3,4,5               to row
- *  6,7,8               from file
- *  9,10,11             from row
- *  12,13,14            promotion piece
- *
- *  "promotion piece" is encoded as follows
- *
- *  none       0
- *  knight     1
- *  bishop     2
- *  rook       3
- *  queen      4
- *
- *  If the move is "0" (a1a1) then it should simply be ignored. 
- *  It seems to me that in that case one might as well delete the entry from the book. 
- */
-
+// "move" is a bit field with the following meaning (bit 0 is the least significant bit)
+//
+// bits                meaning
+// ===================================
+// 0,1,2               to file
+// 3,4,5               to row
+// 6,7,8               from file
+// 9,10,11             from row
+// 12,13,14            promotion piece
+//
+// "promotion piece" is encoded as follows
+//
+// none       0
+// knight     1
+// bishop     2
+// rook       3
+// queen      4
+//
+// If the move is "0" (a1a1) then it should simply be ignored. 
+// It seems to me that in that case one might as well delete the entry from the book. 
 
 /**
  * @desc Converts polyglot's 16bit format to my 32bit one
