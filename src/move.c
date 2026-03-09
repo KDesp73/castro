@@ -460,7 +460,7 @@ void castro_UnmakeMove(Board* board)
 
 NullMoveState nullState = {0};
 
-void MakeNullMove(Board* board)
+void castro_MakeNullMove(Board* board)
 {
     nullState.turn           = board->turn;
     nullState.halfmoveClock  = board->halfmove;
@@ -481,7 +481,7 @@ void MakeNullMove(Board* board)
     if (board->turn == COLOR_BLACK) board->hash ^= Random64[780];
 }
 
-void UnmakeNullMove(Board* board)
+void castro_UnmakeNullMove(Board* board)
 {
     /* Remove current side-to-move */
     if (board->turn == COLOR_BLACK) board->hash ^= Random64[780];
