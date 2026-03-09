@@ -701,6 +701,13 @@ typedef struct {
 
     History history;                 ///< Move history
     uint64_t hash;                   ///< Zobrist hash of current position
+
+    struct {
+        bool turn;
+        int halfmoveClock;
+        int fullmoveNumber;
+        Square epSquare;
+    } null_move_state;
 } Board;
 
 // @function AddUndo
@@ -1357,19 +1364,6 @@ enum {
     CASTLE_BLACK_KINGSIDE  = 0b0100,
     CASTLE_BLACK_QUEENSIDE = 0b1000
 };
-
-// @type NullMoveState
-// @desc Used to store minimal board state when making a null move.
-typedef struct {
-    PieceColor turn;
-    int halfmoveClock;
-    int fullmoveNumber;
-    Square epSquare;
-} NullMoveState;
-
-// @var nullState
-// @desc Stores the state of the board before a null move is made
-extern NullMoveState nullState;
 
 // @type Move
 // @desc Encoded move type (bitfield). Format:

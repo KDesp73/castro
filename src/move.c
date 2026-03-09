@@ -458,14 +458,12 @@ void castro_UnmakeMove(Board* board)
 
 /* ------------------------------------------------------------------ */
 
-NullMoveState nullState = {0};
-
 void castro_MakeNullMove(Board* board)
 {
-    nullState.turn           = board->turn;
-    nullState.halfmoveClock  = board->halfmove;
-    nullState.fullmoveNumber = board->fullmove;
-    nullState.epSquare       = board->enpassant_square;
+    board->null_move_state.turn           = board->turn;
+    board->null_move_state.halfmoveClock  = board->halfmove;
+    board->null_move_state.fullmoveNumber = board->fullmove;
+    board->null_move_state.epSquare       = board->enpassant_square;
 
     /* Remove current ep and side-to-move */
     board->hash ^= ep_hash(board);
@@ -487,10 +485,10 @@ void castro_UnmakeNullMove(Board* board)
     if (board->turn == COLOR_BLACK) board->hash ^= Random64[780];
     /* ep is SQUARE_NONE, nothing to remove */
 
-    board->turn             = nullState.turn;
-    board->halfmove         = nullState.halfmoveClock;
-    board->fullmove         = nullState.fullmoveNumber;
-    board->enpassant_square = nullState.epSquare;
+    board->turn             = board->null_move_state.turn;
+    board->halfmove         = board->null_move_state.halfmoveClock;
+    board->fullmove         = board->null_move_state.fullmoveNumber;
+    board->enpassant_square = board->null_move_state.epSquare;
 
     /* Restore original ep and side-to-move */
     board->hash ^= ep_hash(board);

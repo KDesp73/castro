@@ -16,6 +16,7 @@
 #include "test_king_pseudo.h"
 #include "test_king_moves.h"
 #include "test_queen_pseudo.h"
+#include "test_null_move.h"
 #include "test_pawn_pseudo.h"
 #include "test_rook_moves.h"
 #include "test_board_hash.h"
@@ -38,6 +39,7 @@ static int dispatch_test_by_name(const char* name) {
     if (strcmp(name, "test_king_pseudo") == 0) return test(TEST_test_king_pseudo, END);
     if (strcmp(name, "test_king_moves") == 0) return test(TEST_test_king_moves, END);
     if (strcmp(name, "test_queen_pseudo") == 0) return test(TEST_test_queen_pseudo, END);
+    if (strcmp(name, "test_null_move") == 0) return test(TEST_test_null_move, END);
     if (strcmp(name, "test_pawn_pseudo") == 0) return test(TEST_test_pawn_pseudo, END);
     if (strcmp(name, "test_rook_moves") == 0) return test(TEST_test_rook_moves, END);
     if (strcmp(name, "test_board_hash") == 0) return test(TEST_test_board_hash, END);
