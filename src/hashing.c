@@ -70,6 +70,24 @@ _Bool castro_UpdateHashTable(HashTable* table, uint64_t hash)
     return 0; /* table full */
 }
 
+size_t castro_HashTableGetCount(const HashTable* table, uint64_t hash)
+{
+    if (hash == 0) return 0;
+
+    const size_t cap = table->capacity;
+    const size_t mask = cap - 1;
+    size_t i = (size_t)(hash & mask);
+
+    for (size_t n = 0; n < cap; n++) {
+        if (table->entries[i].hash == hash)
+            return table->entries[i].count;
+        if (table->entries[i].hash == 0)
+            return 0;
+        i = (i + 1) & mask;
+    }
+    return 0;
+}
+
 void castro_HashTableDecrement(HashTable* table, uint64_t hash)
 {
     if (hash == 0) return;

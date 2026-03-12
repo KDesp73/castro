@@ -562,6 +562,14 @@ void castro_InitHashTableHash(HashTable* table, uint64_t starting_hash);
 // @returns true if repetition >= 3 (e.g., threefold repetition), false otherwise
 _Bool castro_UpdateHashTable(HashTable* table, uint64_t hash);
 
+// @function HashTableGetCount
+// @desc Returns the current repetition count for a position (lookup only).
+//
+// @param table Pointer to HashTable
+// @param hash The hash of the position to look up
+// @returns The count (0 if not present)
+size_t castro_HashTableGetCount(const HashTable* table, uint64_t hash);
+
 // @function HashTableDecrement
 // @desc Decrements the repetition count for a position (used on unmake).
 // Call with the hash that was last added before the move being undone.
@@ -615,10 +623,12 @@ typedef struct {
 
 // @function HistoryRemove
 // @desc Removes the last move from history (pop operation).
-// Updates position table and count.
+// Updates position table and count. Decrements the given position hash
+// (the position we're unmaking from), not last_added.
 //
 // @param history Pointer to a history struct
-void castro_HistoryRemove(History* history);
+// @param hash_to_remove Zobrist hash of the position being left (child node)
+void castro_HistoryRemove(History* history, uint64_t hash_to_remove);
 
 // @function HistoryGetLast
 // @desc Returns the most recent Undo record from history.
@@ -2703,6 +2713,7 @@ Move castro_LookupBookMove(uint64_t position_hash, const char* book_path);
 #define InitHashTable castro_InitHashTable
 #define InitHashTableHash castro_InitHashTableHash
 #define UpdateHashTable castro_UpdateHashTable
+#define HashTableGetCount castro_HashTableGetCount
 #define HashTableDecrement castro_HashTableDecrement
 #define FreeHashTable castro_FreeHashTable
 #define UndoPrint castro_UndoPrint

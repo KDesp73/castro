@@ -92,10 +92,10 @@ Square castro_UpdateEnpassantSquare(Board* board, Move move)
         goto no_enpassant;
     }
 
-    int from_file = castro_Rank(castro_GetFrom(move));
-    int to_file = castro_Rank(castro_GetTo(move));
-    int from_rank = castro_File(castro_GetFrom(move));
-    int to_rank = castro_File(castro_GetTo(move));
+    int from_file = castro_File(castro_GetFrom(move));
+    int to_file = castro_File(castro_GetTo(move));
+    int from_rank = castro_Rank(castro_GetFrom(move));
+    int to_rank = castro_Rank(castro_GetTo(move));
 
     int file_diff = abs((int)from_file - (int)to_file);
     int rank_diff = (int)to_rank - (int)from_rank;
@@ -106,7 +106,8 @@ Square castro_UpdateEnpassantSquare(Board* board, Move move)
         goto no_enpassant;
     }
 
-    return ((piece.color) ? 3 : 6) * 8 + to_file;
+    /* Ep square is the square behind the pawn: rank 2 for white, rank 5 for black */
+    return ((piece.color) ? 2 : 5) * 8 + to_file;
 
 no_enpassant:
     return 64;
@@ -186,19 +187,9 @@ uint8_t castro_UpdateCastlingRights(Board* board, Move move)
 
 void castro_UpdateHalfmove(Board* board, Move move, size_t piece_count_before, size_t piece_count_after, char piece)
 {
-    int color = castro_GetPieceColor(piece);
-    int direction = (color == COLOR_WHITE) ? 1 : -1;
     bool is_pawn = tolower(piece) == 'p';
     bool is_capture = (piece_count_after < piece_count_before);
-    int from_rank = castro_Rank(castro_GetFrom(move));
-    int to_rank = castro_Rank(castro_GetTo(move));
-
-    // Check if it's a pawn move
-    bool is_pawn_advancement = is_pawn && (from_rank == (color == COLOR_WHITE ? 7 : 2)) &&
-                                (to_rank == from_rank + direction);
-
-    // If it's a pawn move, pawn advancement, or a capture, reset halfmove
-    if (is_pawn_advancement || is_capture || is_pawn) {
+    if (is_pawn || is_capture) {
         board->halfmove = 0;
     } else {
         board->halfmove++;

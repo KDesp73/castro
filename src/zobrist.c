@@ -122,7 +122,7 @@ uint64_t castro_CalculateZobristHash(const Board* board)
         }
     }
 
-    if (board->turn == 1) {
+    if (board->turn == COLOR_BLACK) {
         hash ^= Random64[780];
     }
 

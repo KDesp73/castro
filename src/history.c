@@ -12,12 +12,11 @@ bool castro_AddUndo(Board* board, uint32_t move)
     return true;
 }
 
-void castro_HistoryRemove(History* history)
+void castro_HistoryRemove(History* history, uint64_t hash_to_remove)
 {
     if (history->count == 0) return;
     history->count--;
-
-    castro_HashTableDecrement(&history->positions, history->positions.last_added);
+    castro_HashTableDecrement(&history->positions, hash_to_remove);
 }
 
 void castro_UndoPrint(Undo undo)
