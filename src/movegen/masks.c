@@ -63,18 +63,22 @@ Bitboard castro_ComputeVerticalMask(Square square)
 
 Bitboard castro_DiagonalMask(Square square)
 {
+    if (square >= 64) return 0ULL;
     return DIAGONAL_MASKS[square];
 }
 Bitboard castro_AntiDiagonalMask(Square square)
 {
+    if (square >= 64) return 0ULL;
     return ANTI_DIAGONAL_MASKS[square];
 }
 Bitboard castro_HorizontalMask(Square square)
 {
+    if (square >= 64) return 0ULL;
     return HORIZONTAL_MASKS[square];
 }
 Bitboard castro_VerticalMask(Square square)
 {
+    if (square >= 64) return 0ULL;
     return VERTICAL_MASKS[square];
 }
 
@@ -228,52 +232,52 @@ Bitboard castro_ComputeKingMoveMask(Square square)
 
 Bitboard castro_PawnPushMask(Square square, PieceColor color)
 {
-    if (square == 64) return 0ULL;
+    if (square >= 64) return 0ULL;
     return PAWN_PUSH_MASKS[color][square];
 }
 Bitboard castro_PawnDoublePushMask(Square square, PieceColor color)
 {
-    if (square == 64) return 0ULL;
+    if (square >= 64) return 0ULL;
     return PAWN_DOUBLE_PUSH_MASKS[color][square];
 }
 Bitboard castro_PawnAttackMask(Square square, PieceColor color)
 {
-    if (square == 64) return 0ULL;
+    if (square >= 64) return 0ULL;
     return PAWN_ATTACK_MASKS[color][square];
 }
 Bitboard castro_PawnPromotionMask(Square square, PieceColor color)
 {
-    if (square == 64) return 0ULL;
+    if (square >= 64) return 0ULL;
     return PAWN_PROMOTION_MASKS[color][square];
 }
 Bitboard castro_PawnPromotionAttackMask(Square square, PieceColor color)
 {
-    if (square == 64) return 0ULL;
+    if (square >= 64) return 0ULL;
     return PAWN_PROMOTION_ATTACK_MASKS[color][square];
 }
 
 Bitboard castro_KnightMoveMask(Square square)
 {
-    if (square == 64) return 0ULL;
+    if (square >= 64) return 0ULL;
     return KNIGHT_MOVE_MASKS[square];
 }
 Bitboard castro_BishopMoveMask(Square square)
 {
-    if (square == 64) return 0ULL;
+    if (square >= 64) return 0ULL;
     return BISHOP_MOVE_MASKS[square];
 }
 Bitboard castro_RookMoveMask(Square square)
 {
-    if (square == 64) return 0ULL;
+    if (square >= 64) return 0ULL;
     return ROOK_MOVE_MASKS[square];
 }
 Bitboard castro_QueenMoveMask(Square square)
 {
-    if (square == 64) return 0ULL;
+    if (square >= 64) return 0ULL;
     return QUEEN_MOVE_MASKS[square];
 }
 Bitboard castro_KingMoveMask(Square square)
 {
-    if (square == 64) return 0ULL;
+    if (square >= 64) return 0ULL;
     return KING_MOVE_MASKS[square];
 }
