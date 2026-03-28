@@ -2290,9 +2290,11 @@
             
                 
             
+                
+            
         
 
-        <section x-show="shouldShowModule('src/castro.h', 'hashing', ["HashEntry", "HASH_TABLE_CAPACITY", "HashTable", "InitHashTable", "InitHashTableHash", "UpdateHashTable", "HashTableDecrement", "FreeHashTable"])" x-cloak class="relative">
+        <section x-show="shouldShowModule('src/castro.h', 'hashing', ["HashEntry", "HASH_TABLE_CAPACITY", "HashTable", "InitHashTable", "InitHashTableHash", "UpdateHashTable", "HashTableGetCount", "HashTableDecrement", "FreeHashTable"])" x-cloak class="relative">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 group">
                 <div class="space-y-1">
                     <div class="flex items-center gap-2">
@@ -2556,6 +2558,63 @@
                         </div>
                     </div>
                     
+                    <div class="relative pl-0 md:pl-12 group" x-show="match('HashTableGetCount') || match('hashing') || match('src/castro.h')">
+                        <div class="absolute left-[-5px] top-4 w-2.5 h-2.5 rounded-full bg-white dark:bg-slate-950 border-2 border-indigo-500 hidden md:block group-hover:scale-125 transition-transform"></div>
+
+                        <div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex flex-wrap items-center gap-3 mb-6">
+                                <span class="text-[9px] font-black px-2 py-1 rounded-md uppercase tracking-wider
+                                     bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400
+                                    ">
+                                    function
+                                </span>
+                                
+                                <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100 tracking-tight" :class="match('HashTableGetCount') && 'highlight'">
+                                    HashTableGetCount
+                                </h3>
+                                
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 565</span>
+                            </div>
+
+                            <div class="space-y-4">
+                                
+                                    
+                                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-base">Returns the current repetition count for a position (lookup only).</p>
+                                    
+                                    
+                                
+                                    
+                                        <div class="flex items-center gap-3 p-2 rounded-lg bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+                                            <span class="text-[9px] font-black uppercase text-pink-500 w-8 shrink-0">param</span>
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold text-sm">table</code>
+                                            <span class="text-slate-400 text-xs">—</span>
+                                            <span class="text-slate-500 dark:text-slate-400 italic text-xs">Pointer to HashTable</span>
+                                        </div>
+
+                                    
+                                
+                                    
+                                        <div class="flex items-center gap-3 p-2 rounded-lg bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+                                            <span class="text-[9px] font-black uppercase text-pink-500 w-8 shrink-0">param</span>
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold text-sm">hash</code>
+                                            <span class="text-slate-400 text-xs">—</span>
+                                            <span class="text-slate-500 dark:text-slate-400 italic text-xs">The hash of the position to look up</span>
+                                        </div>
+
+                                    
+                                
+                                    
+                                        <div class="flex items-center gap-5 mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+                                            <span class="text-[9px] font-black uppercase text-emerald-500 w-8 shrink-0">returns</span>
+                                            <code class="text-emerald-600 dark:text-emerald-400 font-bold text-sm">The</code>
+                                        </div>
+
+                                    
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="relative pl-0 md:pl-12 group" x-show="match('HashTableDecrement') || match('hashing') || match('src/castro.h')">
                         <div class="absolute left-[-5px] top-4 w-2.5 h-2.5 rounded-full bg-white dark:bg-slate-950 border-2 border-indigo-500 hidden md:block group-hover:scale-125 transition-transform"></div>
 
@@ -2571,7 +2630,7 @@
                                     HashTableDecrement
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 565</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 573</span>
                             </div>
 
                             <div class="space-y-4">
@@ -2620,7 +2679,7 @@
                                     FreeHashTable
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 573</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 581</span>
                             </div>
 
                             <div class="space-y-4">
@@ -2696,7 +2755,7 @@
                                     MAX_MOVES
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 584</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 592</span>
                             </div>
 
                             <div class="space-y-4">
@@ -2725,7 +2784,7 @@
                                     Undo
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 588</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 596</span>
                             </div>
 
                             <div class="space-y-4">
@@ -2753,7 +2812,7 @@
                                     NULL_UNDO
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 598</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 606</span>
                             </div>
 
                             <div class="space-y-4">
@@ -2782,7 +2841,7 @@
                                     UndoPrint
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 602</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 610</span>
                             </div>
 
                             <div class="space-y-4">
@@ -2821,7 +2880,7 @@
                                     History
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 608</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 616</span>
                             </div>
 
                             <div class="space-y-4">
@@ -2850,13 +2909,13 @@
                                     HistoryRemove
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 616</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 624</span>
                             </div>
 
                             <div class="space-y-4">
                                 
                                     
-                                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-base">Removes the last move from history (pop operation). Updates position table and count.</p>
+                                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-base">Removes the last move from history (pop operation). Updates position table and count. Decrements the given position hash (the position we're unmaking from), not last_added.</p>
                                     
                                     
                                 
@@ -2866,6 +2925,16 @@
                                             <code class="text-pink-600 dark:text-pink-400 font-bold text-sm">history</code>
                                             <span class="text-slate-400 text-xs">—</span>
                                             <span class="text-slate-500 dark:text-slate-400 italic text-xs">Pointer to a history struct</span>
+                                        </div>
+
+                                    
+                                
+                                    
+                                        <div class="flex items-center gap-3 p-2 rounded-lg bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+                                            <span class="text-[9px] font-black uppercase text-pink-500 w-8 shrink-0">param</span>
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold text-sm">hash_to_remove</code>
+                                            <span class="text-slate-400 text-xs">—</span>
+                                            <span class="text-slate-500 dark:text-slate-400 italic text-xs">Zobrist hash of the position being left (child node)</span>
                                         </div>
 
                                     
@@ -2889,7 +2958,7 @@
                                     HistoryGetLast
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 623</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 633</span>
                             </div>
 
                             <div class="space-y-4">
@@ -2992,9 +3061,13 @@
             
                 
             
+                
+            
+                
+            
         
 
-        <section x-show="shouldShowModule('src/castro.h', 'board', ["PieceType", "EMPTY_SQUARE", "STARTING_FEN", "BOARD_SIZE", "PIECE_TYPES", "Board", "AddUndo", "LoadLastUndo", "PIECES", "PieceColor", "PromotionToChar", "CharToPromotion", "BoardInitFen", "BoardInitFenHeap", "BoardFree", "BoardUpdateOccupancy", "GetWhite", "GetBlack", "GetEnemyColor", "GetEnemy", "GetEmpty", "CountPieces", "HasCastlingRights", "RevokeCastlingRights", "IsSquareAttacked", "IsSquareEmpty", "castro_IsSquareOccupiedBy", "castro_NumberOfPieces", "castro_IsInCheckColor", "castro_IsInCheck", "castro_BoardCopy"])" x-cloak class="relative">
+        <section x-show="shouldShowModule('src/castro.h', 'board', ["PieceType", "EMPTY_SQUARE", "STARTING_FEN", "BOARD_SIZE", "PIECE_TYPES", "Board", "AddUndo", "LoadLastUndo", "PIECES", "PieceColor", "PromotionToChar", "CharToPromotion", "BoardInitFen", "BoardInitFenHeap", "BoardFree", "BoardUpdateOccupancy", "GetWhite", "GetBlack", "GetEnemyColor", "GetEnemy", "GetEmpty", "CountPieces", "HasNonPawnMaterial", "PieceCount", "HasCastlingRights", "RevokeCastlingRights", "IsSquareAttacked", "IsSquareEmpty", "castro_IsSquareOccupiedBy", "castro_NumberOfPieces", "castro_IsInCheckColor", "castro_IsInCheck", "castro_BoardCopy"])" x-cloak class="relative">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 group">
                 <div class="space-y-1">
                     <div class="flex items-center gap-2">
@@ -3032,7 +3105,7 @@
                                     PieceType
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 653</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 663</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3060,7 +3133,7 @@
                                     EMPTY_SQUARE
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 664</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 674</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3088,7 +3161,7 @@
                                     STARTING_FEN
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 668</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 678</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3116,7 +3189,7 @@
                                     BOARD_SIZE
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 672</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 682</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3144,7 +3217,7 @@
                                     PIECE_TYPES
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 676</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 686</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3173,7 +3246,7 @@
                                     Board
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 686</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 696</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3202,7 +3275,7 @@
                                     AddUndo
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 706</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 723</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3259,7 +3332,7 @@
                                     LoadLastUndo
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 715</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 732</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3305,7 +3378,7 @@
                                     PIECES
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 723</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 740</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3334,7 +3407,7 @@
                                     PieceColor
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 751</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 768</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3363,7 +3436,7 @@
                                     PromotionToChar
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 759</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 776</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3410,7 +3483,7 @@
                                     CharToPromotion
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 767</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 784</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3457,7 +3530,7 @@
                                     BoardInitFen
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 775</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 792</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3506,7 +3579,7 @@
                                     BoardInitFenHeap
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 783</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 800</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3553,7 +3626,7 @@
                                     BoardFree
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 792</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 809</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3592,7 +3665,7 @@
                                     BoardUpdateOccupancy
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 798</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 815</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3631,7 +3704,7 @@
                                     GetWhite
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 805</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 822</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3678,7 +3751,7 @@
                                     GetBlack
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 813</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 830</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3725,7 +3798,7 @@
                                     GetEnemyColor
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 821</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 838</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3782,7 +3855,7 @@
                                     GetEnemy
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 830</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 847</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3829,7 +3902,7 @@
                                     GetEmpty
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 838</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 855</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3876,7 +3949,7 @@
                                     CountPieces
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 846</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 863</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3920,6 +3993,59 @@
                         </div>
                     </div>
                     
+                    <div class="relative pl-0 md:pl-12 group" x-show="match('HasNonPawnMaterial') || match('board') || match('src/castro.h')">
+                        <div class="absolute left-[-5px] top-4 w-2.5 h-2.5 rounded-full bg-white dark:bg-slate-950 border-2 border-indigo-500 hidden md:block group-hover:scale-125 transition-transform"></div>
+
+                        <div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex flex-wrap items-center gap-3 mb-6">
+                                <span class="text-[9px] font-black px-2 py-1 rounded-md uppercase tracking-wider
+                                     bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400
+                                    ">
+                                    function
+                                </span>
+                                
+                                <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100 tracking-tight" :class="match('HasNonPawnMaterial') && 'highlight'">
+                                    HasNonPawnMaterial
+                                </h3>
+                                
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 873</span>
+                            </div>
+
+                            <div class="space-y-4">
+                                
+                                    
+                                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-base">Returns true if the side to move has material other than pawns and the king</p>
+                                    
+                                    
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative pl-0 md:pl-12 group" x-show="match('PieceCount') || match('board') || match('src/castro.h')">
+                        <div class="absolute left-[-5px] top-4 w-2.5 h-2.5 rounded-full bg-white dark:bg-slate-950 border-2 border-indigo-500 hidden md:block group-hover:scale-125 transition-transform"></div>
+
+                        <div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex flex-wrap items-center gap-3 mb-6">
+                                <span class="text-[9px] font-black px-2 py-1 rounded-md uppercase tracking-wider
+                                     bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400
+                                    ">
+                                    function
+                                </span>
+                                
+                                <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100 tracking-tight" :class="match('PieceCount') && 'highlight'">
+                                    PieceCount
+                                </h3>
+                                
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 877</span>
+                            </div>
+
+                            <div class="space-y-4">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="relative pl-0 md:pl-12 group" x-show="match('HasCastlingRights') || match('board') || match('src/castro.h')">
                         <div class="absolute left-[-5px] top-4 w-2.5 h-2.5 rounded-full bg-white dark:bg-slate-950 border-2 border-indigo-500 hidden md:block group-hover:scale-125 transition-transform"></div>
 
@@ -3935,7 +4061,7 @@
                                     HasCastlingRights
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 856</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 881</span>
                             </div>
 
                             <div class="space-y-4">
@@ -3992,7 +4118,7 @@
                                     RevokeCastlingRights
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 865</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 890</span>
                             </div>
 
                             <div class="space-y-4">
@@ -4041,7 +4167,7 @@
                                     IsSquareAttacked
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 872</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 897</span>
                             </div>
 
                             <div class="space-y-4">
@@ -4108,7 +4234,7 @@
                                     IsSquareEmpty
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 882</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 907</span>
                             </div>
 
                             <div class="space-y-4">
@@ -4165,7 +4291,7 @@
                                     castro_IsSquareOccupiedBy
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 891</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 916</span>
                             </div>
 
                             <div class="space-y-4">
@@ -4232,7 +4358,7 @@
                                     castro_NumberOfPieces
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 901</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 926</span>
                             </div>
 
                             <div class="space-y-4">
@@ -4289,7 +4415,7 @@
                                     castro_IsInCheckColor
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 910</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 935</span>
                             </div>
 
                             <div class="space-y-4">
@@ -4346,7 +4472,7 @@
                                     castro_IsInCheck
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 919</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 944</span>
                             </div>
 
                             <div class="space-y-4">
@@ -4393,7 +4519,7 @@
                                     castro_BoardCopy
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 928</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 953</span>
                             </div>
 
                             <div class="space-y-4">
@@ -4490,7 +4616,7 @@
                                     Uint32Print
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 939</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 964</span>
                             </div>
 
                             <div class="space-y-4">
@@ -4529,7 +4655,7 @@
                                     Uint64Print
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 944</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 969</span>
                             </div>
 
                             <div class="space-y-4">
@@ -4568,7 +4694,7 @@
                                     BitboardPrint
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 949</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 974</span>
                             </div>
 
                             <div class="space-y-4">
@@ -4607,7 +4733,7 @@
                                     castro_BoardPrintSquares
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 955</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 980</span>
                             </div>
 
                             <div class="space-y-4">
@@ -4666,7 +4792,7 @@
                                     castro_BoardPrintBitboard
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 963</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 988</span>
                             </div>
 
                             <div class="space-y-4">
@@ -4715,7 +4841,7 @@
                                     castro_BoardPrint
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 970</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 995</span>
                             </div>
 
                             <div class="space-y-4">
@@ -4764,7 +4890,7 @@
                                     castro_BoardPrintBitboards
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 977</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1002</span>
                             </div>
 
                             <div class="space-y-4">
@@ -4803,7 +4929,7 @@
                                     castro_BoardPrintGrid
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 983</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1008</span>
                             </div>
 
                             <div class="space-y-4">
@@ -4893,7 +5019,7 @@
                                     CASTLING_OPTIONS
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 996</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1021</span>
                             </div>
 
                             <div class="space-y-4">
@@ -4921,7 +5047,7 @@
                                     zobrist_table
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1000</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1025</span>
                             </div>
 
                             <div class="space-y-4">
@@ -4949,7 +5075,7 @@
                                     zobrist_castling
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1008</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1033</span>
                             </div>
 
                             <div class="space-y-4">
@@ -4977,7 +5103,7 @@
                                     zobrist_en_passant
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1012</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1037</span>
                             </div>
 
                             <div class="space-y-4">
@@ -5005,7 +5131,7 @@
                                     zobrist_black_to_move
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1016</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1041</span>
                             </div>
 
                             <div class="space-y-4">
@@ -5033,7 +5159,7 @@
                                     InitZobrist
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1020</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1045</span>
                             </div>
 
                             <div class="space-y-4">
@@ -5062,7 +5188,7 @@
                                     CalculateZobristHash
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1024</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1049</span>
                             </div>
 
                             <div class="space-y-4">
@@ -5109,7 +5235,7 @@
                                     CalculateZobristHashFen
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1037</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1062</span>
                             </div>
 
                             <div class="space-y-4">
@@ -5156,7 +5282,7 @@
                                     ZobristPieceToIndex
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1045</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1070</span>
                             </div>
 
                             <div class="space-y-4">
@@ -5301,7 +5427,7 @@
                                     Bitboard
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1055</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1080</span>
                             </div>
 
                             <div class="space-y-4">
@@ -5330,7 +5456,7 @@
                                     InitMasks
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1114</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1139</span>
                             </div>
 
                             <div class="space-y-4">
@@ -5359,7 +5485,7 @@
                                     GeneralOccupancy
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1118</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1143</span>
                             </div>
 
                             <div class="space-y-4">
@@ -5416,7 +5542,7 @@
                                     BlockerMasks
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1127</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1152</span>
                             </div>
 
                             <div class="space-y-4">
@@ -5473,7 +5599,7 @@
                                     ComputeDiagonalMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1138</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1163</span>
                             </div>
 
                             <div class="space-y-4">
@@ -5520,7 +5646,7 @@
                                     ComputeAntiDiagonalMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1144</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1169</span>
                             </div>
 
                             <div class="space-y-4">
@@ -5567,7 +5693,7 @@
                                     ComputeHorizontalMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1150</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1175</span>
                             </div>
 
                             <div class="space-y-4">
@@ -5614,7 +5740,7 @@
                                     ComputeVerticalMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1156</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1181</span>
                             </div>
 
                             <div class="space-y-4">
@@ -5661,7 +5787,7 @@
                                     DiagonalMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1162</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1187</span>
                             </div>
 
                             <div class="space-y-4">
@@ -5708,7 +5834,7 @@
                                     AntiDiagonalMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1168</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1193</span>
                             </div>
 
                             <div class="space-y-4">
@@ -5755,7 +5881,7 @@
                                     HorizontalMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1174</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1199</span>
                             </div>
 
                             <div class="space-y-4">
@@ -5802,7 +5928,7 @@
                                     VerticalMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1180</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1205</span>
                             </div>
 
                             <div class="space-y-4">
@@ -5849,7 +5975,7 @@
                                     ComputePawnPushMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1188</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1213</span>
                             </div>
 
                             <div class="space-y-4">
@@ -5906,7 +6032,7 @@
                                     ComputePawnDoublePushMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1195</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1220</span>
                             </div>
 
                             <div class="space-y-4">
@@ -5963,7 +6089,7 @@
                                     ComputePawnPromotionMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1202</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1227</span>
                             </div>
 
                             <div class="space-y-4">
@@ -6020,7 +6146,7 @@
                                     ComputePawnPromotionAttackMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1209</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1234</span>
                             </div>
 
                             <div class="space-y-4">
@@ -6077,7 +6203,7 @@
                                     ComputePawnAttackMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1216</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1241</span>
                             </div>
 
                             <div class="space-y-4">
@@ -6134,7 +6260,7 @@
                                     ComputeKnightMoveMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1223</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1248</span>
                             </div>
 
                             <div class="space-y-4">
@@ -6181,7 +6307,7 @@
                                     ComputeBishopMoveMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1229</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1254</span>
                             </div>
 
                             <div class="space-y-4">
@@ -6228,7 +6354,7 @@
                                     ComputeRookMoveMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1235</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1260</span>
                             </div>
 
                             <div class="space-y-4">
@@ -6275,7 +6401,7 @@
                                     ComputeQueenMoveMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1241</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1266</span>
                             </div>
 
                             <div class="space-y-4">
@@ -6322,7 +6448,7 @@
                                     ComputeKingMoveMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1247</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1272</span>
                             </div>
 
                             <div class="space-y-4">
@@ -6369,7 +6495,7 @@
                                     PawnPushMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1253</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1278</span>
                             </div>
 
                             <div class="space-y-4">
@@ -6426,7 +6552,7 @@
                                     PawnDoublePushMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1260</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1285</span>
                             </div>
 
                             <div class="space-y-4">
@@ -6483,7 +6609,7 @@
                                     PawnPromotionMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1267</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1292</span>
                             </div>
 
                             <div class="space-y-4">
@@ -6540,7 +6666,7 @@
                                     PawnPromotionAttackMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1274</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1299</span>
                             </div>
 
                             <div class="space-y-4">
@@ -6597,7 +6723,7 @@
                                     PawnAttackMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1281</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1306</span>
                             </div>
 
                             <div class="space-y-4">
@@ -6654,7 +6780,7 @@
                                     KnightMoveMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1288</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1313</span>
                             </div>
 
                             <div class="space-y-4">
@@ -6701,7 +6827,7 @@
                                     BishopMoveMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1294</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1319</span>
                             </div>
 
                             <div class="space-y-4">
@@ -6748,7 +6874,7 @@
                                     RookMoveMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1300</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1325</span>
                             </div>
 
                             <div class="space-y-4">
@@ -6795,7 +6921,7 @@
                                     QueenMoveMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1306</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1331</span>
                             </div>
 
                             <div class="space-y-4">
@@ -6842,7 +6968,7 @@
                                     KingMoveMask
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1312</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1337</span>
                             </div>
 
                             <div class="space-y-4">
@@ -6993,13 +7119,9 @@
             
                 
             
-                
-            
-                
-            
         
 
-        <section x-show="shouldShowModule('src/castro.h', 'move', ["Flag", "Promotion", "Castling bytes", "NullMoveState", "nullState", "Move", "NULL_MOVE", "MOVES_CAPACITY", "Moves", "NO_MOVES", "MovesAppend", "MovesAppendList", "MovesCombine", "MakeUndo", "MOVE_DECODE", "MoveIsValid", "MoveIsCapture", "MoveGivesCheck", "PieceValueFromType", "OrderLegalMoves", "MoveEncode", "MoveEncodeNames", "MoveDecode", "MoveSetFlag", "MoveSetPromotion", "DoMove", "UndoMove", "MakeMove", "UnmakeMove", "MakeNullMove", "UnmakeNullMove", "Castle", "IsCastle", "Enpassant", "IsEnpassant", "IsDoublePawnPush", "IsPromotion", "IsCapture", "IsInCheckAfterMove", "MoveMake", "MoveFreely", "MovePrint", "StringToMove", "MoveToString", "MoveCmp", "MoveCmpStrict", "GetFrom", "GetTo", "GetPromotion", "GetFlag", "UpdateHalfmove", "UpdateCastlingRights", "UpdateEnpassantSquare", "BitboardToMoves", "MovesToBitboard", "BoardPrintMove", "MOVE_PRINT"])" x-cloak class="relative">
+        <section x-show="shouldShowModule('src/castro.h', 'move', ["Flag", "Promotion", "Castling bytes", "Move", "NULL_MOVE", "MOVES_CAPACITY", "Moves", "NO_MOVES", "MovesAppend", "MovesAppendList", "MovesCombine", "MakeUndo", "MOVE_DECODE", "MoveIsValid", "MoveIsCapture", "MoveGivesCheck", "PieceValueFromType", "OrderLegalMoves", "MoveEncode", "MoveEncodeNames", "MoveDecode", "MoveSetFlag", "MoveSetPromotion", "DoMove", "UndoMove", "MakeMove", "UnmakeMove", "MakeNullMove", "UnmakeNullMove", "Castle", "IsCastle", "Enpassant", "IsEnpassant", "IsDoublePawnPush", "IsPromotion", "IsCapture", "IsInCheckAfterMove", "MoveMake", "MoveFreely", "MovePrint", "StringToMove", "MoveToString", "MoveCmp", "MoveCmpStrict", "GetFrom", "GetTo", "GetPromotion", "GetFlag", "UpdateHalfmove", "UpdateCastlingRights", "UpdateEnpassantSquare", "BitboardToMoves", "MovesToBitboard", "BoardPrintMove", "MOVE_PRINT"])" x-cloak class="relative">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 group">
                 <div class="space-y-1">
                     <div class="flex items-center gap-2">
@@ -7037,7 +7159,7 @@
                                     Flag
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1331</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1356</span>
                             </div>
 
                             <div class="space-y-4">
@@ -7066,7 +7188,7 @@
                                     Promotion
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1342</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1367</span>
                             </div>
 
                             <div class="space-y-4">
@@ -7095,70 +7217,13 @@
                                     Castling bytes
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1352</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1377</span>
                             </div>
 
                             <div class="space-y-4">
                                 
                                     
                                         <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-base">Bit flags representing castling rights.</p>
-                                    
-                                    
-                                
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="relative pl-0 md:pl-12 group" x-show="match('NullMoveState') || match('move') || match('src/castro.h')">
-                        <div class="absolute left-[-5px] top-4 w-2.5 h-2.5 rounded-full bg-white dark:bg-slate-950 border-2 border-indigo-500 hidden md:block group-hover:scale-125 transition-transform"></div>
-
-                        <div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                            <div class="flex flex-wrap items-center gap-3 mb-6">
-                                <span class="text-[9px] font-black px-2 py-1 rounded-md uppercase tracking-wider
-                                     bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300
-                                    ">
-                                    type
-                                </span>
-                                
-                                <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100 tracking-tight" :class="match('NullMoveState') && 'highlight'">
-                                    NullMoveState
-                                </h3>
-                                
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1361</span>
-                            </div>
-
-                            <div class="space-y-4">
-                                
-                                    
-                                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-base">Used to store minimal board state when making a null move.</p>
-                                    
-                                    
-                                
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="relative pl-0 md:pl-12 group" x-show="match('nullState') || match('move') || match('src/castro.h')">
-                        <div class="absolute left-[-5px] top-4 w-2.5 h-2.5 rounded-full bg-white dark:bg-slate-950 border-2 border-indigo-500 hidden md:block group-hover:scale-125 transition-transform"></div>
-
-                        <div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-                            <div class="flex flex-wrap items-center gap-3 mb-6">
-                                <span class="text-[9px] font-black px-2 py-1 rounded-md uppercase tracking-wider
-                                     bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 ">
-                                    var
-                                </span>
-                                
-                                <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100 tracking-tight" :class="match('nullState') && 'highlight'">
-                                    nullState
-                                </h3>
-                                
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1370</span>
-                            </div>
-
-                            <div class="space-y-4">
-                                
-                                    
-                                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-base">Stores the state of the board before a null move is made</p>
                                     
                                     
                                 
@@ -7181,7 +7246,7 @@
                                     Move
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1374</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1386</span>
                             </div>
 
                             <div class="space-y-4">
@@ -7209,7 +7274,7 @@
                                     NULL_MOVE
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1382</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1394</span>
                             </div>
 
                             <div class="space-y-4">
@@ -7237,7 +7302,7 @@
                                     MOVES_CAPACITY
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1386</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1398</span>
                             </div>
 
                             <div class="space-y-4">
@@ -7266,7 +7331,7 @@
                                     Moves
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1390</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1402</span>
                             </div>
 
                             <div class="space-y-4">
@@ -7294,7 +7359,7 @@
                                     NO_MOVES
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1397</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1409</span>
                             </div>
 
                             <div class="space-y-4">
@@ -7323,7 +7388,7 @@
                                     MovesAppend
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1401</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1413</span>
                             </div>
 
                             <div class="space-y-4">
@@ -7372,7 +7437,7 @@
                                     MovesAppendList
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1407</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1419</span>
                             </div>
 
                             <div class="space-y-4">
@@ -7421,7 +7486,7 @@
                                     MovesCombine
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1413</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1425</span>
                             </div>
 
                             <div class="space-y-4">
@@ -7478,7 +7543,7 @@
                                     MakeUndo
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1420</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1432</span>
                             </div>
 
                             <div class="space-y-4">
@@ -7535,7 +7600,7 @@
                                     MOVE_DECODE
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1451</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1463</span>
                             </div>
 
                             <div class="space-y-4">
@@ -7564,7 +7629,7 @@
                                     MoveIsValid
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1462</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1474</span>
                             </div>
 
                             <div class="space-y-4">
@@ -7631,7 +7696,7 @@
                                     MoveIsCapture
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1470</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1482</span>
                             </div>
 
                             <div class="space-y-4">
@@ -7688,7 +7753,7 @@
                                     MoveGivesCheck
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1477</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1489</span>
                             </div>
 
                             <div class="space-y-4">
@@ -7745,7 +7810,7 @@
                                     PieceValueFromType
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1484</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1496</span>
                             </div>
 
                             <div class="space-y-4">
@@ -7792,7 +7857,7 @@
                                     OrderLegalMoves
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1490</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1502</span>
                             </div>
 
                             <div class="space-y-4">
@@ -7881,7 +7946,7 @@
                                     MoveEncode
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1500</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1512</span>
                             </div>
 
                             <div class="space-y-4">
@@ -7958,7 +8023,7 @@
                                     MoveEncodeNames
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1509</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1521</span>
                             </div>
 
                             <div class="space-y-4">
@@ -8035,7 +8100,7 @@
                                     MoveDecode
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1518</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1530</span>
                             </div>
 
                             <div class="space-y-4">
@@ -8114,7 +8179,7 @@
                                     MoveSetFlag
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1527</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1539</span>
                             </div>
 
                             <div class="space-y-4">
@@ -8163,7 +8228,7 @@
                                     MoveSetPromotion
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1533</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1545</span>
                             </div>
 
                             <div class="space-y-4">
@@ -8212,7 +8277,7 @@
                                     DoMove
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1543</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1555</span>
                             </div>
 
                             <div class="space-y-4">
@@ -8269,7 +8334,7 @@
                                     UndoMove
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1550</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1562</span>
                             </div>
 
                             <div class="space-y-4">
@@ -8326,7 +8391,7 @@
                                     MakeMove
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1561</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1573</span>
                             </div>
 
                             <div class="space-y-4">
@@ -8383,7 +8448,7 @@
                                     UnmakeMove
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1569</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1581</span>
                             </div>
 
                             <div class="space-y-4">
@@ -8422,7 +8487,7 @@
                                     MakeNullMove
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1574</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1586</span>
                             </div>
 
                             <div class="space-y-4">
@@ -8461,7 +8526,7 @@
                                     UnmakeNullMove
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1580</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1592</span>
                             </div>
 
                             <div class="space-y-4">
@@ -8500,7 +8565,7 @@
                                     Castle
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1589</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1601</span>
                             </div>
 
                             <div class="space-y-4">
@@ -8557,7 +8622,7 @@
                                     IsCastle
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1596</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1608</span>
                             </div>
 
                             <div class="space-y-4">
@@ -8614,7 +8679,7 @@
                                     Enpassant
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1603</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1615</span>
                             </div>
 
                             <div class="space-y-4">
@@ -8671,7 +8736,7 @@
                                     IsEnpassant
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1610</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1622</span>
                             </div>
 
                             <div class="space-y-4">
@@ -8728,7 +8793,7 @@
                                     IsDoublePawnPush
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1617</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1629</span>
                             </div>
 
                             <div class="space-y-4">
@@ -8785,7 +8850,7 @@
                                     IsPromotion
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1624</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1636</span>
                             </div>
 
                             <div class="space-y-4">
@@ -8842,7 +8907,7 @@
                                     IsCapture
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1631</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1643</span>
                             </div>
 
                             <div class="space-y-4">
@@ -8899,7 +8964,7 @@
                                     IsInCheckAfterMove
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1638</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1650</span>
                             </div>
 
                             <div class="space-y-4">
@@ -8956,7 +9021,7 @@
                                     MoveMake
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1645</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1657</span>
                             </div>
 
                             <div class="space-y-4">
@@ -9013,7 +9078,7 @@
                                     MoveFreely
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1652</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1664</span>
                             </div>
 
                             <div class="space-y-4">
@@ -9072,7 +9137,7 @@
                                     MovePrint
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1659</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1671</span>
                             </div>
 
                             <div class="space-y-4">
@@ -9111,7 +9176,7 @@
                                     StringToMove
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1664</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1676</span>
                             </div>
 
                             <div class="space-y-4">
@@ -9158,7 +9223,7 @@
                                     MoveToString
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1670</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1682</span>
                             </div>
 
                             <div class="space-y-4">
@@ -9207,7 +9272,7 @@
                                     MoveCmp
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1680</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1692</span>
                             </div>
 
                             <div class="space-y-4">
@@ -9264,7 +9329,7 @@
                                     MoveCmpStrict
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1687</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1699</span>
                             </div>
 
                             <div class="space-y-4">
@@ -9321,7 +9386,7 @@
                                     GetFrom
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1698</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1710</span>
                             </div>
 
                             <div class="space-y-4">
@@ -9368,7 +9433,7 @@
                                     GetTo
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1704</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1716</span>
                             </div>
 
                             <div class="space-y-4">
@@ -9415,7 +9480,7 @@
                                     GetPromotion
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1710</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1722</span>
                             </div>
 
                             <div class="space-y-4">
@@ -9462,7 +9527,7 @@
                                     GetFlag
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1716</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1728</span>
                             </div>
 
                             <div class="space-y-4">
@@ -9509,7 +9574,7 @@
                                     UpdateHalfmove
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1726</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1738</span>
                             </div>
 
                             <div class="space-y-4">
@@ -9588,7 +9653,7 @@
                                     UpdateCastlingRights
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1735</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1747</span>
                             </div>
 
                             <div class="space-y-4">
@@ -9645,7 +9710,7 @@
                                     UpdateEnpassantSquare
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1742</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1754</span>
                             </div>
 
                             <div class="space-y-4">
@@ -9702,7 +9767,7 @@
                                     BitboardToMoves
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1753</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1765</span>
                             </div>
 
                             <div class="space-y-4">
@@ -9759,7 +9824,7 @@
                                     MovesToBitboard
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1760</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1772</span>
                             </div>
 
                             <div class="space-y-4">
@@ -9806,7 +9871,7 @@
                                     BoardPrintMove
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1770</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1782</span>
                             </div>
 
                             <div class="space-y-4">
@@ -9855,7 +9920,7 @@
                                     MOVE_PRINT
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1776</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1788</span>
                             </div>
 
                             <div class="space-y-4">
@@ -9946,7 +10011,7 @@
                                     Piece
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1787</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1799</span>
                             </div>
 
                             <div class="space-y-4">
@@ -9975,7 +10040,7 @@
                                     PIECE_PRINT
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1797</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1809</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10004,7 +10069,7 @@
                                     IS_PAWN
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1806</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1818</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10033,7 +10098,7 @@
                                     IS_KNIGHT
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1811</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1823</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10062,7 +10127,7 @@
                                     IS_BISHOP
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1816</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1828</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10091,7 +10156,7 @@
                                     IS_ROOK
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1821</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1833</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10120,7 +10185,7 @@
                                     IS_QUEEN
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1826</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1838</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10149,7 +10214,7 @@
                                     IS_KING
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1831</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1843</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10178,7 +10243,7 @@
                                     IS_COLOR
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1836</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1848</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10207,7 +10272,7 @@
                                     IS_WHITE
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1841</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1853</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10236,7 +10301,7 @@
                                     IS_BLACK
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1846</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1858</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10265,7 +10330,7 @@
                                     GetPieceColor
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1855</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1867</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10312,7 +10377,7 @@
                                     PieceAt
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1861</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1873</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10369,7 +10434,7 @@
                                     PieceCmp
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1868</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1880</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10506,7 +10571,7 @@
                                     FenImport
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1885</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1897</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10555,7 +10620,7 @@
                                     FenExport
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1893</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1905</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10603,7 +10668,7 @@
                                     MAX_HEADER_LENGTH
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1900</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1912</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10632,7 +10697,7 @@
                                     SanMove
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1908</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1920</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10661,7 +10726,7 @@
                                     Game
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1914</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1926</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10690,7 +10755,7 @@
                                     move_name
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1929</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1941</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10749,7 +10814,7 @@
                                     MOVE
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1939</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1951</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10778,7 +10843,7 @@
                                     GameInit
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1948</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1960</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10867,7 +10932,7 @@
                                     GameRun
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1958</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1970</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10906,7 +10971,7 @@
                                     GamePrint
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1963</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1975</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10945,7 +11010,7 @@
                                     GameAddMove
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1968</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1980</span>
                             </div>
 
                             <div class="space-y-4">
@@ -10994,7 +11059,7 @@
                                     GameSetEvent
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1974</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1986</span>
                             </div>
 
                             <div class="space-y-4">
@@ -11043,7 +11108,7 @@
                                     GameSetSite
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1980</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1992</span>
                             </div>
 
                             <div class="space-y-4">
@@ -11092,7 +11157,7 @@
                                     GameSetDate
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1986</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1998</span>
                             </div>
 
                             <div class="space-y-4">
@@ -11141,7 +11206,7 @@
                                     GameSetWhite
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1992</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2004</span>
                             </div>
 
                             <div class="space-y-4">
@@ -11190,7 +11255,7 @@
                                     GameSetBlack
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 1998</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2010</span>
                             </div>
 
                             <div class="space-y-4">
@@ -11239,7 +11304,7 @@
                                     GameSetFen
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2004</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2016</span>
                             </div>
 
                             <div class="space-y-4">
@@ -11288,7 +11353,7 @@
                                     GameSetResult
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2010</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2022</span>
                             </div>
 
                             <div class="space-y-4">
@@ -11337,7 +11402,7 @@
                                     PgnImport
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2020</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2032</span>
                             </div>
 
                             <div class="space-y-4">
@@ -11386,7 +11451,7 @@
                                     PgnExport
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2026</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2038</span>
                             </div>
 
                             <div class="space-y-4">
@@ -11435,7 +11500,7 @@
                                     PgnExportFile
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2032</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2044</span>
                             </div>
 
                             <div class="space-y-4">
@@ -11484,7 +11549,7 @@
                                     Notate
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2042</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2054</span>
                             </div>
 
                             <div class="space-y-4">
@@ -11543,7 +11608,7 @@
                                     SanToMove
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2049</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2061</span>
                             </div>
 
                             <div class="space-y-4">
@@ -11610,9 +11675,11 @@
             
                 
             
+                
+            
         
 
-        <section x-show="shouldShowModule('src/castro.h', 'result', ["Result", "result_score", "result_message", "IsResult", "IsCheckmate", "IsStalemate", "IsInsufficientMaterial", "IsThreefoldRepetition"])" x-cloak class="relative">
+        <section x-show="shouldShowModule('src/castro.h', 'result', ["Result", "result_score", "result_message", "IsResult", "IsCheckmate", "HasNonPawnMaterial", "IsStalemate", "IsInsufficientMaterial", "IsThreefoldRepetition"])" x-cloak class="relative">
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10 group">
                 <div class="space-y-1">
                     <div class="flex items-center gap-2">
@@ -11650,7 +11717,7 @@
                                     Result
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2063</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2075</span>
                             </div>
 
                             <div class="space-y-4">
@@ -11678,7 +11745,7 @@
                                     result_score
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2076</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2088</span>
                             </div>
 
                             <div class="space-y-4">
@@ -11706,7 +11773,7 @@
                                     result_message
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2092</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2104</span>
                             </div>
 
                             <div class="space-y-4">
@@ -11735,7 +11802,7 @@
                                     IsResult
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2109</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2121</span>
                             </div>
 
                             <div class="space-y-4">
@@ -11774,7 +11841,7 @@
                                     IsCheckmate
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2118</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2130</span>
                             </div>
 
                             <div class="space-y-4">
@@ -11798,6 +11865,53 @@
                         </div>
                     </div>
                     
+                    <div class="relative pl-0 md:pl-12 group" x-show="match('HasNonPawnMaterial') || match('result') || match('src/castro.h')">
+                        <div class="absolute left-[-5px] top-4 w-2.5 h-2.5 rounded-full bg-white dark:bg-slate-950 border-2 border-indigo-500 hidden md:block group-hover:scale-125 transition-transform"></div>
+
+                        <div class="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                            <div class="flex flex-wrap items-center gap-3 mb-6">
+                                <span class="text-[9px] font-black px-2 py-1 rounded-md uppercase tracking-wider
+                                     bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400
+                                    ">
+                                    function
+                                </span>
+                                
+                                <h3 class="text-2xl font-bold text-slate-800 dark:text-slate-100 tracking-tight" :class="match('HasNonPawnMaterial') && 'highlight'">
+                                    HasNonPawnMaterial
+                                </h3>
+                                
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2137</span>
+                            </div>
+
+                            <div class="space-y-4">
+                                
+                                    
+                                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed text-base">Returns true if the position is a draw by 50-move rule, threefold repetition, or insufficient material.</p>
+                                    
+                                    
+                                
+                                    
+                                        <div class="flex items-center gap-3 p-2 rounded-lg bg-slate-50 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800">
+                                            <span class="text-[9px] font-black uppercase text-pink-500 w-8 shrink-0">param</span>
+                                            <code class="text-pink-600 dark:text-pink-400 font-bold text-sm">board</code>
+                                            <span class="text-slate-400 text-xs">—</span>
+                                            <span class="text-slate-500 dark:text-slate-400 italic text-xs">Board to check.</span>
+                                        </div>
+
+                                    
+                                
+                                    
+                                        <div class="flex items-center gap-5 mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+                                            <span class="text-[9px] font-black uppercase text-emerald-500 w-8 shrink-0">returns</span>
+                                            <code class="text-emerald-600 dark:text-emerald-400 font-bold text-sm">bool</code>
+                                        </div>
+
+                                    
+                                
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div class="relative pl-0 md:pl-12 group" x-show="match('IsStalemate') || match('result') || match('src/castro.h')">
                         <div class="absolute left-[-5px] top-4 w-2.5 h-2.5 rounded-full bg-white dark:bg-slate-950 border-2 border-indigo-500 hidden md:block group-hover:scale-125 transition-transform"></div>
 
@@ -11813,7 +11927,7 @@
                                     IsStalemate
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2125</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2143</span>
                             </div>
 
                             <div class="space-y-4">
@@ -11852,7 +11966,7 @@
                                     IsInsufficientMaterial
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2132</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2150</span>
                             </div>
 
                             <div class="space-y-4">
@@ -11891,7 +12005,7 @@
                                     IsThreefoldRepetition
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2139</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2157</span>
                             </div>
 
                             <div class="space-y-4">
@@ -12026,7 +12140,7 @@
                                     MoveType
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2154</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2172</span>
                             </div>
 
                             <div class="space-y-4">
@@ -12055,7 +12169,7 @@
                                     GeneratePseudoLegalMoves
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2167</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2185</span>
                             </div>
 
                             <div class="space-y-4">
@@ -12102,7 +12216,7 @@
                                     GeneratePseudoLegalMovesBitboard
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2173</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2191</span>
                             </div>
 
                             <div class="space-y-4">
@@ -12149,7 +12263,7 @@
                                     GeneratePseudoLegalPawnMoves
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2179</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2197</span>
                             </div>
 
                             <div class="space-y-4">
@@ -12216,7 +12330,7 @@
                                     GeneratePseudoLegalPawnAttacks
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2187</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2205</span>
                             </div>
 
                             <div class="space-y-4">
@@ -12293,7 +12407,7 @@
                                     GeneratePseudoLegalKnightAttacks
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2196</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2214</span>
                             </div>
 
                             <div class="space-y-4">
@@ -12360,7 +12474,7 @@
                                     GeneratePseudoLegalBishopAttacks
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2204</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2222</span>
                             </div>
 
                             <div class="space-y-4">
@@ -12427,7 +12541,7 @@
                                     GeneratePseudoLegalRookAttacks
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2212</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2230</span>
                             </div>
 
                             <div class="space-y-4">
@@ -12494,7 +12608,7 @@
                                     GeneratePseudoLegalQueenAttacks
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2220</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2238</span>
                             </div>
 
                             <div class="space-y-4">
@@ -12561,7 +12675,7 @@
                                     GeneratePseudoLegalKingAttacks
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2228</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2246</span>
                             </div>
 
                             <div class="space-y-4">
@@ -12628,7 +12742,7 @@
                                     GeneratePseudoLegalAttacks
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2236</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2254</span>
                             </div>
 
                             <div class="space-y-4">
@@ -12685,7 +12799,7 @@
                                     GeneratePawnMoves
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2243</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2261</span>
                             </div>
 
                             <div class="space-y-4">
@@ -12752,7 +12866,7 @@
                                     GenerateKnightMoves
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2251</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2269</span>
                             </div>
 
                             <div class="space-y-4">
@@ -12819,7 +12933,7 @@
                                     GenerateBishopMoves
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2259</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2277</span>
                             </div>
 
                             <div class="space-y-4">
@@ -12886,7 +13000,7 @@
                                     GenerateRookMoves
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2267</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2285</span>
                             </div>
 
                             <div class="space-y-4">
@@ -12953,7 +13067,7 @@
                                     GenerateQueenMoves
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2275</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2293</span>
                             </div>
 
                             <div class="space-y-4">
@@ -13020,7 +13134,7 @@
                                     GenerateKingMoves
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2283</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2301</span>
                             </div>
 
                             <div class="space-y-4">
@@ -13086,7 +13200,7 @@
                                     LegalityContext
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2295</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2313</span>
                             </div>
 
                             <div class="space-y-4">
@@ -13115,7 +13229,7 @@
                                     CalculateLegality
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2303</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2321</span>
                             </div>
 
                             <div class="space-y-4">
@@ -13162,7 +13276,7 @@
                                     IsLegal
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2309</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2327</span>
                             </div>
 
                             <div class="space-y-4">
@@ -13219,7 +13333,7 @@
                                     GenerateLegalMoves
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2316</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2334</span>
                             </div>
 
                             <div class="space-y-4">
@@ -13266,7 +13380,7 @@
                                     GenerateLegalCaptures
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2322</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2340</span>
                             </div>
 
                             <div class="space-y-4">
@@ -13313,7 +13427,7 @@
                                     GenerateLegalMovesSquare
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2328</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2346</span>
                             </div>
 
                             <div class="space-y-4">
@@ -13370,7 +13484,7 @@
                                     GenerateLegalMovesBitboard
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2335</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2353</span>
                             </div>
 
                             <div class="space-y-4">
@@ -13417,7 +13531,7 @@
                                     GenerateLegalPawnMoves
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2341</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2359</span>
                             </div>
 
                             <div class="space-y-4">
@@ -13506,7 +13620,7 @@
                                     GenerateLegalKnightMoves
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2351</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2369</span>
                             </div>
 
                             <div class="space-y-4">
@@ -13595,7 +13709,7 @@
                                     GenerateLegalBishopMoves
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2361</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2379</span>
                             </div>
 
                             <div class="space-y-4">
@@ -13684,7 +13798,7 @@
                                     GenerateLegalRookMoves
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2371</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2389</span>
                             </div>
 
                             <div class="space-y-4">
@@ -13773,7 +13887,7 @@
                                     GenerateLegalQueenMoves
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2381</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2399</span>
                             </div>
 
                             <div class="space-y-4">
@@ -13862,7 +13976,7 @@
                                     GenerateLegalKingMoves
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2391</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2409</span>
                             </div>
 
                             <div class="space-y-4">
@@ -13951,7 +14065,7 @@
                                     GenerateMoves
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2405</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2423</span>
                             </div>
 
                             <div class="space-y-4">
@@ -14040,7 +14154,7 @@
                                     u64
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2415</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2433</span>
                             </div>
 
                             <div class="space-y-4">
@@ -14064,7 +14178,7 @@
                                     Perft
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2418</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2436</span>
                             </div>
 
                             <div class="space-y-4">
@@ -14093,7 +14207,7 @@
                                     PerftPseudoLegal
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2422</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2440</span>
                             </div>
 
                             <div class="space-y-4">
@@ -14166,7 +14280,7 @@
                                     PolyglotEntry
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2428</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2446</span>
                             </div>
 
                             <div class="space-y-4">
@@ -14195,7 +14309,7 @@
                                     U64
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2439</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2457</span>
                             </div>
 
                             <div class="space-y-4">
@@ -14223,7 +14337,7 @@
                                     Random64
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2447</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2465</span>
                             </div>
 
                             <div class="space-y-4">
@@ -14252,7 +14366,7 @@
                                     ConvertMove
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2669</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2687</span>
                             </div>
 
                             <div class="space-y-4">
@@ -14299,7 +14413,7 @@
                                     LookupBookMove
                                 </h3>
                                 
-                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2675</span>
+                                <span class="text-[10px] font-mono text-slate-400 ml-auto">Line 2693</span>
                             </div>
 
                             <div class="space-y-4">
