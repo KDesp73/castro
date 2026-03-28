@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software, please cite it using the metadata from this file.
+title:  >-
+  KDesp73/castro
+abstract: Independent Move Generation Library
+type: software
+license: MIT
+url: https://github.com/KDesp73/castro
+keywords: 
+  - c-language
+  - chess
+  - chess-game
+  - movegen
+authors: 
+  - family-names: Despoinidis
+    given-names: Konstantinos
+date-released: 2026-03-15

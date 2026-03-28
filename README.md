@@ -49,7 +49,7 @@ Documentation for this library can be found in the header file [castro.h](./src/
 
 ## Benchmarks
 
-<img width="754" height="795" alt="2026-02-22-185222_hyprshot" src="https://github.com/user-attachments/assets/28078d2d-d726-4257-8b84-0f626ca71ea7" />
+<img width="754" height="795" alt="εικόνα" src="https://github.com/user-attachments/assets/3a982ecf-1b70-407a-babf-07d83c1c88a0" />
 
 
 ## License
