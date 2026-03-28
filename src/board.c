@@ -264,3 +264,24 @@ int castro_CountPieces(const Board* board, PieceColor color, PieceType type)
     return popcount(bb);
 }
 
+bool castro_HasNonPawnMaterial(Board* board, int sideToMove)
+{
+    int start = (sideToMove == COLOR_WHITE) ? INDEX_WHITE_KNIGHT : INDEX_BLACK_KNIGHT;
+    int end   = (sideToMove == COLOR_WHITE) ? INDEX_WHITE_KING   : INDEX_BLACK_KING;
+
+    for (int i = start; i < end; i++) {
+        if (board->bitboards[i] != 0ULL) return true;
+    }
+    return false;
+}
+
+size_t castro_PieceCount(Board* board)
+{
+    size_t count = 0;
+    for(size_t i = 0; i < 12; ++i) {
+        Bitboard bb = board->bitboards[i];
+        count += popcount(bb);
+    }
+    return count;
+}
+

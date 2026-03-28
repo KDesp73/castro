@@ -147,3 +147,17 @@ bool castro_IsThreefoldRepetition(Board* board)
     return castro_HashTableGetCount(&board->history.positions, hash) >= 2;
 }
 
+bool castro_IsDraw(Board* board)
+{
+    if (board->halfmove >= 100)
+        return true;
+
+    if (castro_IsThreefoldRepetition(board))
+        return true;
+
+    if (castro_IsInsufficientMaterial(board))
+        return true;
+
+    return false;
+}
+

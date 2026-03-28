@@ -870,6 +870,14 @@ Bitboard castro_GetEmpty(const Board* board);
 // @return int The final count
 int castro_CountPieces(const Board* board, PieceColor color, PieceType type);
 
+// @function HasNonPawnMaterial
+// @desc Returns true if the side to move has material other than pawns and the king
+bool castro_HasNonPawnMaterial(Board* board, int sideToMove);
+
+// @function PieceCount
+// @descr Calculates the total piece count
+size_t castro_PieceCount(Board* board);
+
 // @function HasCastlingRights
 // @desc Checks if a board has certain castling rights.
 //
@@ -2126,6 +2134,12 @@ Result castro_IsResult(Board* board);
 // @return true if checkmate
 bool castro_IsCheckmate(const Board* board);
 
+// @function HasNonPawnMaterial 
+// @desc Returns true if the position is a draw by 50-move rule, threefold repetition, or insufficient material.
+// @param board Board to check.
+// @returns bool True if draw.
+bool castro_IsDraw(Board* board);
+
 // @function IsStalemate
 // @desc Determines if the current position is stalemate.
 // 
@@ -2883,6 +2897,9 @@ Move castro_LookupBookMove(uint64_t position_hash, const char* book_path);
 #define Perft castro_Perft
 #define ConvertMove castro_ConvertMove
 #define LookupBookMove castro_LookupBookMove
+#define IsDraw castro_IsDraw
+#define HasNonPawnMaterial castro_HasNonPawnMaterial
+#define PieceCount castro_PieceCount
 
 #endif // CASTRO_STRIP_PREFIX
 
