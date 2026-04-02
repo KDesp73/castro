@@ -285,6 +285,11 @@ bool castro_IsDoublePawnPush(Board* board, Move move)
 
 bool castro_MakeMove(Board* board, Move move)
 {
+    /* If AddUndo fails, castro used to continue applying the move, leaving the
+     * board inconsistent with history.count (UnmakeMove becomes a no-op). */
+    if (board->history.count >= MAX_MOVES)
+        return false;
+ 
     Piece piece = castro_PieceAt(board, castro_GetFrom(move));
     if (piece.type == EMPTY_SQUARE || piece.color != board->turn) return false;
 
